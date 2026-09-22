@@ -74,12 +74,38 @@ const CAMPAIGN_STATUS_CFG: Record<string, { label: string; color: string; bg: st
 
 // ─── Contact data helper ──────────────────────────────────────────────────────
 
-// Build searchable index from workspace data
+// Prototype contact data — kept here so search.ts doesn't import from page modules.
+// This mirrors the CONTACTS structure in ContactsTab.tsx.
+type ContactRecord = { name: string; role: string; team: string }
+
+const CONTACT_INDEX: Record<string, ContactRecord[]> = {
+  stripe:   [
+    { name: 'Priya Mehta', role: 'Engineering Manager', team: 'Platform Infrastructure' },
+    { name: 'James Wu', role: 'Staff Infrastructure Engineer', team: 'Platform Engineering' },
+    { name: 'Sara Okonkwo', role: 'Director of Engineering', team: 'Platform' },
+  ],
+  paystack: [
+    { name: 'Dele Adeyemi', role: 'Engineering Manager', team: 'Backend Platform' },
+    { name: 'Amara Nwosu', role: 'Senior Staff Engineer', team: 'API Platform' },
+  ],
+  kuda: [
+    { name: 'Alex Obi', role: 'Head of Engineering', team: 'Platform Engineering' },
+  ],
+}
+
+const CONTACT_IDS: Record<string, string[]> = {
+  stripe:   ['priya-mehta', 'james-wu', 'sara-okonkwo'],
+  paystack: ['dele-adeyemi', 'amara-nwosu'],
+  kuda:     ['alex-obi'],
+}
+
+// ─── Index builder ────────────────────────────────────────────────────────────
+
 export function buildSearchIndex(ws: Workspace): SearchableItem[] {
   const items: SearchableItem[] = []
 
-  // Companies & Opportunities & Contacts
   for (const entry of ws.companies) {
+    // Company
     const oppCfg = OPP_STATUS_CFG[entry.oppStatus]
     items.push({
       id: entry.id,
@@ -93,31 +119,26 @@ export function buildSearchIndex(ws: Workspace): SearchableItem[] {
       keywords: [entry.name, entry.domain, entry.oppStatus].join(' ').toLowerCase(),
     })
 
-    // Contacts for this company
-    const associations = ws.personCompanyAssociations.filter(a => a.companyId === entry.id)
-    associations.forEach(assoc => {
-      const personId = assoc.personId.replace('contact-', '')
-      const person = ws.people.find(p => p.id === assoc.personId || p.id === personId || p.id === `contact-${assoc.personId}`)
-      const actualPerson = person ?? ws.people.find(p => p.id.endsWith(assoc.personId) || assoc.personId.endsWith(p.id))
-      const contactId = actualPerson ? actualPerson.id.replace('contact-', '') : assoc.personId
-      const name = actualPerson ? `${actualPerson.firstName} ${actualPerson.lastName}` : 'Unknown'
-      const role = assoc.title ?? 'Unknown'
-      const team = assoc.team ?? ''
-
-      const isSelected = entry.selectedContactId === contactId || entry.selectedContactId === assoc.personId
-      const lifecycle = isSelected ? deriveContactLifecycle(entry) : 'DISCOVERED'
-
-      items.push({
-        id: `${entry.id}--${contactId}`,
-        type: 'contact',
-        title: name,
-        subtitle: `${role} · ${entry.name}`,
-        meta: team,
-        statusLabel: LIFECYCLE_LABELS[lifecycle],
-        route: `/contacts/${entry.id}--${contactId}`,
-        keywords: [name, role, team, entry.name].join(' ').toLowerCase(),
+    // Contacts for this company (if discovered)
+    if (entry.contactStage !== 'NOT_DISCOVERED') {
+      const contacts = CONTACT_INDEX[entry.id] ?? []
+      const ids = CONTACT_IDS[entry.id] ?? []
+      contacts.forEach((c, i) => {
+        const contactId = ids[i] ?? `contact-${i}`
+        const isSelected = entry.selectedContactId === contactId
+        const lifecycle = isSelected ? deriveContactLifecycle(entry) : 'DISCOVERED'
+        items.push({
+          id: `${entry.id}--${contactId}`,
+          type: 'contact',
+          title: c.name,
+          subtitle: `${c.role} · ${entry.name}`,
+          meta: c.team,
+          statusLabel: LIFECYCLE_LABELS[lifecycle],
+          route: `/contacts/${entry.id}--${contactId}`,
+          keywords: [c.name, c.role, c.team, entry.name].join(' ').toLowerCase(),
+        })
       })
-    })
+    }
 
     // Opportunity (if has any research/classification)
     if (entry.researchStage !== 'NOT_STARTED' || entry.oppStatus !== 'UNCLASSIFIED') {
@@ -142,8 +163,9 @@ export function buildSearchIndex(ws: Workspace): SearchableItem[] {
     // Conversation (if outreach sent)
     if (entry.outreachStage === 'SENT') {
       const convCfg = CONV_STAGE_CFG[entry.convStage] ?? CONV_STAGE_CFG.NONE
-      const person = entry.selectedContactId ? ws.people.find(p => p.id === entry.selectedContactId || p.id === `contact-${entry.selectedContactId}` || entry.selectedContactId?.endsWith(p.id)) : null
-      const contactRecord = person ? { name: `${person.firstName} ${person.lastName}`, role: 'Contact' } : null
+      const contactRecord = CONTACT_INDEX[entry.id]?.find(
+        (_, i) => (CONTACT_IDS[entry.id] ?? [])[i] === entry.selectedContactId,
+      )
       const lastMsg = entry.conversationMessages?.at(-1)
       items.push({
         id: `conv-${entry.id}`,
@@ -299,8 +321,9 @@ export function getRecentItems(ws: Workspace): SearchableItem[] {
   if (activeConv) {
     const opp = OPP_STATUS_CFG[activeConv.oppStatus]
     const convCfg = CONV_STAGE_CFG[activeConv.convStage] ?? CONV_STAGE_CFG.NONE
-    const person = activeConv.selectedContactId ? ws.people.find(p => p.id === activeConv.selectedContactId || p.id === `contact-${activeConv.selectedContactId}` || activeConv.selectedContactId?.endsWith(p.id)) : null
-    const contactRecord = person ? { name: `${person.firstName} ${person.lastName}`, role: 'Contact' } : null
+    const contactRecord = CONTACT_INDEX[activeConv.id]?.find(
+      (_, i) => (CONTACT_IDS[activeConv.id] ?? [])[i] === activeConv.selectedContactId,
+    )
     recents.push({
       id: `recent-conv-${activeConv.id}`,
       type: 'conversation',

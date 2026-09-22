@@ -15,7 +15,7 @@ import {
   CONV_OUTCOME_LABELS,
 } from '../../lib/workspaceStore'
 import { getContactData } from './ContactsTab'
-import type { CompanyContactView } from './ContactsTab'
+import type { ProtoContact } from './ContactsTab'
 
 // ─── Simulated reply content ──────────────────────────────────────────────────
 
@@ -38,7 +38,7 @@ const REPLY_MAP: Record<string, { confirmed: string; proactive: string }> = {
   },
 }
 
-function getSimulatedReply(companyId: string, contact: CompanyContactView, oppStatus: OppStatus): string {
+function getSimulatedReply(companyId: string, contact: ProtoContact, oppStatus: OppStatus): string {
   const firstName = contact.name.split(' ')[0]
   const entry = REPLY_MAP[companyId]
   if (entry) return oppStatus === 'CONFIRMED' ? entry.confirmed : entry.proactive
@@ -98,7 +98,7 @@ const FOLLOWUP_MAP: Record<string, {
 function getFollowUpContent(
   companyId: string,
   companyName: string,
-  contact: CompanyContactView,
+  contact: ProtoContact,
   _oppStatus: OppStatus,
   followUpNumber: 1 | 2,
   outreachSubject?: string,
@@ -191,7 +191,7 @@ function GateCard({ icon, heading, body, cta, onCta }: {
 
 // ─── Context panel ────────────────────────────────────────────────────────────
 
-function ContextPanel({ entry, contact }: { entry: CompanyEntry; contact: CompanyContactView }) {
+function ContextPanel({ entry, contact }: { entry: CompanyEntry; contact: ProtoContact }) {
   const oppCfg = OPP_CFG[entry.oppStatus]
 
   return (
@@ -316,7 +316,7 @@ function ContextPanel({ entry, contact }: { entry: CompanyEntry; contact: Compan
 
 // ─── Message bubbles ──────────────────────────────────────────────────────────
 
-function OutgoingBubble({ message, contact }: { message: ConvMessage; contact: CompanyContactView }) {
+function OutgoingBubble({ message, contact }: { message: ConvMessage; contact: ProtoContact }) {
   const isFollowUp = message.kind === 'followup'
   const isUserReply = message.kind === 'user-reply'
   const kindLabel = isFollowUp ? 'Follow-up' : isUserReply ? 'Your reply' : 'Outreach'
@@ -377,7 +377,7 @@ function OutgoingBubble({ message, contact }: { message: ConvMessage; contact: C
   )
 }
 
-function IncomingBubble({ message, contact }: { message: ConvMessage; contact: CompanyContactView }) {
+function IncomingBubble({ message, contact }: { message: ConvMessage; contact: ProtoContact }) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2 justify-between flex-wrap">
@@ -405,7 +405,7 @@ function IncomingBubble({ message, contact }: { message: ConvMessage; contact: C
   )
 }
 
-function MessageTimeline({ messages, contact }: { messages: ConvMessage[]; contact: CompanyContactView }) {
+function MessageTimeline({ messages, contact }: { messages: ConvMessage[]; contact: ProtoContact }) {
   if (messages.length === 0) return null
   return (
     <div className="flex flex-col gap-5">
@@ -422,7 +422,7 @@ function MessageTimeline({ messages, contact }: { messages: ConvMessage[]; conta
 
 function StopFollowUps({ entry, contact, onUpdate }: {
   entry: CompanyEntry
-  contact: CompanyContactView
+  contact: ProtoContact
   onUpdate: (patch: Partial<CompanyEntry>) => void
 }) {
   const [confirming, setConfirming] = useState(false)
@@ -669,7 +669,7 @@ function RecordOutcome({ entry, onUpdate }: {
 
 function ReplyComposer({ entry, contact, onUpdate }: {
   entry: CompanyEntry
-  contact: CompanyContactView
+  contact: ProtoContact
   onUpdate: (patch: Partial<CompanyEntry>) => void
 }) {
   const [text, setText] = useState('')
@@ -747,7 +747,7 @@ function ReplyComposer({ entry, contact, onUpdate }: {
 
 function FollowUpDraftPanel({ entry, contact, onUpdate }: {
   entry: CompanyEntry
-  contact: CompanyContactView
+  contact: ProtoContact
   onUpdate: (patch: Partial<CompanyEntry>) => void
 }) {
   const followUpNumber = ((entry.followUpCount ?? 0) + 1) as 1 | 2
@@ -927,7 +927,7 @@ function FollowUpDraftPanel({ entry, contact, onUpdate }: {
 
 function AwaitingReplyView({ entry, contact, onUpdate, messages }: {
   entry: CompanyEntry
-  contact: CompanyContactView
+  contact: ProtoContact
   onUpdate: (patch: Partial<CompanyEntry>) => void
   messages: ConvMessage[]
 }) {
@@ -1048,7 +1048,7 @@ function AwaitingReplyView({ entry, contact, onUpdate, messages }: {
 
 function FollowUpDueView({ entry, contact, onUpdate, messages }: {
   entry: CompanyEntry
-  contact: CompanyContactView
+  contact: ProtoContact
   onUpdate: (patch: Partial<CompanyEntry>) => void
   messages: ConvMessage[]
 }) {
@@ -1167,7 +1167,7 @@ function FollowUpDueView({ entry, contact, onUpdate, messages }: {
 
 function FollowUpDraftView({ entry, contact, onUpdate, messages }: {
   entry: CompanyEntry
-  contact: CompanyContactView
+  contact: ProtoContact
   onUpdate: (patch: Partial<CompanyEntry>) => void
   messages: ConvMessage[]
 }) {
@@ -1201,7 +1201,7 @@ function FollowUpDraftView({ entry, contact, onUpdate, messages }: {
 
 function ReplyReceivedView({ entry, contact, onUpdate, messages }: {
   entry: CompanyEntry
-  contact: CompanyContactView
+  contact: ProtoContact
   onUpdate: (patch: Partial<CompanyEntry>) => void
   messages: ConvMessage[]
 }) {
@@ -1246,7 +1246,7 @@ function ReplyReceivedView({ entry, contact, onUpdate, messages }: {
 
 function ActiveConversationView({ entry, contact, onUpdate, messages }: {
   entry: CompanyEntry
-  contact: CompanyContactView
+  contact: ProtoContact
   onUpdate: (patch: Partial<CompanyEntry>) => void
   messages: ConvMessage[]
 }) {
@@ -1281,7 +1281,7 @@ function ActiveConversationView({ entry, contact, onUpdate, messages }: {
 
 function StoppedView({ entry, contact, onUpdate, messages }: {
   entry: CompanyEntry
-  contact: CompanyContactView
+  contact: ProtoContact
   onUpdate: (patch: Partial<CompanyEntry>) => void
   messages: ConvMessage[]
 }) {

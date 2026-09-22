@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Icon, icons } from '../../lib/icons'
 import { useAuth } from '../../context/AuthContext'
-import { type OppStatus, loadWorkspace } from '../../lib/workspaceStore'
+import type { OppStatus } from '../../lib/workspaceStore'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -64,12 +64,155 @@ export type OppData = {
 
 // ─── Prototype data ───────────────────────────────────────────────────────────
 
-export function getOpportunityData(companyId: string, companyName: string, status: OppStatus, hasResearch: boolean): OppData {
-  const ws = loadWorkspace()
-  const opp = ws.opportunities.find(o => o.companyId === companyId)
-  const evidence = ws.evidence.filter(e => e.companyId === companyId)
+const OPP_DATA: Record<string, OppData> = {
+  stripe: {
+    stateExplanation: 'An active, relevant engineering opening was found at Stripe. This is a direct reason to pursue a conversation.',
+    lastUpdated: '18 Sep 2026',
+    primaryCta: 'Review opening',
+    hasResearch: true,
+    summary: {
+      whyExists: 'Research found an active listing for a Senior Infrastructure Engineer on Stripe\'s careers page, posted 25 days ago.',
+      whatSupports: 'The listing combined with LinkedIn team growth (12+ hires in 60 days) and GitHub engineering activity provides strong evidence of genuine hiring intent.',
+      whatUncertain: 'The specific team and hiring manager have not been identified. This is the next blocker before outreach.',
+      whatToDoNext: 'Review the opening details, then proceed to contact discovery to find the right person to reach.',
+    },
+    opening: {
+      role: 'Senior Infrastructure Engineer',
+      team: 'Infrastructure · Platform Engineering',
+      location: 'San Francisco / Remote',
+      openingStatus: 'Active · Posted 25 days ago',
+      source: 'Stripe Careers',
+      sourceDomain: 'stripe.com/jobs',
+      dateDiscovered: '18 Sep 2026',
+      requirements: ['Distributed systems experience', 'Reliability and observability background', 'Comfort working at scale'],
+    },
+    relevance: {
+      roleMatch: 'This opening is a direct match to your stated target role in platform engineering.',
+      skills: ['Distributed systems', 'Reliability engineering', 'Observability'],
+      goalConnection: 'Your goal of working on high-scale infrastructure aligns directly with Stripe\'s platform team mandate and the requirements of this listing.',
+      conversationAngle: 'An outreach message anchored to this specific listing avoids a cold-approach framing. You have a concrete, specific reason to reach out.',
+    },
+    evidence: [
+      { finding: 'Active listing: Senior Infrastructure Engineer', source: 'stripe.com/jobs', recency: '25 days ago', confidence: 'high' },
+      { finding: '12+ engineering hires in 60 days (infrastructure focus)', source: 'linkedin.com', recency: '60 days', confidence: 'medium' },
+      { finding: 'Active distributed systems commits in public repos', source: 'github.com/stripe', recency: 'Last 2 weeks', confidence: 'high' },
+      { finding: 'Engineering blog: platform investment in 2026', source: 'stripe.com/blog', recency: '2 months ago', confidence: 'medium' },
+    ],
+  },
 
-  if (!hasResearch && !opp && evidence.length === 0) {
+  kuda: {
+    stateExplanation: 'A confirmed opening at Kuda led to outreach. A conversation is now active — this opportunity is in progress.',
+    lastUpdated: '14 Sep 2026',
+    primaryCta: 'View conversation',
+    hasResearch: true,
+    summary: {
+      whyExists: 'A platform engineering role was confirmed on Kuda\'s careers page at the time of research. Outreach was sent to Alex Obi and a reply has been received.',
+      whatSupports: 'The listing combined with engineering team growth and Kuda\'s product expansion provided clear evidence of a CONFIRMED opportunity.',
+      whatUncertain: 'The conversation is now in progress. The next uncertainty is the outcome of the discussion with Alex Obi.',
+      whatToDoNext: 'Respond to Alex Obi\'s reply. The opportunity stage is now Conversation.',
+    },
+    opening: {
+      role: 'Platform Engineer',
+      team: 'Platform Engineering',
+      location: 'Lagos, Nigeria / Remote',
+      openingStatus: 'Active at time of research · Conversation underway',
+      source: 'Kuda Careers',
+      sourceDomain: 'kuda.com/careers',
+      dateDiscovered: '14 Sep 2026',
+      requirements: ['Backend engineering experience', 'Financial systems background helpful', 'API and platform design'],
+    },
+    relevance: {
+      roleMatch: 'The platform engineering role aligned with your target role at time of research.',
+      skills: ['Backend engineering', 'Platform engineering', 'API design'],
+      goalConnection: 'Kuda\'s product trajectory — expanding into business banking — aligned with your interest in financially significant infrastructure.',
+      conversationAngle: 'The message referenced the active listing and Kuda\'s product direction. Alex Obi has replied — the angle was effective.',
+    },
+    evidence: [
+      { finding: 'Active platform engineering listing (confirmed at research time)', source: 'kuda.com/careers', recency: 'At time of research', confidence: 'high' },
+      { finding: '5 engineering hires in 45 days', source: 'linkedin.com', recency: 'At time of research', confidence: 'medium' },
+      { finding: 'Business banking product expansion announced', source: 'techcabal.com', recency: 'At time of research', confidence: 'medium' },
+    ],
+  },
+
+  vercel: {
+    stateExplanation: 'No confirmed opening found. Company signals provide a credible basis for reaching out before a listing exists.',
+    lastUpdated: '12 min ago',
+    primaryCta: 'Build a proactive case',
+    hasResearch: true,
+    summary: {
+      whyExists: 'Vercel is actively investing in edge and platform infrastructure. 3 recent hires in relevant roles and sustained engineering output support a proactive classification.',
+      whatSupports: 'Infrastructure hiring patterns (LinkedIn), edge runtime investment (engineering blog), and active TypeScript/Rust tooling work (GitHub).',
+      whatUncertain: 'No confirmed opening exists for your target role. The strength of a proactive reach depends on identifying the right engineering contact.',
+      whatToDoNext: 'Review the evidence supporting this case. Then proceed to contact discovery to find the right person to reach at Vercel.',
+    },
+    proactiveCase: {
+      signals: [
+        { type: 'Team growth', finding: '3 infrastructure hires in 90 days visible on LinkedIn', source: 'linkedin.com' },
+        { type: 'Strategic initiative', finding: 'Edge runtime infrastructure investment described in engineering blog', source: 'vercel.com/blog' },
+        { type: 'Engineering activity', finding: 'Active TypeScript and Rust infrastructure tooling work in public repos', source: 'github.com/vercel' },
+      ],
+      toStrengthen: [
+        'Identify a specific, relevant engineering contact at Vercel',
+        'Look for a relevant listing that may have been added since research was run',
+        'Find stronger direct evidence of open headcount or backfill hiring',
+      ],
+    },
+    relevance: {
+      roleMatch: 'No confirmed opening. This is a PROACTIVE classification based on team growth and technical signals.',
+      skills: ['Platform engineering', 'Edge infrastructure', 'TypeScript/Rust tooling'],
+      goalConnection: 'Vercel\'s engineering direction and growth stage align with an interest in working at the infrastructure layer of developer tools.',
+      conversationAngle: 'A message referencing Vercel\'s edge runtime work directly is more credible than a generic cold approach. Specificity matters.',
+    },
+    evidence: [
+      { finding: '3 recent infrastructure hires', source: 'linkedin.com', recency: '90 days', confidence: 'medium' },
+      { finding: 'Edge runtime investment — engineering blog series', source: 'vercel.com/blog', recency: '3 months ago', confidence: 'high' },
+      { finding: 'Rust and TypeScript infrastructure work in public repos', source: 'github.com/vercel', recency: 'Last 30 days', confidence: 'medium' },
+    ],
+  },
+
+  paystack: {
+    stateExplanation: 'No confirmed opening found. Company signals — team growth and product expansion — provide a credible basis for a proactive approach.',
+    lastUpdated: 'Yesterday',
+    primaryCta: 'Build a proactive case',
+    hasResearch: true,
+    summary: {
+      whyExists: 'Paystack is in an active growth phase following Stripe\'s acquisition. Engineering hiring and product expansion suggest ongoing platform investment.',
+      whatSupports: 'LinkedIn engineering team growth (8 hires in 90 days), commerce product expansion, and active backend engineering work in public repos.',
+      whatUncertain: 'No confirmed opening for your target role. Team structure and engineering leadership are not clearly visible from public sources.',
+      whatToDoNext: 'Review the case for pursuing Paystack. Then proceed to contact discovery to identify a relevant engineering contact.',
+    },
+    proactiveCase: {
+      signals: [
+        { type: 'Team growth', finding: '8 engineering hires in 90 days, spread across backend and platform teams', source: 'linkedin.com' },
+        { type: 'Product direction', finding: 'Commerce and enterprise product expansion announced — engineering demand implied', source: 'paystack.com/blog' },
+        { type: 'Engineering activity', finding: 'Active backend and API infrastructure work in public repositories', source: 'github.com/PaystackHQ' },
+      ],
+      toStrengthen: [
+        'Identify a specific relevant contact in the engineering team',
+        'Verify whether any relevant listing has been posted since research',
+        'Find clearer evidence of team ownership for the relevant engineering area',
+      ],
+    },
+    relevance: {
+      roleMatch: 'No confirmed opening — PROACTIVE classification based on team growth and product expansion.',
+      skills: ['Backend engineering', 'API infrastructure', 'Systems design'],
+      goalConnection: 'Paystack\'s position in African fintech infrastructure and active product expansion aligns with an interest in high-impact payments systems.',
+      conversationAngle: 'Reference Paystack\'s product expansion and backend infrastructure work directly. Informed specificity is more credible than a generic interest approach.',
+    },
+    evidence: [
+      { finding: '8 engineering hires in 90 days', source: 'linkedin.com', recency: '90 days', confidence: 'medium' },
+      { finding: 'Commerce and enterprise product expansion', source: 'paystack.com/blog', recency: '2 months ago', confidence: 'medium' },
+      { finding: 'Backend and API infrastructure work in public repos', source: 'github.com/PaystackHQ', recency: 'Last 45 days', confidence: 'medium' },
+    ],
+  },
+}
+
+export function getOpportunityData(companyId: string, companyName: string, status: OppStatus, hasResearch: boolean): OppData {
+  return OPP_DATA[companyId] ?? getGenericOppData(companyName, status, hasResearch)
+}
+
+function getGenericOppData(companyName: string, status: OppStatus, hasResearch: boolean): OppData {
+  if (!hasResearch) {
     return {
       stateExplanation: 'Research has not been completed. Opportunity classification requires research evidence.',
       lastUpdated: '—',
@@ -84,53 +227,28 @@ export function getOpportunityData(companyId: string, companyName: string, statu
       evidence: [],
     }
   }
-
-  const mappedEvidence: EvidenceItem[] = evidence.map(e => ({
-    finding: e.claim,
-    source: e.sourceName ?? 'Unknown source',
-    recency: e.collectedAt ?? 'Recently',
-    confidence: e.classification === 'FACT' ? 'high' : 'medium'
-  }))
-
-  const isConfirmed = opp?.type === 'CONFIRMED' || status === 'CONFIRMED'
-  const isProactive = opp?.type === 'PROACTIVE' || status === 'PROACTIVE'
-
   return {
-    stateExplanation: isConfirmed
-      ? 'An active, relevant opening was found. This is a direct reason to pursue a conversation.'
-      : isProactive
-        ? 'No confirmed opening found. Company signals provide a credible basis for reaching out before a listing exists.'
-        : 'Research did not return sufficient evidence to classify this opportunity responsibly.',
+    stateExplanation: status === 'UNCLASSIFIED'
+      ? 'Research did not return sufficient evidence to classify this opportunity responsibly.'
+      : 'Company signals suggest this is worth pursuing proactively.',
     lastUpdated: 'Recently',
-    primaryCta: isConfirmed ? 'Review opening' : isProactive ? 'Build a proactive case' : 'Review research',
+    primaryCta: status === 'UNCLASSIFIED' ? 'Review research' : 'Build a proactive case',
     hasResearch: true,
     summary: {
-      whyExists: isConfirmed ? `Research found an active listing for ${opp?.roleTitle ?? 'a role'} at ${companyName}.` : isProactive ? `${companyName} is actively investing in engineering.` : 'Research ran but did not find sufficient evidence.',
-      whatSupports: evidence.length > 0 ? evidence.slice(0, 2).map(e => e.claim).join(' and ') : 'No specific evidence.',
-      whatUncertain: 'The specific team and hiring manager have not been identified. This is the next blocker before outreach.',
-      whatToDoNext: isConfirmed ? 'Review the opening details, then proceed to contact discovery to find the right person to reach.' : 'Review the evidence, then proceed to contact discovery.',
+      whyExists: status === 'UNCLASSIFIED'
+        ? 'Research ran but did not find sufficient evidence to classify this as CONFIRMED or PROACTIVE.'
+        : `Research found signals suggesting ${companyName} may be worth pursuing proactively.`,
+      whatSupports: status === 'UNCLASSIFIED' ? 'Insufficient evidence gathered.' : 'Team activity and company direction signals.',
+      whatUncertain: 'A full picture has not been established. Further research or monitoring may help.',
+      whatToDoNext: status === 'UNCLASSIFIED' ? 'Run research again or monitor this company for new signals.' : 'Review the proactive case and proceed to contact discovery.',
     },
-    opening: isConfirmed ? {
-      role: opp?.roleTitle ?? 'Engineering Role',
-      team: 'Engineering',
-      location: opp?.roleLocation ?? 'Remote',
-      openingStatus: opp?.status ?? 'Active',
-      source: opp?.openingSourceUrl ?? `${companyName} Careers`,
-      sourceDomain: opp?.openingSourceUrl ? (opp.openingSourceUrl.includes('://') ? new URL(opp.openingSourceUrl).hostname : opp.openingSourceUrl) : 'careers page',
-      dateDiscovered: 'Recently',
-      requirements: opp?.roleDescription ? [opp.roleDescription] : ['Relevant engineering background'],
+    proactiveCase: status !== 'UNCLASSIFIED' ? {
+      signals: [
+        { type: 'Team activity', finding: 'Engineering team activity visible in public sources', source: 'linkedin.com' },
+      ],
+      toStrengthen: ['Identify a specific relevant contact', 'Run research again to look for stronger signals'],
     } : undefined,
-    proactiveCase: isProactive ? {
-      signals: evidence.map(e => ({ type: e.sourceName ?? 'Signal', finding: e.claim, source: e.sourceUrl ?? 'unknown' })),
-      toStrengthen: ['Identify a specific relevant engineering contact', 'Find clearer evidence of team ownership'],
-    } : undefined,
-    relevance: {
-      roleMatch: isConfirmed ? 'This opening is a match to your target role.' : 'No confirmed opening. PROACTIVE classification.',
-      skills: ['Engineering', 'Infrastructure'],
-      goalConnection: 'Aligns with your engineering goals.',
-      conversationAngle: 'Reference the collected evidence in your outreach.',
-    },
-    evidence: mappedEvidence,
+    evidence: [],
   }
 }
 
@@ -724,7 +842,8 @@ export function OpportunitiesTab({ id, companyName, status, hasResearch, onNavig
   const targetRole = auth.user?.targetRole ?? ''
   const userSkills = auth.user?.skills ?? []
 
-  const data = getOpportunityData(id, companyName, status, hasResearch)
+  const rawData = OPP_DATA[id]
+  const data = rawData ?? getGenericOppData(companyName, status, hasResearch)
 
   // If no research has been done and no specific data, show unclassified view
   if (!data.hasResearch) {

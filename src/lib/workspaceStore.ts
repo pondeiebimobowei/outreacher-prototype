@@ -202,7 +202,7 @@ export type Outreach = {
   id: string
   companyId: string
   personId: string
-  personCompanyAssociationId: string
+  personCompanyAssociationId?: string
   campaignId?: string
   templateId?: string
   senderAccountId?: string
@@ -420,7 +420,7 @@ function normalizeRecord(p: Record<string, unknown>): Omit<WorkspaceRecord, 'id'
   const outreaches: Outreach[] = rawOutreaches.map(({ contactId, associationId, ...rest }) => ({
     ...rest,
     personId: (rest.personId ?? contactId ?? '') as string,
-    personCompanyAssociationId: (rest.personCompanyAssociationId ?? associationId ?? '') as string,
+    personCompanyAssociationId: rest.personCompanyAssociationId ?? associationId,
   } as Outreach))
 
   // Migrate legacy CampaignMember.contactId → personId

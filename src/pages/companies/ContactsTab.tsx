@@ -6,7 +6,7 @@ import { type CompanyEntry, type OppStatus, loadWorkspace, saveWorkspace } from 
 
 type WorkspaceTab = 'Research' | 'Opportunities' | 'Outreach'
 
-export type CompanyContactView = {
+export type ProtoContact = {
   id: string
   name: string
   role: string
@@ -23,47 +23,191 @@ export type CompanyContactView = {
   maybeRelevant: string[]
 }
 
-export function getContactData(companyId: string, contactId: string): CompanyContactView | null {
-  return getContactsForCompany(companyId).find(c => c.id === contactId) ?? null
+// ─── Prototype contact data ───────────────────────────────────────────────────
+
+const CONTACTS: Record<string, ProtoContact[]> = {
+  stripe: [
+    {
+      id: 'priya-mehta',
+      name: 'Priya Mehta',
+      role: 'Engineering Manager',
+      team: 'Platform Infrastructure',
+      fn: 'Engineering Leadership',
+      avatarInitials: 'PM',
+      avatarBg: '#635BFF',
+      relevanceSummary: "Manages Stripe's Platform Infrastructure team — the team most likely responsible for the active Senior Infrastructure Engineer opening.",
+      roleRelevance: "Priya manages the platform infrastructure org at Stripe. The active listing for Senior Infrastructure Engineer sits within or adjacent to her team.",
+      opportunityConnection: 'Active listing: Senior Infrastructure Engineer · Platform Engineering · Posted 25 days ago',
+      evidence: [
+        { text: 'Engineering Manager, Platform Infrastructure — title listed publicly', source: 'linkedin.com', recency: 'Current' },
+        { text: 'Joined Stripe ~3 years ago from Google infrastructure org', source: 'linkedin.com', recency: '3 years ago' },
+        { text: 'Named in 2025 Stripe engineering blog post on platform reliability', source: 'stripe.com/blog', recency: '10 months ago' },
+      ],
+      conversationAngle: "Your message can reference the active listing and demonstrate a direct understanding of platform infrastructure work. An EM approached with relevant specificity responds better than one approached generically.",
+      known: [
+        'Engineering Manager, Platform Infrastructure at Stripe',
+        'Joined from Google engineering ~3 years ago',
+        'Named in public Stripe engineering content',
+      ],
+      maybeRelevant: [
+        'Likely manages headcount for the active listing — not confirmed',
+        'Exact team scope relative to the listing is not confirmed',
+      ],
+    },
+    {
+      id: 'james-wu',
+      name: 'James Wu',
+      role: 'Staff Infrastructure Engineer',
+      team: 'Platform Engineering',
+      fn: 'Engineering',
+      avatarInitials: 'JW',
+      avatarBg: '#0E1726',
+      relevanceSummary: "Senior technical contributor in Stripe's platform engineering space. A technical peer to the target role — useful for understanding the team before the EM approach.",
+      roleRelevance: "James is a Staff-level engineer in platform engineering — a technical peer to the target role. A peer message can open a different door than approaching the EM directly.",
+      opportunityConnection: 'Active GitHub commits to distributed systems components. Infrastructure blog contributor. 5-year tenure.',
+      evidence: [
+        { text: 'Staff Engineer, Platform — active LinkedIn profile', source: 'linkedin.com', recency: 'Current' },
+        { text: 'Recent commits to distributed systems libraries in public repos', source: 'github.com/stripe', recency: 'Last 2 weeks' },
+        { text: '5-year tenure at Stripe', source: 'linkedin.com', recency: 'Current' },
+      ],
+      conversationAngle: "A peer message referencing specific infrastructure work (the distributed systems commits) is more effective than approaching via job listing alone. James can provide context about the team's technical work even if not the hiring decision-maker.",
+      known: [
+        'Staff Infrastructure Engineer at Stripe',
+        '5+ year tenure',
+        'Active contributor to public GitHub repositories',
+      ],
+      maybeRelevant: [
+        'May have input on hiring decisions for the relevant team — not confirmed',
+        'Team placement relative to the active listing is not confirmed',
+      ],
+    },
+    {
+      id: 'sara-okonkwo',
+      name: 'Sara Okonkwo',
+      role: 'Director of Engineering',
+      team: 'Platform',
+      fn: 'Engineering Leadership',
+      avatarInitials: 'SO',
+      avatarBg: '#10B981',
+      relevanceSummary: "Leads the broader Platform engineering org. Relevant if the EM approach doesn't progress, or if you want to establish a higher-level relationship.",
+      roleRelevance: "Director-level for the platform org. A higher-signal approach for a senior candidate — but requires a stronger case than the listing alone.",
+      opportunityConnection: "Likely owns headcount approval for the active listing. Leads the broader platform engineering org including Priya's team.",
+      evidence: [
+        { text: 'Director of Engineering, Platform — LinkedIn', source: 'linkedin.com', recency: 'Current' },
+        { text: 'Speaker at Stripe engineering summit (2025)', source: 'stripe.com/events', recency: '8 months ago' },
+        { text: 'Joined Stripe 4 years ago', source: 'linkedin.com', recency: 'Current' },
+      ],
+      conversationAngle: "Reaching a Director requires a more compelling narrative than approaching an EM. Lead with specificity about the infrastructure domain and the value you bring — the listing alone is insufficient context at this level.",
+      known: [
+        'Director of Engineering, Platform org',
+        '4+ year tenure at Stripe',
+        'Public speaker at Stripe engineering events',
+      ],
+      maybeRelevant: [
+        'Exact reporting structure for the active listing is not confirmed',
+        'Whether director-level outreach is appropriate for this role level is uncertain',
+      ],
+    },
+  ],
+
+  paystack: [
+    {
+      id: 'dele-adeyemi',
+      name: 'Dele Adeyemi',
+      role: 'Engineering Manager',
+      team: 'Backend Platform',
+      fn: 'Engineering',
+      avatarInitials: 'DA',
+      avatarBg: '#00C3F7',
+      relevanceSummary: "Manages Paystack's Backend Platform team. Given the product expansion direction, this team likely owns the infrastructure most aligned with a platform engineering role.",
+      roleRelevance: "Backend Platform EM at Paystack — likely responsible for the team most aligned with your target role, given the product expansion signals.",
+      opportunityConnection: "Paystack's commerce and enterprise expansion signals backend platform demand. Dele's team sits in that critical path.",
+      evidence: [
+        { text: 'Engineering Manager, Backend Platform — LinkedIn', source: 'linkedin.com', recency: 'Current' },
+        { text: 'Previously at Interswitch as a backend infrastructure engineer', source: 'linkedin.com', recency: '3 years ago' },
+        { text: 'Visible in Paystack Lagos engineering team page', source: 'paystack.com/careers', recency: 'Recent' },
+      ],
+      conversationAngle: "Reference Paystack's product expansion and the backend platform's role in enabling it. A message demonstrating understanding of their growth challenges is more credible than a generic interest framing.",
+      known: [
+        'Engineering Manager, Backend Platform at Paystack',
+        'Based in Lagos, Nigeria',
+        'Prior background in fintech infrastructure (Interswitch)',
+      ],
+      maybeRelevant: [
+        'Specific team headcount plans are not public',
+        'Whether Backend Platform has current openings is unconfirmed',
+      ],
+    },
+    {
+      id: 'amara-nwosu',
+      name: 'Amara Nwosu',
+      role: 'Senior Staff Engineer',
+      team: 'API Platform',
+      fn: 'Engineering',
+      avatarInitials: 'AN',
+      avatarBg: '#0066FF',
+      relevanceSummary: "Senior technical lead for Paystack's API platform — the layer powering the merchant ecosystem. A peer approach with technical substance.",
+      roleRelevance: "Staff-level engineer on API Platform. A technical peer route — and a way to understand team structure better before the EM approach.",
+      opportunityConnection: 'Active API infrastructure work visible on GitHub. Team growth signals align with platform investment.',
+      evidence: [
+        { text: 'Senior Staff Engineer, API Platform — LinkedIn', source: 'linkedin.com', recency: 'Current' },
+        { text: 'Active commits to PaystackHQ public repositories', source: 'github.com/PaystackHQ', recency: 'Last 45 days' },
+        { text: '2-year tenure at Paystack', source: 'linkedin.com', recency: 'Current' },
+      ],
+      conversationAngle: "Technical specificity matters here. Reference the API infrastructure work or specific challenges in the Paystack developer ecosystem. A peer-to-peer technical message outperforms a role-interest framing.",
+      known: [
+        'Senior Staff Engineer, API Platform at Paystack',
+        'Active open-source contributor',
+        '2-year tenure',
+      ],
+      maybeRelevant: [
+        'Scope relative to open positions is not confirmed',
+        'Involvement in hiring decisions is unknown',
+      ],
+    },
+  ],
+
+  kuda: [
+    {
+      id: 'alex-obi',
+      name: 'Alex Obi',
+      role: 'Head of Engineering',
+      team: 'Platform Engineering',
+      fn: 'Engineering Leadership',
+      avatarInitials: 'AO',
+      avatarBg: '#1B4DFF',
+      relevanceSummary: "Leads platform engineering at Kuda. This contact is selected — an active reply has been received following your outreach on the confirmed platform opening.",
+      roleRelevance: "Alex leads the platform engineering org at Kuda — the team responsible for the confirmed opening. Outreach was targeted to this role directly.",
+      opportunityConnection: 'Confirmed opening: Platform Engineer · Kuda · Active at time of research · Conversation now active.',
+      evidence: [
+        { text: 'Head of Engineering, Platform — confirmed from Kuda careers page', source: 'kuda.com/careers', recency: 'At time of research' },
+        { text: 'Engineering leadership profile on LinkedIn', source: 'linkedin.com', recency: 'Current' },
+        { text: "Cited in Kuda's engineering team communication", source: 'techcabal.com', recency: '4 months ago' },
+      ],
+      conversationAngle: "Conversation is active. Alex replied to your outreach. The next step is responding to the reply — not writing a new message.",
+      known: [
+        'Head of Platform Engineering at Kuda',
+        'Replied to your outreach message',
+        'Leads the team that posted the relevant listing',
+      ],
+      maybeRelevant: [
+        "Next steps in the conversation are unknown until you read the reply",
+        'Whether the listing remains open at this point is not confirmed',
+      ],
+    },
+  ],
 }
 
-export function getContactsForCompany(companyId: string): CompanyContactView[] {
-  const ws = loadWorkspace()
-  const associations = ws.personCompanyAssociations.filter(a => a.companyId === companyId)
-  
-  if (associations.length === 0) {
-    const company = ws.companies.find(c => c.id === companyId)
-    return getGenericContacts(company?.name ?? 'Company')
-  }
-
-  return associations.map(assoc => {
-    const personId = assoc.personId.replace('contact-', '')
-    const person = ws.people.find(p => p.id === assoc.personId || p.id === personId || p.id === `contact-${assoc.personId}`)
-    
-    // Some legacy references use 'contact-name' while association uses 'contact-name'. 
-    // Just find by ending if needed
-    const actualPerson = person ?? ws.people.find(p => p.id.endsWith(assoc.personId) || assoc.personId.endsWith(p.id))
-
-    return {
-      id: actualPerson ? actualPerson.id.replace('contact-', '') : assoc.personId,
-      name: actualPerson ? `${actualPerson.firstName} ${actualPerson.lastName}` : 'Unknown',
-      role: assoc.title ?? 'Unknown Role',
-      team: assoc.team ?? '',
-      fn: assoc.fn ?? '',
-      avatarInitials: actualPerson?.avatarInitials ?? '??',
-      avatarBg: actualPerson?.avatarBg ?? '#cccccc',
-      relevanceSummary: assoc.whyThisPerson ?? '',
-      roleRelevance: assoc.whyThisPerson ?? '',
-      opportunityConnection: '',
-      evidence: assoc.evidence ?? [],
-      conversationAngle: assoc.conversationAngle ?? '',
-      known: assoc.known ?? [],
-      maybeRelevant: assoc.maybeRelevant ?? [],
-    }
-  })
+export function getContactData(companyId: string, contactId: string): ProtoContact | null {
+  const list = CONTACTS[companyId] ?? getGenericContacts(companyId)
+  return list.find(c => c.id === contactId) ?? null
 }
 
-function getGenericContacts(companyName: string): CompanyContactView[] {
+export function getContactsForCompany(companyId: string): ProtoContact[] {
+  return CONTACTS[companyId] ?? []
+}
+
+function getGenericContacts(companyName: string): ProtoContact[] {
   return [
     {
       id: 'generic-em',
@@ -89,7 +233,7 @@ function getGenericContacts(companyName: string): CompanyContactView[] {
 // ─── Evidence panel ───────────────────────────────────────────────────────────
 
 function EvidencePanel({ contact, onBackToResearch }: {
-  contact: CompanyContactView
+  contact: ProtoContact
   onBackToResearch: () => void
 }) {
   return (
@@ -138,7 +282,7 @@ function EvidencePanel({ contact, onBackToResearch }: {
 // ─── Contact review panel ─────────────────────────────────────────────────────
 
 function ContactReview({ contact, companyName, oppStatus, isSelected, onSelect, onBack, onBackToResearch }: {
-  contact: CompanyContactView
+  contact: ProtoContact
   companyName: string
   oppStatus: OppStatus
   isSelected: boolean
@@ -448,7 +592,7 @@ function DiscoveryAnimation({ onComplete }: { onComplete: () => void }) {
 // ─── Contact card ─────────────────────────────────────────────────────────────
 
 function ContactCard({ contact, isSelected, onReview }: {
-  contact: CompanyContactView
+  contact: ProtoContact
   isSelected: boolean
   onReview: () => void
 }) {
@@ -526,7 +670,7 @@ function ContactCard({ contact, isSelected, onReview }: {
 
 // ─── Post-selection state ─────────────────────────────────────────────────────
 
-function ContactSelectedBanner({ contact, onPrepareOutreach }: { contact: CompanyContactView; onPrepareOutreach: () => void }) {
+function ContactSelectedBanner({ contact, onPrepareOutreach }: { contact: ProtoContact; onPrepareOutreach: () => void }) {
   return (
     <div
       className="rounded-xl p-5 mb-4"
@@ -585,7 +729,7 @@ export function ContactsTab({ entry, onUpdate, onNavigate, companyName }: {
   const oppClassified = entry.oppStatus !== 'UNCLASSIFIED'
   const contactStage = entry.contactStage
 
-  const contacts = getContactsForCompany(entry.id)
+  const contacts = CONTACTS[entry.id] ?? getGenericContacts(companyName)
   const reviewingContact = reviewingId ? contacts.find(c => c.id === reviewingId) ?? null : null
   const selectedContact = entry.selectedContactId ? contacts.find(c => c.id === entry.selectedContactId) ?? null : null
 
@@ -725,45 +869,23 @@ export function ContactsTab({ entry, onUpdate, onNavigate, companyName }: {
             if (contact) {
               const now = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
               const outreachId = `outreach-${entry.id}-${id}-${Date.now()}`
-              
-              const personId = contact.id
-              let assoc = ws.personCompanyAssociations.find(a => 
-                (a.personId === personId || a.personId === `contact-${personId}`) && a.companyId === entry.id
-              )
-              
-              let updatedWs = { ...ws }
-              
-              if (!assoc) {
-                const newAssoc = {
-                  id: `assoc-${entry.id}-${personId}`,
-                  personId: personId,
-                  companyId: entry.id,
-                  title: contact.role,
-                  team: contact.team,
-                  fn: contact.fn,
-                  source: 'DISCOVERED' as const,
-                  createdAt: now,
-                }
-                updatedWs.personCompanyAssociations = [...updatedWs.personCompanyAssociations, newAssoc]
-                assoc = newAssoc
-              }
-              
-              const existing = updatedWs.outreaches.find(o => o.companyId === entry.id && (o.personId === personId || o.personId === `contact-${personId}`) && o.status === 'DRAFT')
-              
-              if (!existing && assoc) {
+              // Resolve Person and PersonCompanyAssociation from canonical store
+              const personId = `contact-${id}`
+              const assoc = ws.personCompanyAssociations.find(a => a.personId === personId && a.companyId === entry.id)
+              const existing = ws.outreaches.find(o => o.companyId === entry.id && o.personId === personId && o.status === 'DRAFT')
+              if (!existing) {
                 const draft = {
                   id: outreachId,
                   companyId: entry.id,
-                  personId: assoc.personId,
-                  personCompanyAssociationId: assoc.id,
+                  personId,
+                  personCompanyAssociationId: assoc?.id,
                   subject: `Re: ${contact.name.split(' ')[0]} — ${entry.name}`,
                   message: `Hi ${contact.name.split(' ')[0]},\n\n[Draft message — edit before sending]\n\nBest,\n[Your name]`,
                   status: 'DRAFT' as const,
                   createdAt: now,
                 }
-                updatedWs.outreaches = [...updatedWs.outreaches, draft]
+                saveWorkspace({ ...ws, outreaches: [...ws.outreaches, draft] })
               }
-              saveWorkspace(updatedWs)
             }
           }}
           onBack={() => setReviewingId(null)}

@@ -14,21 +14,18 @@ const OPP_CFG: Record<OppStatus, { label: string; color: string; bg: string; bor
 
 // ─── Evidence preview ─────────────────────────────────────────────────────────
 
-function getEvidenceSnippet(entry: CompanyEntry): string {
-  const ws = loadWorkspace()
-  const opp = ws.opportunities.find(o => o.companyId === entry.id)
-  
-  if (opp) {
-    if (opp.roleTitle && opp.roleTitle.trim().length > 0 && opp.roleTitle !== 'Unknown — Research In Progress') {
-      return `Active opportunity: ${opp.roleTitle}`
-    }
-    const evidence = ws.evidence.filter(e => e.companyId === entry.id)
-    if (evidence.length > 0) {
-      return `${evidence.length} piece${evidence.length > 1 ? 's' : ''} of evidence found`
-    }
-  }
+const EVIDENCE_SNIPPETS: Record<string, string> = {
+  stripe:     'Active listing: Senior Infrastructure Engineer · Posted 25 days ago',
+  kuda:       'Platform engineering listing (at time of research) · Conversation underway',
+  paystack:   '8 engineering hires in 90 days · Commerce product expansion',
+  vercel:     '3 infrastructure hires in 90 days · Edge runtime investment',
+  flutterwave:'Research in progress — evidence pending',
+  linear:     'Research not started',
+  moniepoint: 'Research not started',
+}
 
-  return entry.researchStage === 'COMPLETE' ? 'Research complete' : (entry.researchStage === 'IN_PROGRESS' ? 'Research in progress' : 'Research not started')
+function getEvidenceSnippet(entry: CompanyEntry): string {
+  return EVIDENCE_SNIPPETS[entry.id] ?? (entry.researchStage === 'COMPLETE' ? 'Research complete' : 'Research in progress')
 }
 
 // ─── Opportunity card ─────────────────────────────────────────────────────────
