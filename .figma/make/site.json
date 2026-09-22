@@ -1,0 +1,10 @@
+{
+  "description": "Streamline career outreach with a premium platform that organizes contacts, opportunities, and tasks, empowering users to enhance their networking efforts.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

@@ -1,0 +1,2165 @@
+You are continuing implementation of the **Outreacher Figma Make prototype**.
+
+This is the **frontend prototype codebase**, separate from the GitHub/NestJS/Prisma Outreacher repository.
+
+You have already attempted a large implementation covering Career Profile, Company Management, Contacts, Outreach, Conversations, Campaigns, Integrations, and Sender Accounts.
+
+Your previous pass reported these as implemented, but my review found that several are incomplete, superficial, not actually persisted, not wired into the real domain flow, or only represented by UI.
+
+**Do not treat the previous agent's completion report as authoritative.**
+
+Your job in this phase is to **inspect the actual code and state flow, identify what is truly implemented, fix everything listed below, and continue through any additional integrity issues you discover.**
+
+Do not merely explain what is missing.
+
+**Actually implement the fixes in the codebase.**
+
+---
+
+# 1. PRIMARY OBJECTIVE
+
+The product must now behave like a coherent product rather than a collection of screens.
+
+The central workflow must work end-to-end:
+
+```text
+Career Profile
+      ↓
+Company
+      ↓
+Research / Evidence
+      ↓
+Opportunity
+      ↓
+Contact
+      ↓
+Prepare Outreach
+      ↓
+Outreach
+      ↓
+Send
+      ↓
+Conversation
+      ↓
+Follow-up / Outcome / Relationship
+```
+
+The important domain distinction is:
+
+```text
+OUTREACH
+= an outbound message/attempt
+
+CONVERSATION
+= an ongoing thread of messages exchanged with a contact
+
+CAMPAIGN
+= a sending mechanism that may contain multiple outreach recipients
+
+CONTACT
+= a global person/role identity
+
+CONTACT ASSOCIATION
+= that contact's relationship to a specific company
+```
+
+Do not collapse these concepts.
+
+The prototype should make these relationships visible and believable.
+
+---
+
+# 2. NON-NEGOTIABLE IMPLEMENTATION RULES
+
+## Rule 1 — Inspect before modifying
+
+Before making changes:
+
+* inspect `workspaceStore.ts`
+* inspect route definitions
+* inspect navigation
+* inspect `CompanyDetailPage`
+* inspect `ContactsTab`
+* inspect existing `OutreachTab`
+* inspect `OutreachesPage`
+* inspect `OutreachDetailPage`
+* inspect `ConversationsPage`
+* inspect `ConversationDetailPage`
+* inspect `CampaignsPage`
+* inspect `CampaignDetailPage`
+* inspect `IntegrationsPage`
+* inspect `SenderAccountsPage`
+* inspect `ProfilePage`
+* inspect `OnboardingPage`
+* inspect `DashboardPage`
+* inspect search/indexing
+* inspect all places where `loadWorkspace()` / `saveWorkspace()` are used
+
+Do not assume similarly named functionality is correctly wired.
+
+---
+
+## Rule 2 — Persistence is the source of truth
+
+The product must follow:
+
+```text
+USER ACTION
+→ workspace state mutation
+→ persistence
+→ route/tab transition
+→ destination reconstructs from persisted state
+```
+
+Do not solve missing functionality by merely:
+
+* changing button text
+* navigating to another page
+* inserting local component state
+* rendering hardcoded demo data
+* creating a temporary object that disappears on navigation
+
+If a user creates, edits, archives, sends, selects, or associates something, that state must survive navigation and reload through the existing workspace persistence mechanism.
+
+---
+
+## Rule 3 — Do not create duplicate domain models
+
+Before creating a new type/model, inspect existing types.
+
+If an equivalent already exists:
+
+* extend it
+* normalize it
+* migrate it
+
+Do not create competing versions such as:
+
+```text
+Contact
+ProtoContact
+ContactPerson
+OutreachContact
+```
+
+when one canonical domain model can represent the concept.
+
+---
+
+## Rule 4 — Preserve existing working behavior
+
+Do not regress:
+
+* conversation lifecycle
+* follow-up logic
+* outcome recording
+* relationship status
+* dashboard attention queue
+* global search
+* command palette
+* campaign lifecycle
+* template lifecycle
+* sender account selection
+* company navigation
+* contact navigation
+
+Especially preserve:
+
+```text
+REPLIED ≠ automatically ACTIVE
+```
+
+A reply should not silently start an active relationship.
+
+The user must explicitly choose to continue the conversation.
+
+Also preserve:
+
+```text
+STOPPED = terminal
+```
+
+unless the existing product specification explicitly provides a future reopen path.
+
+---
+
+# 3. PHASE A — CAREER PROFILE MUST BE ACTUALLY COMPLETE
+
+The previous implementation added UI fields, but this needs an integrity pass.
+
+## Required Career Profile
+
+The canonical career profile must support:
+
+```ts
+careerProfile: {
+  professionalHeadline?: string
+
+  targetIndustries: string[]
+
+  targetLocations: string[]
+
+  backgroundAndPositioning?: string
+
+  experienceHighlights?: string
+}
+```
+
+If the current type differs, adapt it rather than blindly duplicating it.
+
+---
+
+## 3.1 Target Industries
+
+Must be a genuine multi-value field.
+
+Examples:
+
+```text
+Fintech
+DevTools
+SaaS
+AI
+Cybersecurity
+Developer Infrastructure
+```
+
+Requirements:
+
+* add/remove individual values
+* no duplicate values
+* clear visual selected state
+* keyboard accessible
+* sensible empty state
+* persisted
+* restored on reload
+* reflected anywhere career-profile context is displayed
+
+Do not implement this as a fake static list that isn't persisted.
+
+---
+
+## 3.2 Target Locations
+
+Same requirements as Target Industries.
+
+Examples:
+
+```text
+Lagos
+Remote
+United Kingdom
+United States
+Europe
+```
+
+Support adding/removing values.
+
+Persist them.
+
+---
+
+## 3.3 Background & Positioning
+
+Add the missing section explicitly.
+
+Label:
+
+**Background & Positioning**
+
+Helper text:
+
+> Feeds AI outreach generation and evidence matching context.
+
+Include:
+
+### Professional Headline
+
+Example:
+
+> Staff Engineer specializing in high-throughput backend architecture
+
+### Background & Positioning
+
+A multiline field explaining the user's professional identity, strengths, domains, and positioning.
+
+### Experience Highlights
+
+Helper/example:
+
+> Key technical achievements, team leadership scale, or domain impacts...
+
+All three must persist through `workspaceStore`.
+
+---
+
+## 3.4 Career Profile completion
+
+Create a reusable completion calculation.
+
+For example:
+
+```text
+professional headline
+background / positioning
+experience highlights
+target industries
+target locations
+```
+
+The exact percentage can be designed appropriately, but it must be based on actual persisted data.
+
+Use this completion state for:
+
+* onboarding
+* dashboard contextual banner
+* profile page
+* relevant empty/restriction states
+
+Do not hardcode “profile incomplete”.
+
+---
+
+# 4. PHASE B — ONBOARDING SKIP MUST ACTUALLY WORK
+
+The previous implementation added a "Skip for now" UI but it reportedly does not work.
+
+Fix the actual behavior.
+
+## Required behavior
+
+A new user must be able to:
+
+```text
+Signup
+↓
+Onboarding
+↓
+Skip for now
+↓
+Dashboard
+```
+
+Skipping must not falsely mark the career profile as complete.
+
+Instead persist an onboarding state such as:
+
+```ts
+onboarding: {
+  completed?: boolean
+  skipped?: boolean
+}
+```
+
+or integrate with the existing equivalent.
+
+Do not create redundant state if the project already has an onboarding state.
+
+---
+
+## 4.1 Contextual guidance after skip
+
+After skipping, the product should not trap the user.
+
+Dashboard should communicate:
+
+* profile incomplete
+* what the user can do next
+* direct CTA to complete profile
+
+Example:
+
+```text
+Your career profile is incomplete
+
+Add your positioning, target industries and locations to improve
+company matching and outreach generation.
+
+Complete profile
+```
+
+---
+
+## 4.2 Progressive restrictions
+
+Do NOT block the entire application because onboarding was skipped.
+
+Only restrict workflows when the missing configuration genuinely matters.
+
+Examples:
+
+### Can do without career profile
+
+* browse dashboard
+* create company
+* edit company
+* research company
+* add contacts
+* inspect opportunities
+* browse conversations
+* manage templates
+
+### May require career profile
+
+* AI outreach generation
+* evidence matching that depends on candidate context
+* personalized outreach generation
+
+When restricted, explain why and give a direct CTA to complete the missing information.
+
+---
+
+# 5. PHASE C — COMPANY MANAGEMENT MUST BE REAL
+
+The previous pass added:
+
+* industry
+* location
+* description
+
+but these fields reportedly are **not persisted and therefore do not appear elsewhere**.
+
+Fix this.
+
+Canonical company model should support something equivalent to:
+
+```ts
+CompanyEntry {
+  id
+  name
+  domain?
+  industry?
+  location?
+  description?
+  status
+  createdAt
+  updatedAt?
+}
+```
+
+Status:
+
+```text
+ACTIVE
+ARCHIVED
+```
+
+---
+
+## 5.1 Company creation
+
+Create company with:
+
+```text
+Company Name *
+Company Website / Domain
+Industry
+Location
+Description / Notes
+```
+
+Persist everything.
+
+---
+
+## 5.2 Company detail
+
+Company detail must visibly use the stored values.
+
+At minimum:
+
+* industry
+* location
+* description
+* domain
+
+Do not collect fields that disappear after save.
+
+---
+
+## 5.3 Company editing
+
+Editing must:
+
+1. load persisted company data
+2. populate form
+3. allow changes
+4. save through workspace state
+5. update the company list
+6. update company detail
+7. survive navigation/reload
+
+Do not duplicate company objects.
+
+---
+
+## 5.4 Company archiving
+
+Implement:
+
+```text
+ACTIVE → ARCHIVED
+ARCHIVED → ACTIVE
+```
+
+Archive confirmation required.
+
+Archived companies should:
+
+* no longer appear in default active company list
+* remain accessible through archived filter
+* retain all historical contacts, outreaches, campaigns, conversations and opportunities
+* not destroy data
+
+Do NOT implement archive as deletion.
+
+---
+
+## 5.5 Missing delete behavior
+
+The previous review noted:
+
+> No delete
+
+Do not automatically add destructive deletion simply because it was missing.
+
+First determine whether the existing product architecture actually requires permanent company deletion.
+
+For this prototype, **archive should be the primary lifecycle action**.
+
+If there is already a delete affordance or the specification explicitly requires deletion, implement it with:
+
+* explicit confirmation
+* destructive styling
+* explanation of consequences
+* appropriate dependency handling
+
+Otherwise do not introduce an unnecessary destructive operation.
+
+---
+
+# 6. PHASE D — CONTACT ARCHITECTURE
+
+The contact model must remain global.
+
+Conceptually:
+
+```text
+PERSON
+  |
+  +-- Company Association A
+  |     title
+  |     team
+  |     whyThisPerson
+  |     evidence
+  |     conversationAngle
+  |
+  +-- Company Association B
+        title
+        team
+        whyThisPerson
+        evidence
+        conversationAngle
+```
+
+A person should not become duplicated merely because they belong to multiple companies.
+
+---
+
+# 6.1 Contact type
+
+Support:
+
+```text
+PERSON
+ROLE_ADDRESS
+```
+
+Examples:
+
+### PERSON
+
+```text
+Jane Doe
+jane@company.com
+VP Engineering
+```
+
+### ROLE_ADDRESS
+
+```text
+Engineering Hiring
+engineering@company.com
+```
+
+The UI should clearly distinguish them.
+
+---
+
+# 6.2 Reference URL
+
+Support optional:
+
+```text
+Reference URL
+```
+
+Examples:
+
+* LinkedIn
+* company team page
+* job posting
+* conference profile
+* article
+* company announcement
+
+Persist it.
+
+Display it appropriately on contact detail.
+
+---
+
+# 6.3 Add contact from company
+
+This is still incomplete.
+
+From a company context:
+
+```text
+Company
+→ Contacts
+→ Add contact
+```
+
+The user must be able to:
+
+### Option A
+
+Create a new person.
+
+### Option B
+
+Find an existing global person and associate them with this company.
+
+The second path is critical.
+
+Example:
+
+```text
+Search existing contacts
+[ Jane Doe                    ]
+[ John Smith                  ]
+[ Sarah Williams              ]
+```
+
+Selecting Jane should create/update the company association rather than duplicate Jane globally.
+
+---
+
+# 6.4 Duplicate detection
+
+Improve duplicate detection.
+
+At minimum:
+
+* exact email match
+* normalized email comparison
+* obvious existing-person match warning
+
+Do not prevent legitimate role addresses from being added.
+
+---
+
+# 6.5 Editing
+
+Editing must work for:
+
+### Global person data
+
+Examples:
+
+* name
+* email
+* LinkedIn/reference URL
+
+Changes should update the global person.
+
+### Company-specific association
+
+Examples:
+
+* role/title
+* team
+* why this person
+* evidence
+* conversation angle
+
+Changes should only update that company relationship.
+
+Make this distinction clear in the UI.
+
+---
+
+# 7. PHASE E — OUTREACH MUST BECOME A REAL FIRST-CLASS DOMAIN
+
+This is the most important unfinished area.
+
+Do not accept the existence of `/outreaches` as proof that the Outreach domain is complete.
+
+Inspect the entire data lifecycle.
+
+---
+
+# 7.1 Canonical Outreach model
+
+Adapt to the existing store, but the conceptual model should be:
+
+```ts
+Outreach {
+  id
+
+  companyId
+  contactId
+  associationId
+
+  campaignId?
+  templateId?
+  senderAccountId?
+
+  subject
+  message
+
+  status
+
+  createdAt
+  sentAt?
+
+  conversationId?
+}
+```
+
+Status:
+
+```text
+DRAFT
+READY
+SENT
+```
+
+If the existing prototype has additional useful states, preserve them where appropriate, but do not make the lifecycle ambiguous.
+
+---
+
+# 7.2 Outreach is an individual outbound attempt
+
+Every manually prepared outreach should belong to:
+
+```text
+ONE company
+ONE contact
+ONE company-contact association
+```
+
+It may optionally belong to:
+
+```text
+ONE campaign
+ONE template
+ONE sender account
+ONE conversation
+```
+
+Do not create one generic outreach object for an entire company.
+
+---
+
+# 7.3 Prepare outreach
+
+The company contact flow must now be:
+
+```text
+Company
+→ Contacts
+→ Contact
+→ Prepare outreach
+```
+
+NOT:
+
+```text
+Select contact
+→ go back
+→ manually find outreach tab
+→ prepare message
+```
+
+Clicking:
+
+**Prepare outreach**
+
+must:
+
+1. identify the company
+2. identify the contact
+3. identify the association
+4. create or load the relevant outreach draft
+5. persist it
+6. open the outreach workflow scoped to that contact/company
+
+The user should immediately see:
+
+```text
+Preparing outreach to Jane Doe
+at Acme
+```
+
+---
+
+# 7.4 Prevent accidental duplicate drafts
+
+If a draft already exists for the same:
+
+```text
+company + contact
+```
+
+and is still editable, reuse it rather than blindly creating duplicates.
+
+If multiple legitimate outreaches are allowed, make the distinction explicit.
+
+Do not generate accidental duplicate drafts every time the user clicks Prepare outreach.
+
+---
+
+# 7.5 Outreach editing
+
+The user must be able to edit:
+
+```text
+Subject
+Message
+Sender
+Template
+```
+
+depending on state.
+
+Changes must persist.
+
+---
+
+# 7.6 Draft → Ready → Sent
+
+The lifecycle must be real.
+
+Example:
+
+```text
+DRAFT
+  ↓
+READY
+  ↓
+SENT
+```
+
+A draft should not appear as SENT merely because the user opened the page.
+
+"Mark ready" and "Send" should have distinct semantics.
+
+---
+
+# 7.7 Sender account integration
+
+Outreach must be able to reference a sender account.
+
+Display:
+
+```text
+From:
+Jane / jane@example.com
+
+Reply-to:
+jane@example.com
+
+Via:
+Resend Production
+```
+
+If no sender account exists, the product should not pretend the message can be sent.
+
+Show an actionable restriction:
+
+```text
+Add a sender account to send this outreach.
+```
+
+with CTA:
+
+**Add sender account**
+
+---
+
+# 7.8 Campaign relationship
+
+An outreach can optionally originate from a campaign.
+
+Show:
+
+```text
+Campaign:
+Backend Hiring Outreach
+```
+
+Clicking it should navigate to the campaign.
+
+Campaign membership must not overwrite the individual outreach identity.
+
+---
+
+# 7.9 Conversation relationship
+
+An outreach may have:
+
+```text
+conversationId
+```
+
+But an outreach is NOT a conversation.
+
+Before a reply:
+
+```text
+Outreach
+SENT
+No conversation yet
+```
+
+After a reply:
+
+```text
+Outreach
+SENT
+↓
+Conversation
+REPLIED
+```
+
+Do not automatically make the conversation ACTIVE.
+
+---
+
+# 8. GLOBAL OUTREACHES
+
+Verify `/outreaches` is driven entirely from persisted workspace outreaches.
+
+It must not be a static demo screen.
+
+Show useful fields:
+
+```text
+Contact
+Company
+Subject
+Message preview
+Status
+Campaign
+Sender
+Conversation state
+Created/Sent time
+```
+
+Support filtering:
+
+```text
+All
+Draft
+Ready
+Sent
+```
+
+Clicking a row/card must open:
+
+```text
+/outreaches/:id
+```
+
+---
+
+# 8.1 Outreach detail
+
+The detail page must reconstruct from the persisted Outreach record.
+
+Show:
+
+### Message
+
+* subject
+* body
+* status
+* timestamps
+
+### Recipient
+
+* contact
+* company
+* role
+* association context
+
+### Why this person
+
+If available.
+
+### Campaign
+
+If applicable.
+
+### Sender
+
+If selected.
+
+### Conversation
+
+If one exists.
+
+### Actions
+
+Based on lifecycle:
+
+```text
+Edit
+Mark ready
+Send
+View conversation
+```
+
+Do not show actions that are invalid for the current state.
+
+---
+
+# 9. COMPANY OUTREACH TAB
+
+Company detail must have a genuine Outreach tab.
+
+It must show only:
+
+```text
+outreaches where outreach.companyId === currentCompany.id
+```
+
+Do not show all global outreaches.
+
+Each row should identify:
+
+```text
+Contact
+Subject
+Status
+Created/Sent
+Campaign
+Conversation
+```
+
+Clicking opens the global outreach detail route.
+
+---
+
+# 10. COMPANY CAMPAIGNS TAB
+
+The company Campaigns tab must be properly scoped.
+
+It should show campaigns where at least one campaign member belongs to the current company.
+
+Conceptually:
+
+```text
+Campaign
+  members
+    ↓
+  contact
+    ↓
+  company association
+    ↓
+  current company
+```
+
+Do not filter campaigns merely by campaign name or a manually stored company ID if the real relationship is membership-based.
+
+If the prototype model needs a denormalized company reference for UX, keep it consistent with membership.
+
+---
+
+# 11. COMPANY CONVERSATIONS TAB
+
+Company Conversations must only show conversations involving contacts associated with that company.
+
+Do not show unrelated global conversations.
+
+Global:
+
+```text
+/conversations
+```
+
+shows all.
+
+Company:
+
+```text
+/company/:id → Conversations
+```
+
+shows only company-related conversations.
+
+Conversation detail remains the existing canonical conversation detail experience.
+
+---
+
+# 12. CONVERSATION SEPARATION
+
+Audit the entire conversation model.
+
+Conversation is:
+
+```text
+a thread of messages exchanged with a contact
+```
+
+It can originate from:
+
+* manual outreach
+* campaign outreach
+* inbound reply
+* manually recorded interaction
+
+It must not require a campaign.
+
+It must not equal an outreach.
+
+---
+
+## Required message model behavior
+
+A conversation can contain:
+
+```text
+OUTREACH
+FOLLOW_UP
+CONTACT_REPLY
+USER_REPLY
+```
+
+or the existing equivalent.
+
+The conversation timeline must remain coherent.
+
+If an outreach is sent and a contact replies:
+
+```text
+Outreach
+→ Conversation
+→ Contact reply
+```
+
+If the user sends a reply:
+
+```text
+Conversation
+→ USER_REPLY
+```
+
+Do not create a second conversation unnecessarily.
+
+---
+
+# 13. CAMPAIGN CONTACT PICKER
+
+The previous implementation is still incomplete.
+
+Replace weak/static contact selection with a proper selection experience.
+
+Requirements:
+
+* search
+* company context
+* contact type
+* role/title
+* selected state
+* selected count
+* remove
+* clear all
+* confirmation before proceeding if appropriate
+
+Selection should use the same contact model used by:
+
+* global contacts
+* company contacts
+* outreach
+* conversations
+
+Do not maintain a separate campaign-only contact representation.
+
+---
+
+# 14. CAMPAIGN TEMPLATE PICKER
+
+Improve template selection.
+
+Requirements:
+
+* searchable/selectable template cards or rows
+* template name
+* category
+* subject preview
+* message preview
+* selected state
+* clear visual active selection
+* preview before use
+
+When selected, persist:
+
+```text
+templateId
+```
+
+on the appropriate campaign/outreach state.
+
+Do not merely copy text into the UI and lose the template relationship.
+
+---
+
+# 15. CAMPAIGN SENDER ACCOUNT SELECTION
+
+Campaign creation must support selecting a sender account.
+
+Display:
+
+```text
+Sender:
+Jane Doe <jane@example.com>
+
+Via:
+Resend Production
+```
+
+Persist:
+
+```text
+campaign.senderAccountId
+```
+
+Every campaign-created outreach should inherit that sender account unless intentionally overridden by an explicit product rule.
+
+---
+
+# 16. SENDER ACCOUNT DAILY LIMIT
+
+The previous pass added a UI field but this must become meaningful state.
+
+Sender account should support:
+
+```text
+dailyLimit
+sentToday
+```
+
+or equivalent.
+
+When sending simulated messages:
+
+```text
+sentToday < dailyLimit
+```
+
+allows sending.
+
+When:
+
+```text
+sentToday >= dailyLimit
+```
+
+sending is blocked.
+
+Show a clear state:
+
+```text
+Daily sending limit reached
+
+This sender account has reached its configured limit of 50 messages today.
+```
+
+Do not silently increment beyond the limit.
+
+---
+
+# 16.1 Reset behavior
+
+For a prototype, you may implement a simulated day boundary based on stored date:
+
+```text
+sentTodayDate
+```
+
+If the date changes, reset the simulated daily count.
+
+Do not require a real backend scheduler.
+
+---
+
+# 17. INTEGRATIONS
+
+The previous implementation missed Integration Name.
+
+An Integration should support something equivalent to:
+
+```ts
+Integration {
+  id
+  name
+  provider
+  status
+}
+```
+
+Example:
+
+```text
+Resend Production
+Resend
+Connected
+```
+
+Multiple integrations must be supported.
+
+Example:
+
+```text
+Resend Production
+Resend Sandbox
+SMTP Personal
+SMTP Work
+```
+
+Do not assume only one integration can exist.
+
+---
+
+# 17.1 Integration name
+
+Add:
+
+```text
+Integration Name *
+```
+
+This is the user-facing identity.
+
+Do not use the provider name as the only identity.
+
+---
+
+# 17.2 Test Connection
+
+Keep this simulated.
+
+Required states:
+
+```text
+Idle
+Testing
+Success
+Failed
+```
+
+Button:
+
+**Test connection**
+
+Do not call real provider APIs.
+
+A successful simulated test should update visible status appropriately.
+
+A failed simulated test should be understandable and recoverable.
+
+---
+
+# 18. SENDER ACCOUNT VS INTEGRATION
+
+Preserve this architecture:
+
+```text
+Integration
+    ↓
+Sender Account
+    ↓
+Campaign / Outreach
+```
+
+Integration answers:
+
+> Which email provider connection is this?
+
+Sender Account answers:
+
+> Which identity are we sending from?
+
+Do not merge them.
+
+A single integration may have multiple sender accounts.
+
+---
+
+# 19. SEARCH / COMMAND PALETTE
+
+Because Outreach is now first-class, update global search.
+
+Search should include:
+
+```text
+Companies
+Contacts
+Opportunities
+Outreaches
+Conversations
+Campaigns
+Templates
+```
+
+An outreach result should show:
+
+```text
+Subject
+Contact
+Company
+Status
+```
+
+Click should navigate to:
+
+```text
+/outreaches/:id
+```
+
+Ensure the index is rebuilt from persisted workspace state.
+
+---
+
+# 20. DASHBOARD
+
+Audit dashboard behavior after the new domain changes.
+
+Dashboard attention should be derived from real state.
+
+Potential attention items:
+
+```text
+Incomplete career profile
+Draft outreach
+Outreach ready to send
+Follow-up due
+Conversation reply
+Missing sender account
+Daily sender limit reached
+```
+
+Do not show banners merely because the feature exists.
+
+Only show them when the persisted state actually warrants them.
+
+---
+
+# 21. DEMO DATA
+
+Existing demo/sample workspace behavior may remain.
+
+But distinguish:
+
+```text
+REAL USER WORKSPACE
+```
+
+from:
+
+```text
+DEMO/SAMPLE WORKSPACE
+```
+
+Do not silently inject demo outreaches, contacts, companies, campaigns, etc. into a user's normal workspace.
+
+If demo seeding is used:
+
+* make it explicit
+* keep it deterministic
+* ensure clearing demo data actually clears all related domains
+
+---
+
+# 22. ARCHIVE INTEGRITY
+
+When a company is archived:
+
+Do not delete:
+
+* contacts
+* associations
+* outreaches
+* conversations
+* campaigns
+* opportunities
+* research
+
+Historical records should remain accessible.
+
+But active workflow surfaces should clearly indicate that the company is archived.
+
+For example:
+
+```text
+Acme
+ARCHIVED
+```
+
+Sending new outreach to an archived company should either:
+
+* be blocked with an explicit explanation, or
+* require an intentional reactivation
+
+Choose the behavior that best preserves product safety.
+
+Do not allow accidental new outbound activity against an archived company.
+
+---
+
+# 23. STATE INTEGRITY AUDIT
+
+Perform a full audit for stale/local-only state.
+
+Search for:
+
+```text
+useState(
+loadWorkspace()
+saveWorkspace()
+```
+
+and determine whether any domain-critical state is being held only in components.
+
+Pay special attention to:
+
+* company editing
+* contacts
+* contact associations
+* outreaches
+* conversations
+* campaigns
+* templates
+* integrations
+* sender accounts
+* career profile
+
+Where appropriate, derive UI from the parent persisted state rather than loading a stale snapshot once.
+
+---
+
+# 24. MUTATION INTEGRITY
+
+Inspect mutations for accidental direct mutation.
+
+Avoid patterns such as:
+
+```ts
+workspace.items.push(...)
+workspace.company.foo = ...
+```
+
+Prefer immutable updates.
+
+For every mutation verify:
+
+```text
+read current workspace
+→ produce new state
+→ save workspace
+→ update UI
+```
+
+Do not allow stale references to overwrite newer state.
+
+---
+
+# 25. ROUTING INTEGRITY
+
+Verify every canonical route.
+
+At minimum:
+
+```text
+/dashboard
+
+/companies
+/companies/:companyId
+
+/contacts
+/contacts/:contactId
+
+/opportunities
+/opportunities/:opportunityId
+
+/outreaches
+/outreaches/:outreachId
+
+/conversations
+/conversations/:conversationId
+
+/campaigns
+/campaigns/:campaignId
+
+/templates
+
+/integrations
+
+/sender-accounts
+
+/profile
+```
+
+No broken links.
+
+No dead navigation.
+
+No route that exists only visually.
+
+---
+
+# 26. CROSS-DOMAIN NAVIGATION
+
+Verify these paths:
+
+```text
+Company
+→ Contact
+→ Prepare outreach
+→ Outreach detail
+→ Conversation
+```
+
+```text
+Company
+→ Campaign
+→ Campaign member
+→ Contact
+→ Outreach
+```
+
+```text
+Global Outreach
+→ Company
+```
+
+```text
+Global Outreach
+→ Contact
+```
+
+```text
+Global Outreach
+→ Conversation
+```
+
+```text
+Global Conversation
+→ Contact
+→ Company
+→ originating outreach
+```
+
+Links should preserve the canonical IDs.
+
+---
+
+# 27. RESPONSIVE UX
+
+Do not treat responsive behavior as optional.
+
+Check:
+
+### Desktop
+
+* persistent sidebar
+* main content
+* dense but readable tables/cards
+* fixed header
+
+### Tablet
+
+* collapsible/overlay navigation
+* content remains usable
+* forms remain readable
+
+### Mobile
+
+Do not simply shrink desktop tables.
+
+Use:
+
+* stacked cards
+* compact headers
+* drawers
+* responsive selectors
+* full-width CTAs
+* touch targets around 44px
+
+Particularly test:
+
+* Add Company
+* Add Contact
+* Prepare Outreach
+* Outreach detail
+* Campaign contact picker
+* Campaign template picker
+* Integration modal
+* Sender account modal
+
+---
+
+# 28. ACCESSIBILITY
+
+Check:
+
+* keyboard navigation
+* focus states
+* modal focus trapping
+* Escape behavior
+* labels
+* button names
+* aria-expanded
+* aria-selected
+* aria-current
+* form validation
+* destructive confirmation
+* color contrast
+* non-color status indicators
+
+Do not rely solely on color for:
+
+```text
+DRAFT
+READY
+SENT
+ARCHIVED
+REPLIED
+STOPPED
+```
+
+---
+
+# 29. EMPTY / LOADING / ERROR / SUCCESS STATES
+
+Every newly implemented domain should have meaningful lifecycle states.
+
+At minimum:
+
+### Outreach
+
+```text
+No outreaches yet
+Draft
+Ready
+Sent
+```
+
+### Contacts
+
+```text
+No contacts
+No company contacts
+No search results
+```
+
+### Campaigns
+
+```text
+No campaigns
+No matching company campaigns
+```
+
+### Integrations
+
+```text
+No integrations
+Testing
+Connected
+Failed
+```
+
+### Sender Accounts
+
+```text
+No sender accounts
+Limit reached
+Available
+```
+
+### Career Profile
+
+```text
+Incomplete
+Partially complete
+Complete
+```
+
+---
+
+# 30. IMPORTANT: FIND ADDITIONAL ISSUES
+
+The list above is not exhaustive.
+
+After implementing the requested changes, perform a deliberate audit for problems that I have not explicitly listed.
+
+Look for:
+
+* stale state
+* fake persistence
+* duplicate models
+* broken navigation
+* wrong scoping
+* missing IDs
+* incorrect relationships
+* hardcoded demo assumptions
+* invalid lifecycle transitions
+* orphaned records
+* inconsistent labels
+* duplicated UI flows
+* mobile breakage
+* accessibility gaps
+* inconsistent empty states
+* actions that appear available but cannot actually complete
+* data that is created but never displayed
+* data that is displayed but not actually persisted
+* state that survives navigation but not reload
+* state that survives reload but is not reflected across related pages
+
+**If you discover such an issue, fix it as part of this phase.**
+
+Do not leave obvious integrity defects simply because they were not explicitly listed.
+
+---
+
+# 31. DO NOT OVER-ENGINEER
+
+This remains a Figma Make prototype.
+
+Do NOT introduce:
+
+* real APIs
+* real email sending
+* real provider credentials
+* real OAuth
+* backend infrastructure
+* unnecessary dependencies
+* production database work
+
+Use the existing local persistence architecture.
+
+Simulate provider connection tests and email sending.
+
+The goal is a highly believable, interactive prototype with coherent state.
+
+---
+
+# 32. IMPLEMENTATION ORDER
+
+Use this order to reduce regressions:
+
+### Step 1 — Audit existing state
+
+Inspect and understand current models.
+
+### Step 2 — Normalize domain models
+
+Fix:
+
+* CareerProfile
+* Company
+* Contact
+* ContactAssociation
+* Outreach
+* Conversation
+* Campaign
+* Integration
+* SenderAccount
+
+### Step 3 — Fix persistence
+
+Ensure all new fields and relationships survive reload.
+
+### Step 4 — Complete Career Profile + onboarding
+
+### Step 5 — Complete Company lifecycle
+
+### Step 6 — Complete Contact/global-person architecture
+
+### Step 7 — Complete Outreach domain
+
+### Step 8 — Connect Outreach ↔ Conversation
+
+### Step 9 — Complete Campaign UX
+
+### Step 10 — Complete Integration/Sender Account behavior
+
+### Step 11 — Fix global search
+
+### Step 12 — Audit dashboard
+
+### Step 13 — Responsive/accessibility pass
+
+### Step 14 — End-to-end workflow verification
+
+---
+
+# 33. END-TO-END ACCEPTANCE SCENARIOS
+
+Actually perform these flows in the prototype.
+
+## Scenario A — New user skips onboarding
+
+```text
+Signup
+→ Onboarding
+→ Skip
+→ Dashboard
+→ incomplete profile banner
+→ Complete profile
+→ banner disappears
+```
+
+---
+
+## Scenario B — Company lifecycle
+
+```text
+Add company
+→ enter all fields
+→ save
+→ company list shows values
+→ open company
+→ values visible
+→ edit
+→ values update
+→ navigate away
+→ return
+→ values still correct
+→ archive
+→ confirmation
+→ company becomes archived
+→ active list excludes it
+→ archived filter shows it
+```
+
+---
+
+## Scenario C — Existing person association
+
+```text
+Company A
+→ Add Contact
+→ search existing person
+→ select person
+→ add company association
+→ Company A shows person
+
+Company B
+→ Add Contact
+→ same person
+→ associate
+
+Global Contacts
+→ person appears once
+
+Person detail
+→ Company A association
+→ Company B association
+```
+
+---
+
+## Scenario D — Individual outreach
+
+```text
+Company
+→ Contacts
+→ Prepare outreach
+→ Outreach draft created
+→ correct contact/company
+→ edit subject/message
+→ save
+→ navigate away
+→ return
+→ draft still exists
+→ mark ready
+→ send
+→ status becomes SENT
+```
+
+---
+
+## Scenario E — Outreach → Conversation
+
+```text
+SENT outreach
+→ contact replies
+→ conversation created/linked
+→ conversation status REPLIED
+→ not automatically ACTIVE
+→ user chooses Continue conversation
+→ ACTIVE
+```
+
+---
+
+## Scenario F — Multiple contacts
+
+```text
+Company
+→ Contact A
+→ Prepare outreach
+→ Outreach A
+
+Company
+→ Contact B
+→ Prepare outreach
+→ Outreach B
+
+Global Outreaches
+→ A and B both appear separately
+
+Company Outreach
+→ both appear
+
+Neither overwrites the other
+```
+
+---
+
+## Scenario G — Campaign
+
+```text
+Create campaign
+→ select multiple contacts
+→ select template
+→ select sender account
+→ review
+→ create
+→ campaign members persist
+→ company Campaigns shows campaign when appropriate
+→ individual outreaches can be traced back to campaign
+```
+
+---
+
+## Scenario H — Sender limit
+
+```text
+Sender account daily limit = 2
+
+Send outreach 1
+→ 1/2
+
+Send outreach 2
+→ 2/2
+
+Attempt outreach 3
+→ blocked
+→ clear explanation
+```
+
+---
+
+## Scenario I — Integration
+
+```text
+Add integration
+→ Integration Name
+→ Provider
+→ save
+→ appears in integrations list
+→ Test connection
+→ Testing
+→ Success
+```
+
+Multiple integrations must coexist.
+
+---
+
+# 34. FINAL VERIFICATION
+
+Before declaring completion:
+
+Run the project's available validation/build/type checks.
+
+Then manually inspect the major workflows.
+
+Do not report:
+
+> "Implemented"
+
+merely because:
+
+* the route exists
+* the component renders
+* TypeScript passes
+
+The acceptance standard is:
+
+```text
+DATA CREATED
++
+DATA PERSISTED
++
+DATA SHOWN
++
+DATA LINKED
++
+USER CAN CONTINUE THE WORKFLOW
+```
+
+For each major feature verify all five.
+
+---
+
+# 35. FINAL RESPONSE FORMAT
+
+When finished, report:
+
+## Implemented
+
+List the concrete functionality actually completed.
+
+## Fixed From Previous Pass
+
+Explicitly identify the previously claimed-but-incomplete features that are now genuinely fixed.
+
+## Additional Issues Found
+
+List any issues you discovered beyond my supplied list and what you fixed.
+
+## Remaining Limitations
+
+Only list limitations that genuinely remain.
+
+## Validation
+
+Report:
+
+* TypeScript/build result
+* routes checked
+* persistence checked
+* major end-to-end flows checked
+* responsive/accessibility checks performed
+
+Do not claim something passed if you did not actually verify it.
+
+Most importantly:
+
+**Do not stop at analysis or planning. Implement the fixes.**
