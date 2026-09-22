@@ -102,7 +102,7 @@ export function getOpportunityData(companyId: string, companyName: string, statu
         ? 'No confirmed opening found. Company signals provide a credible basis for reaching out before a listing exists.'
         : 'Research did not return sufficient evidence to classify this opportunity responsibly.',
     lastUpdated: 'Recently',
-    primaryCta: isConfirmed ? 'Review opening' : isProactive ? 'Build a proactive case' : 'Review research',
+    primaryCta: isConfirmed ? 'Review people' : isProactive ? 'Find a person' : 'Review research',
     hasResearch: true,
     summary: {
       whyExists: isConfirmed ? `Research found an active listing for ${opp?.roleTitle ?? 'a role'} at ${companyName}.` : isProactive ? `${companyName} is actively investing in engineering.` : 'Research ran but did not find sufficient evidence.',

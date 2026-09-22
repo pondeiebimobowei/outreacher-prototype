@@ -193,7 +193,7 @@ function OutreachNotStarted({ contact, entry, onGenerate, onNavigate }: {
     <div className="p-5 sm:p-6 flex flex-col gap-4">
       {/* Preparation context header */}
       <div>
-        <p className="text-[16px] font-bold mb-0.5" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>Prepare outreach</p>
+        <p className="text-[16px] font-bold mb-0.5" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>No outreach yet</p>
         <p className="text-[13px]" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>
           Review the context below. When ready, generate a draft grounded in this information.
         </p>
@@ -587,9 +587,9 @@ function MessagePanel({
           style={{ background: 'var(--color-primary)', color: 'white', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
           onMouseEnter={e => (e.currentTarget.style.background = '#1E2D4A')}
           onMouseLeave={e => (e.currentTarget.style.background = 'var(--color-primary)')}
-          aria-label="Approve this draft"
+          aria-label="Save this draft"
         >
-          Approve draft <Icon d={icons.check} size={14} strokeWidth={2.5} />
+          Save draft <Icon d={icons.check} size={14} strokeWidth={2.5} />
         </button>
         <div className="flex items-center gap-3 flex-wrap">
           <button
@@ -623,52 +623,51 @@ function MessagePanel({
   )
 }
 
-// ─── Approved state ───────────────────────────────────────────────────────────
+// ─── Saved / Approved state ────────────────────────────────────────────────────
 
-function OutreachApproved({ contact, entry, subject, message, onNavigate, onEdit, onCreateCampaign }: {
+function OutreachApproved({ contact, entry, subject, message, onNavigate, onEdit, onUpdate }: {
   contact: CompanyContactView
   entry: CompanyEntry
   subject: string
   message: string
   onNavigate: (tab: string) => void
   onEdit: () => void
-  onCreateCampaign: () => void
+  onUpdate: (patch: Partial<CompanyEntry>) => void
 }) {
-  const [showEditWarning, setShowEditWarning] = useState(false)
-  const hasCampaign = !!entry.campaignStage
-  const campaignLabel = entry.campaignStage === 'SENT'
-    ? 'View conversation'
-    : entry.campaignStage === 'READY'
-    ? 'Send outreach'
-    : entry.campaignStage === 'SETUP'
-    ? 'Continue campaign setup'
-    : 'Create campaign'
-  const bannerSubtext = entry.campaignStage === 'SENT'
+  const [sendPhase, setSendPhase] = useState<'review' | 'sending'>('review')
+  const isSent = entry.outreachStage === 'SENT'
+
+  const bannerTitle = isSent ? 'Outreach sent' : 'Draft saved'
+  const bannerSubtext = isSent
     ? 'Your outreach has been sent. View the conversation to track replies.'
-    : entry.campaignStage === 'READY'
-    ? 'Your campaign is created and ready to send.'
-    : entry.campaignStage === 'SETUP'
-    ? 'Campaign setup is in progress. Nothing has been sent yet.'
-    : 'This outreach is ready for campaign creation. Nothing has been sent yet.'
+    : 'Your outreach is ready. Review the final message below before sending.'
 
-  function handleCampaignAction() {
-    if (!entry.campaignStage) {
-      onCreateCampaign()
-    } else if (entry.campaignStage === 'SENT') {
+  function handleSend() {
+    setSendPhase('sending')
+    setTimeout(() => {
+      const now = new Date()
+      const sentAt =
+        now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false }) +
+        ' · ' +
+        now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+      
+      const outreachMsg = {
+        id: 'msg_' + Date.now(),
+        direction: 'outbound' as const,
+        kind: 'outreach' as const,
+        subject: subject,
+        body: message,
+        timestamp: sentAt,
+      }
+      
+      onUpdate({
+        outreachStage: 'SENT',
+        convStage: 'NONE',
+        sentAt,
+        conversationMessages: [outreachMsg],
+      })
       onNavigate('Conversation')
-    } else {
-      onNavigate('Campaign')
-    }
-  }
-
-  function handleEditClick() {
-    if (entry.campaignStage === 'SENT') {
-      // already sent — cannot edit
-    } else if (hasCampaign) {
-      setShowEditWarning(v => !v)
-    } else {
-      onEdit()
-    }
+    }, 600)
   }
 
   return (
@@ -676,21 +675,23 @@ function OutreachApproved({ contact, entry, subject, message, onNavigate, onEdit
       {/* Approval banner */}
       <div
         className="rounded-xl p-5"
-        style={{ background: 'linear-gradient(135deg, #065F46 0%, #047857 100%)', border: '1px solid #A7F3D0' }}
+        style={{ background: isSent ? '#EFF6FF' : 'linear-gradient(135deg, #065F46 0%, #047857 100%)', border: isSent ? '1px solid #BFDBFE' : '1px solid #A7F3D0' }}
         role="status"
       >
         <div className="flex items-start gap-4">
           <div
             className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-            style={{ background: 'rgba(255,255,255,0.15)' }}
+            style={{ background: isSent ? '#DBEAFE' : 'rgba(255,255,255,0.15)' }}
           >
-            <span style={{ color: 'white' }}><Icon d={icons.check} size={18} strokeWidth={2.5} /></span>
+            <span style={{ color: isSent ? '#1D4ED8' : 'white' }}>
+              <Icon d={isSent ? icons.campaigns : icons.check} size={18} strokeWidth={2.5} />
+            </span>
           </div>
           <div>
-            <p className="text-[16px] font-bold text-white" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-              Draft approved
+            <p className="text-[16px] font-bold" style={{ color: isSent ? '#1E3A8A' : 'white', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+              {bannerTitle}
             </p>
-            <p className="text-[13px] mt-0.5" style={{ color: 'rgba(255,255,255,0.7)', fontFamily: 'Inter, sans-serif' }}>
+            <p className="text-[13px] mt-0.5" style={{ color: isSent ? '#1E3A8A' : 'rgba(255,255,255,0.7)', fontFamily: 'Inter, sans-serif' }}>
               {bannerSubtext}
             </p>
           </div>
@@ -705,7 +706,7 @@ function OutreachApproved({ contact, entry, subject, message, onNavigate, onEdit
       >
         <div className="px-5 py-3.5" style={{ borderBottom: '1px solid var(--color-border)', background: 'var(--color-muted)' }}>
           <p className="text-[10.5px] font-bold uppercase tracking-wide" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: '0.07em' }}>
-            Approved message
+            Final message
           </p>
         </div>
         <div className="p-5">
@@ -735,55 +736,40 @@ function OutreachApproved({ contact, entry, subject, message, onNavigate, onEdit
         </div>
       </div>
 
-      {/* Edit outreach warning (shown when campaign exists) */}
-      {showEditWarning && (
-        <div
-          className="rounded-xl p-4"
-          style={{ background: '#FFFBEB', border: '1px solid #FDE68A' }}
-          role="alert"
-        >
-          <div className="flex items-start gap-2.5 mb-3">
-            <span className="flex-shrink-0 mt-0.5" style={{ color: '#92400E' }}>
-              <Icon d={icons.alertCircle} size={15} />
-            </span>
-            <p className="text-[13px] leading-relaxed" style={{ color: '#78350F', fontFamily: 'Inter, sans-serif' }}>
-              This outreach belongs to an active campaign. Editing will remove the campaign — you'll need to create a new one after re-approving the updated draft.
-            </p>
-          </div>
-          <div className="flex items-center gap-2 flex-wrap">
-            <button
-              onClick={() => { setShowEditWarning(false); onEdit() }}
-              className="px-3.5 py-2 rounded-lg text-[12.5px] font-semibold transition-all"
-              style={{ background: '#FEF3C7', color: '#78350F', border: '1px solid #FDE68A', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
-              onMouseEnter={e => (e.currentTarget.style.background = '#FDE68A')}
-              onMouseLeave={e => (e.currentTarget.style.background = '#FEF3C7')}
-            >
-              Confirm — edit outreach
-            </button>
-            <button
-              onClick={() => setShowEditWarning(false)}
-              className="px-3.5 py-2 rounded-lg text-[12.5px] font-medium transition-all"
-              style={{ color: '#92400E', fontFamily: 'Inter, sans-serif' }}
-              onMouseEnter={e => (e.currentTarget.style.opacity = '0.7')}
-              onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Actions */}
       <div className="flex flex-wrap items-center gap-3">
-        <button
-          onClick={handleCampaignAction}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all"
-          style={{ background: 'var(--color-primary)', color: 'white', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
-          onMouseEnter={e => (e.currentTarget.style.background = '#1E2D4A')}
-          onMouseLeave={e => (e.currentTarget.style.background = 'var(--color-primary)')}
-        >
-          {campaignLabel} <Icon d={icons.arrowRight} size={14} />
-        </button>
+        {isSent ? (
+          <button
+            onClick={() => onNavigate('Conversation')}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all"
+            style={{ background: 'var(--color-primary)', color: 'white', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
+            onMouseEnter={e => (e.currentTarget.style.background = '#1E2D4A')}
+            onMouseLeave={e => (e.currentTarget.style.background = 'var(--color-primary)')}
+          >
+            View conversation <Icon d={icons.arrowRight} size={14} />
+          </button>
+        ) : (
+          <button
+            onClick={handleSend}
+            disabled={sendPhase === 'sending'}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all relative overflow-hidden group"
+            style={{
+              background: sendPhase === 'sending' ? 'var(--color-accent)' : 'var(--color-primary)',
+              color: 'white',
+              fontFamily: 'Plus Jakarta Sans, sans-serif',
+              opacity: sendPhase === 'sending' ? 0.9 : 1
+            }}
+            onMouseEnter={e => { if (sendPhase === 'review') e.currentTarget.style.background = '#1E2D4A' }}
+            onMouseLeave={e => { if (sendPhase === 'review') e.currentTarget.style.background = 'var(--color-primary)' }}
+          >
+            <span className={`flex items-center gap-2 transition-transform duration-300 ${sendPhase === 'sending' ? 'translate-y-[-30px]' : ''}`}>
+              Send outreach <Icon d={icons.send} size={14} />
+            </span>
+            <span className={`absolute inset-0 flex items-center justify-center gap-2 transition-transform duration-300 ${sendPhase === 'sending' ? 'translate-y-0' : 'translate-y-[30px]'}`}>
+              Sending...
+            </span>
+          </button>
+        )}
         <button
           onClick={() => onNavigate('Contacts')}
           className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-[13.5px] font-medium transition-all"
@@ -793,13 +779,13 @@ function OutreachApproved({ contact, entry, subject, message, onNavigate, onEdit
         >
           <Icon d={icons.arrowLeft} size={14} /> Back to contacts
         </button>
-        {!showEditWarning && entry.campaignStage !== 'SENT' && (
+        {!isSent && (
           <button
-            onClick={handleEditClick}
+            onClick={onEdit}
             className="text-[13px] font-medium transition-all"
-            style={{ color: hasCampaign ? '#92400E' : 'var(--color-accent)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
-            onMouseEnter={e => (e.currentTarget.style.opacity = '0.7')}
-            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+            style={{ color: 'var(--color-accent)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
+            onMouseEnter={e => (e.currentTarget.style.color = '#4338CA')}
+            onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-accent)')}
           >
             Edit draft
           </button>
@@ -967,12 +953,7 @@ function OutreachWorkspace({ entry, contact, onUpdate, onNavigate }: {
     onUpdate({ outreachStage: 'DRAFT', campaignStage: undefined })
   }
 
-  function handleCreateCampaign() {
-    const firstName = contact.name.split(' ')[0]
-    const defaultName = entry.campaignName ?? `Outreach to ${firstName} at ${entry.name}`
-    onUpdate({ campaignStage: 'SETUP', campaignName: defaultName, lastActivity: 'Just now' })
-    onNavigate('Campaign')
-  }
+
 
   // NOT_STARTED
   if (entry.outreachStage === 'NOT_STARTED' && !generating) {
@@ -1006,7 +987,7 @@ function OutreachWorkspace({ entry, contact, onUpdate, onNavigate }: {
         message={entry.outreachMessage ?? message}
         onNavigate={onNavigate}
         onEdit={handleEditFromApproved}
-        onCreateCampaign={handleCreateCampaign}
+        onUpdate={onUpdate}
       />
     )
   }

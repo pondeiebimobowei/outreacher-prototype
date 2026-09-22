@@ -128,106 +128,78 @@ function EvidenceCard({ item, expanded, onToggle }: {
   onToggle: () => void
 }) {
   const catCfg = CATEGORY_COLORS[item.category]
-  const confCfg = CONFIDENCE_CONFIG[item.confidence]
   return (
     <div
-      className="rounded-xl overflow-hidden transition-all"
+      className="rounded-xl overflow-hidden"
       style={{ border: '1px solid var(--color-border)', background: 'var(--color-card)' }}
     >
-      {/* Card header */}
-      <div className="px-5 py-4">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex items-start gap-3 flex-1 min-w-0">
-            <div className="flex flex-col gap-2 flex-1 min-w-0">
-              {/* Category + confidence row */}
-              <div className="flex items-center gap-2 flex-wrap">
-                <span
-                  className="inline-flex items-center gap-1.5 text-[11px] font-bold px-2 py-0.5 rounded-full"
-                  style={{ background: catCfg.bg, color: catCfg.text, fontFamily: 'Plus Jakarta Sans, sans-serif' }}
-                >
-                  <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: catCfg.dot }} />
-                  {item.category}
-                </span>
-                <span className="flex items-center gap-1 text-[11px]" style={{ color: 'var(--color-muted-fg)' }}>
-                  <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: confCfg.color }} />
-                  {confCfg.label}
-                </span>
-              </div>
-              {/* Title */}
-              <p className="text-[14px] font-semibold leading-snug" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-                {item.title}
-              </p>
-              {/* Finding */}
-              <p className="text-[13.5px] leading-relaxed" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>
-                {item.finding}
-              </p>
-              {/* Source row */}
-              <div className="flex items-center gap-3 flex-wrap mt-0.5">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[11.5px] font-medium" style={{ color: 'var(--color-muted-fg)' }}>{item.sourceType}</span>
-                  <span style={{ color: 'var(--color-border)' }}>·</span>
-                  <a
-                    href={`https://${item.sourceDomain}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[11.5px] transition-colors flex items-center gap-0.5"
-                    style={{ color: 'var(--color-accent)' }}
-                    onMouseEnter={e => (e.currentTarget.style.color = '#4338CA')}
-                    onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-accent)')}
-                    onClick={e => e.stopPropagation()}
-                  >
-                    {item.sourceDomain}
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="ml-0.5">
-                      <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" />
-                    </svg>
-                  </a>
-                </div>
-                <span className="text-[11.5px]" style={{ color: 'var(--color-muted-fg)' }}>{item.recency}</span>
-              </div>
-            </div>
+      <div className="px-5 py-4 flex flex-col gap-5">
+        
+        {/* Finding */}
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <span
+              className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full"
+              style={{ background: catCfg.bg, color: catCfg.text, fontFamily: 'Plus Jakarta Sans, sans-serif' }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: catCfg.dot }} />
+              Finding
+            </span>
+          </div>
+          <p className="text-[14px] font-semibold leading-snug" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+            {item.title}
+          </p>
+        </div>
+
+        {/* Evidence */}
+        <div>
+          <p className="text-[11px] font-bold uppercase tracking-wide mb-1" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+            Evidence
+          </p>
+          <p className="text-[13.5px] leading-relaxed" style={{ color: 'var(--color-primary)', fontFamily: 'Inter, sans-serif' }}>
+            {item.finding}
+          </p>
+          <div className="flex items-center gap-2 mt-1.5">
+            <span className="text-[11.5px] font-medium" style={{ color: 'var(--color-muted-fg)' }}>{item.sourceType}</span>
+            <span style={{ color: 'var(--color-border)' }}>·</span>
+            <a
+              href={`https://${item.sourceDomain}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[11.5px] transition-colors flex items-center gap-0.5"
+              style={{ color: 'var(--color-accent)' }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#4338CA')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-accent)')}
+              onClick={e => e.stopPropagation()}
+            >
+              {item.sourceDomain}
+            </a>
+            <span style={{ color: 'var(--color-border)' }}>·</span>
+            <span className="text-[11.5px]" style={{ color: 'var(--color-muted-fg)' }}>{item.recency}</span>
           </div>
         </div>
-      </div>
 
-      {/* Expandable "What this suggests" */}
-      <button
-        onClick={onToggle}
-        className="w-full flex items-center gap-2 px-5 py-3 transition-all text-left"
-        style={{
-          borderTop: '1px solid var(--color-border)',
-          background: expanded ? 'rgba(79,70,229,0.04)' : 'transparent',
-        }}
-        onMouseEnter={e => { if (!expanded) e.currentTarget.style.background = 'var(--color-muted)' }}
-        onMouseLeave={e => { if (!expanded) e.currentTarget.style.background = 'transparent' }}
-      >
-        <span
-          className="text-[12px] font-semibold"
-          style={{ color: expanded ? 'var(--color-accent)' : 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
-        >
-          {expanded ? 'Hide' : 'What this suggests'}
-        </span>
-        <svg
-          width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-          strokeWidth="2.2" strokeLinecap="round"
-          style={{
-            color: expanded ? 'var(--color-accent)' : 'var(--color-muted-fg)',
-            transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
-            transition: 'transform 0.15s',
-          }}
-        >
-          <polyline points="6 9 12 15 18 9" />
-        </svg>
-      </button>
-      {expanded && (
-        <div
-          className="px-5 pb-4 pt-1"
-          style={{ borderTop: '1px solid var(--color-border)', background: 'rgba(79,70,229,0.03)' }}
-        >
+        {/* Why it matters */}
+        <div>
+          <p className="text-[11px] font-bold uppercase tracking-wide mb-1" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+            Why it matters
+          </p>
           <p className="text-[13.5px] leading-relaxed" style={{ color: 'var(--color-primary)', fontFamily: 'Inter, sans-serif' }}>
             {item.suggests}
           </p>
         </div>
-      )}
+
+        {/* What next */}
+        <div>
+          <p className="text-[11px] font-bold uppercase tracking-wide mb-1" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+            What next
+          </p>
+          <p className="text-[13px] font-medium" style={{ color: 'var(--color-accent)', fontFamily: 'Inter, sans-serif' }}>
+            Review the resulting opportunity.
+          </p>
+        </div>
+
+      </div>
     </div>
   )
 }
@@ -562,9 +534,10 @@ function ResearchGaps({ gaps }: { gaps: ResearchData['gaps'] }) {
 
 function ResearchNotStarted({ companyName, onStart }: { companyName: string; onStart: () => void }) {
   const bullets = [
-    { icon: icons.search, text: 'Active job listings and hiring signals relevant to your target role' },
-    { icon: icons.contacts, text: 'Engineering team composition and recent growth indicators' },
-    { icon: icons.opportunities, text: 'Product direction, technical activity, and company signals' },
+    { icon: icons.search, text: 'current hiring signals' },
+    { icon: icons.opportunities, text: 'relevant company activity' },
+    { icon: icons.checkCircle, text: 'potential opportunities' },
+    { icon: icons.user, text: 'reasons this company may fit your profile' },
   ]
   return (
     <div className="rounded-xl flex flex-col items-center justify-center gap-6 py-16 px-8 text-center" style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }}>
@@ -574,15 +547,18 @@ function ResearchNotStarted({ companyName, onStart }: { companyName: string; onS
       >
         <Icon d={icons.search} size={24} strokeWidth={1.7} />
       </div>
-      <div className="max-w-[420px]">
+      <div className="max-w-[440px]">
         <p
           className="text-[18px] font-bold mb-2"
           style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
         >
           Research {companyName}
         </p>
+        <p className="text-[14px] leading-relaxed mb-4" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>
+          Understand what is happening at this company before deciding whether or who to contact.
+        </p>
         <p className="text-[14px] leading-relaxed" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>
-          Research helps determine whether there is a credible reason to pursue a conversation at {companyName}. It doesn't summarise the company — it looks for evidence relevant to you.
+          Research gives you evidence about:
         </p>
       </div>
       <div className="max-w-[380px] w-full flex flex-col gap-2.5">
@@ -601,112 +577,82 @@ function ResearchNotStarted({ companyName, onStart }: { companyName: string; onS
       </div>
       <button
         onClick={onStart}
-        className="flex items-center gap-2 px-6 py-3 rounded-lg text-[14px] font-semibold transition-all"
+        className="mt-2 flex items-center gap-2 px-6 py-3 rounded-xl text-[14px] font-semibold transition-all shadow-sm"
         style={{ background: 'var(--color-primary)', color: 'white', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
         onMouseEnter={e => (e.currentTarget.style.background = '#1E2D4A')}
         onMouseLeave={e => (e.currentTarget.style.background = 'var(--color-primary)')}
       >
-        <Icon d={icons.search} size={15} /> Start research
+        Start research <Icon d={icons.arrowRight} size={15} />
       </button>
     </div>
   )
 }
 
-// ─── In Progress ──────────────────────────────────────────────────────────────
-
-const PROGRESS_STEPS = [
-  'Searching job listings and career pages',
-  'Reviewing LinkedIn team signals',
-  'Checking public engineering and code activity',
-  'Analysing company direction and recent publications',
-]
+// ─── In Progress ────────────────────────────────────────────────────────────
 
 function ResearchInProgress({ companyName, onComplete }: { companyName: string; onComplete: () => void }) {
-  const [completedCount, setCompletedCount] = useState(0)
-  const [showComplete, setShowComplete] = useState(false)
+  const [phase, setPhase] = useState(0)
+  const phases = [
+    'Analyzing company information',
+    'Collecting relevant signals',
+    'Organizing evidence'
+  ]
 
   useEffect(() => {
-    const timers: ReturnType<typeof setTimeout>[] = []
-    PROGRESS_STEPS.forEach((_, i) => {
-      timers.push(setTimeout(() => setCompletedCount(i + 1), (i + 1) * 1800))
-    })
-    timers.push(setTimeout(() => setShowComplete(true), PROGRESS_STEPS.length * 1800 + 600))
-    return () => timers.forEach(t => clearTimeout(t))
-  }, [])
+    const i1 = setInterval(() => {
+      setPhase(p => {
+        if (p >= phases.length - 1) {
+          clearInterval(i1)
+          return p
+        }
+        return p + 1
+      })
+    }, 1500)
+    const t = setTimeout(onComplete, 4500)
+    return () => { clearInterval(i1); clearTimeout(t) }
+  }, [onComplete, phases.length])
 
   return (
-    <div className="rounded-xl flex flex-col items-center gap-6 py-16 px-8" style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }}>
-      <div
-        className="w-14 h-14 rounded-2xl flex items-center justify-center"
-        style={{ background: '#EEF2FF', color: 'var(--color-accent)' }}
-      >
-        <svg
-          className="animate-spin"
-          width="24" height="24" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-        >
-          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-        </svg>
+    <div className="rounded-xl flex flex-col items-center justify-center gap-6 py-16 px-8 text-center" style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }}>
+      <div className="relative w-14 h-14">
+        <div className="absolute inset-0 rounded-2xl animate-pulse" style={{ background: '#EEF2FF' }} />
+        <div className="absolute inset-0 flex items-center justify-center" style={{ color: 'var(--color-accent)' }}>
+          <Icon d={icons.search} size={24} strokeWidth={1.7} className="animate-bounce" />
+        </div>
       </div>
-      <div className="text-center max-w-[380px]">
+      <div className="max-w-[420px]">
         <p className="text-[18px] font-bold mb-2" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
           Researching {companyName}
         </p>
         <p className="text-[14px] leading-relaxed" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>
-          Outreacher is gathering company signals, team information, and evidence relevant to your career profile. This typically takes a few minutes.
+          Finding useful signals and organizing evidence...
         </p>
-      </div>
-      <div className="max-w-[380px] w-full flex flex-col gap-2">
-        {PROGRESS_STEPS.map((step, i) => {
-          const done = i < completedCount
-          const active = i === completedCount
-          return (
-            <div
-              key={i}
-              className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all"
-              style={{
-                background: done ? '#ECFDF5' : active ? 'var(--color-card)' : 'var(--color-muted)',
-                border: done ? '1px solid #A7F3D0' : '1px solid var(--color-border)',
-                opacity: !done && !active ? 0.5 : 1,
-              }}
-            >
-              <div
-                className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ background: done ? '#10B981' : active ? 'var(--color-accent)' : 'var(--color-border)' }}
-              >
-                {done && <Icon d={icons.check} size={10} strokeWidth={2.5} className="text-white" />}
-                {active && <span className="w-2 h-2 rounded-full bg-white" />}
-              </div>
-              <span
-                className="text-[13px]"
-                style={{
-                  color: done ? '#065F46' : active ? 'var(--color-primary)' : 'var(--color-muted-fg)',
-                  fontFamily: 'Inter, sans-serif',
-                  fontWeight: active ? 500 : 400,
-                }}
-              >
-                {step}
-              </span>
-            </div>
-          )
-        })}
       </div>
 
-      {showComplete ? (
-        <button
-          onClick={onComplete}
-          className="flex items-center gap-2 px-6 py-3 rounded-lg text-[14px] font-semibold transition-all"
-          style={{ background: '#10B981', color: 'white', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
-          onMouseEnter={e => (e.currentTarget.style.background = '#059669')}
-          onMouseLeave={e => (e.currentTarget.style.background = '#10B981')}
-        >
-          <Icon d={icons.checkCircle} size={16} /> Research complete — view results
-        </button>
-      ) : (
-        <p className="text-[12.5px]" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>
-          You can leave this page and return — research will complete in the background.
+      <div className="max-w-[320px] w-full flex flex-col gap-3 mt-4 text-left">
+        {phases.map((p, i) => (
+          <div key={i} className="flex items-center gap-3 transition-opacity duration-500" style={{ opacity: i <= phase ? 1 : 0.3 }}>
+            <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: i < phase ? '#10B981' : i === phase ? '#EEF2FF' : 'var(--color-muted)' }}>
+              {i < phase ? (
+                <Icon d={icons.check} size={12} className="text-white" strokeWidth={3} />
+              ) : i === phase ? (
+                <div className="w-2 h-2 rounded-full animate-ping" style={{ background: 'var(--color-accent)' }} />
+              ) : (
+                <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--color-border)' }} />
+              )}
+            </div>
+            <p className="text-[13px] font-medium" style={{ color: i <= phase ? 'var(--color-primary)' : 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+              {p}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-4 px-4 py-2 rounded-full" style={{ background: '#EEF2FF', border: '1px solid #C7D2FE' }}>
+        <p className="text-[12px] font-bold tracking-wide uppercase" style={{ color: 'var(--color-accent)', fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: '0.07em' }}>
+          Research in progress
         </p>
-      )}
+      </div>
     </div>
   )
 }

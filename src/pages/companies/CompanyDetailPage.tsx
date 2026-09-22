@@ -283,7 +283,7 @@ function deriveNextStep(entry: CompanyEntry, companyName: string): NextStepShape
       cta: 'Review draft', ctaTab: 'Conversation',
     }
   }
-  if (entry.outreachStage === 'SENT' && entry.campaignStage === 'SENT') {
+  if (entry.outreachStage === 'SENT') {
     return {
       heading: 'Awaiting reply',
       guidance: `Your outreach was sent to ${companyName}. Use the Conversation tab to track the reply, simulate a response, or stop follow-ups.`,
@@ -306,9 +306,9 @@ function deriveNextStep(entry: CompanyEntry, companyName: string): NextStepShape
   }
   if (entry.outreachStage === 'READY') {
     return {
-      heading: 'Create a campaign',
-      guidance: `Your outreach draft has been approved. Create a campaign to prepare it for sending. Nothing will be sent until you explicitly send it.`,
-      cta: 'Create campaign', ctaTab: 'Campaign',
+      heading: 'Ready to send',
+      guidance: `Your outreach draft is ready. Review the message one last time, then send your outreach to start the conversation.`,
+      cta: 'Send outreach', ctaTab: 'Outreach',
     }
   }
   if (entry.outreachStage === 'DRAFT') {
@@ -381,7 +381,7 @@ function deriveWorkflowLabel(entry: CompanyEntry): string {
   if (entry.outreachStage === 'SENT') return 'Outreach sent · Awaiting reply'
   if (entry.campaignStage === 'READY') return 'Campaign ready · Ready to send'
   if (entry.campaignStage === 'SETUP') return 'Campaign setup in progress'
-  if (entry.outreachStage === 'READY') return 'Draft approved · Create campaign'
+  if (entry.outreachStage === 'READY') return 'Draft approved · Ready to send'
   if (entry.outreachStage === 'DRAFT') return 'Outreach draft ready for review'
   if (entry.contactStage === 'SELECTED') return 'Contact selected · Prepare outreach'
   if (entry.contactStage === 'DISCOVERED') return 'Contacts identified · Awaiting review'
@@ -534,62 +534,67 @@ function StayConnectedCard({ entry, onAction }: {
   )
 }
 
-// ─── Journey Progress ─────────────────────────────────────────────────────────
+// ─── Journey Progression ────────────────────────────────────────────────────────
 
-function JourneyProgress({ stages, onStageClick }: {
-  stages: Record<JourneyStage, StageStatus>
+function getStageLabel(stage: JourneyStage, entry: CompanyEntry): string {
+  switch (stage) {
+    case 'Research':
+      return entry.researchStage === 'COMPLETE' ? 'Complete' : entry.researchStage === 'IN_PROGRESS' ? 'In progress' : 'Not started'
+    case 'Opportunity':
+      return entry.oppStatus === 'UNCLASSIFIED' ? 'Unclassified' : entry.oppStatus === 'PROACTIVE' ? 'Proactive' : 'Confirmed'
+    case 'Contacts':
+      return entry.contactStage === 'SELECTED' ? 'Person selected' : entry.contactStage === 'DISCOVERED' ? 'People discovered' : entry.contactStage === 'DISCOVERING' ? 'Discovering...' : 'Not discovered'
+    case 'Outreach':
+      return entry.outreachStage === 'SENT' ? 'Sent' : entry.outreachStage === 'READY' ? 'Draft saved' : entry.outreachStage === 'DRAFT' ? 'Drafting' : 'Not started'
+    case 'Conversation':
+      if (entry.convStage === 'NONE' || !entry.convStage) return 'Not started'
+      return entry.convStage === 'NO_REPLY' ? 'No reply' : entry.convStage === 'REPLIED' ? 'Replied' : entry.convStage === 'ACTIVE' ? 'Active' : 'Stopped'
+    default:
+      return 'Not started'
+  }
+}
+
+function JourneyProgress({ entry, onStageClick }: {
+  entry: CompanyEntry
   onStageClick: (tab: WorkspaceTab) => void
 }) {
+  // Use a subset of stages for the concise progression
+  const displayStages: JourneyStage[] = ['Research', 'Opportunity', 'Contacts', 'Outreach', 'Conversation']
+  
   return (
     <div className="rounded-xl p-5" style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }}>
       <p className="text-[11.5px] font-bold uppercase tracking-wide mb-4" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: '0.07em' }}>
-        Journey progress
+        What has happened
       </p>
-      <div className="overflow-x-auto -mx-1 px-1">
-      <div className="flex items-center min-w-max">
-        {JOURNEY_STAGES.map((stage, i) => {
-          const status = stages[stage]
-          const isLast = i === JOURNEY_STAGES.length - 1
+      <div className="flex flex-col gap-3">
+        {displayStages.map((stage) => {
           const tab = STAGE_TO_TAB[stage]
-          const isClickable = !!tab && status !== 'pending'
+          const label = getStageLabel(stage, entry)
+          const isCompleteOrActive = label !== 'Not started' && label !== 'Unclassified' && label !== 'Not discovered'
+          
           return (
-            <div key={stage} className="flex items-center flex-1 last:flex-none">
-              <div className="flex flex-col items-center gap-2">
-                <button
-                  disabled={!isClickable}
-                  onClick={() => tab && isClickable && onStageClick(tab)}
-                  className="relative flex items-center justify-center transition-all"
-                  style={{ cursor: isClickable ? 'pointer' : 'default' }}
-                >
-                  {status === 'active' && (
-                    <span className="absolute w-8 h-8 rounded-full" style={{ background: 'var(--color-accent)', opacity: 0.15 }} />
-                  )}
-                  <span
-                    className="w-6 h-6 rounded-full flex items-center justify-center relative z-10 transition-all"
-                    style={{
-                      background: status === 'complete' ? '#10B981' : status === 'active' ? 'var(--color-accent)' : 'var(--color-muted)',
-                      border: status === 'pending' ? '1.5px solid var(--color-border)' : 'none',
-                    }}
-                  >
-                    {status === 'complete' && <Icon d={icons.check} size={11} strokeWidth={2.5} className="text-white" />}
-                    {status === 'active' && <span className="w-2 h-2 rounded-full bg-white" />}
-                    {status === 'pending' && <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--color-border)' }} />}
-                  </span>
-                </button>
-                <span className="text-[11px] font-semibold whitespace-nowrap"
-                  style={{ color: status === 'active' ? 'var(--color-accent)' : status === 'complete' ? '#10B981' : 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-                  {stage}
-                </span>
-              </div>
-              {!isLast && (
-                <div className="flex-1 h-px mx-1 mb-5 transition-all"
-                  style={{ background: stages[JOURNEY_STAGES[i + 1]] !== 'pending' || status === 'complete' ? '#10B981' : 'var(--color-border)' }}
-                />
-              )}
+            <div key={stage} className="flex flex-col sm:flex-row sm:items-center justify-between py-1" style={{ borderBottom: '1px solid rgba(0,0,0,0.03)' }}>
+              <button
+                onClick={() => tab && onStageClick(tab)}
+                className="text-[13px] font-semibold text-left transition-colors"
+                style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
+                onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-accent)')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-primary)')}
+              >
+                {stage}
+              </button>
+              <span 
+                className="text-[13px] font-medium" 
+                style={{ 
+                  color: isCompleteOrActive ? 'var(--color-accent)' : 'var(--color-muted-fg)', 
+                  fontFamily: 'Inter, sans-serif' 
+                }}
+              >
+                {label}
+              </span>
             </div>
           )
         })}
-      </div>
       </div>
     </div>
   )
@@ -762,7 +767,7 @@ function OverviewTab({ entry, content, onTabChange }: {
         {entry.convOutcome && (
           <JourneyCompleteCard entry={entry} contactName={contact?.name} onAction={onTabChange} />
         )}
-        <JourneyProgress stages={stages} onStageClick={onTabChange} />
+        <JourneyProgress entry={entry} onStageClick={onTabChange} />
         <OpportunityStateCard status={entry.oppStatus} explanation={content.opportunityExplanation} />
       </div>
       <div className="w-full xl:w-[248px] flex-shrink-0 flex flex-col gap-4">

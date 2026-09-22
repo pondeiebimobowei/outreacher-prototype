@@ -959,7 +959,7 @@ function AwaitingReplyView({ entry, contact, onUpdate, messages }: {
       <div className="px-5 xl:px-6 py-4" style={{ borderBottom: '1px solid var(--color-border)' }}>
         <div className="flex items-center gap-2.5 flex-wrap">
           <p className="text-[14px] font-bold" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-            Awaiting reply
+            No reply yet
           </p>
           <span
             className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-0.5 rounded-full"
@@ -968,7 +968,7 @@ function AwaitingReplyView({ entry, contact, onUpdate, messages }: {
             <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#8B5CF6' }} />
             {allFollowUpsSent
               ? `${followUpCount} follow-up${followUpCount > 1 ? 's' : ''} sent`
-              : followUpCount > 0 ? 'Follow-up sent' : 'Sent'}
+              : followUpCount > 0 ? 'Follow-up sent' : 'Waiting for reply'}
           </span>
           {entry.followUpDueAt && !allFollowUpsSent && (
             <span className="text-[11.5px]" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>
@@ -976,6 +976,9 @@ function AwaitingReplyView({ entry, contact, onUpdate, messages }: {
             </span>
           )}
         </div>
+        <p className="text-[12.5px] mt-1.5" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>
+          No reply yet. We'll keep the conversation here when they respond.
+        </p>
       </div>
 
       <div className="p-5 xl:p-6 flex flex-col gap-5">
@@ -1339,9 +1342,9 @@ export function ConversationTab({ entry, onUpdate, onNavigate }: {
       <GateCard
         icon={icons.campaigns}
         heading="No conversation yet"
-        body="Send your outreach campaign to start the conversation. A conversation will appear here once your outreach has been sent."
-        cta={entry.campaignStage === 'READY' ? 'Send outreach' : entry.outreachStage === 'READY' ? 'Create campaign' : undefined}
-        onCta={() => onNavigate('Campaign')}
+        body="Send your outreach to start the conversation. A conversation will appear here once your outreach has been sent."
+        cta={entry.outreachStage === 'READY' ? 'Send outreach' : undefined}
+        onCta={() => onNavigate('Outreach')}
       />
     )
   }

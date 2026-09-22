@@ -668,7 +668,7 @@ export function ContactsTab({ entry, onUpdate, onNavigate, companyName }: {
         </div>
         <div className="text-center max-w-[440px]">
           <p className="text-[18px] font-bold mb-2" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-            Find relevant people
+            No people yet
           </p>
           <p className="text-[13.5px] leading-relaxed" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>
             Outreacher will identify people at {companyName} who may be worth contacting — based on role relevance, team alignment, and the evidence gathered during research.
@@ -686,7 +686,7 @@ export function ContactsTab({ entry, onUpdate, onNavigate, companyName }: {
         </div>
         <button
           onClick={() => onUpdate({ contactStage: 'DISCOVERING', lastActivity: 'Just now' })}
-          className="flex items-center gap-2 px-6 py-3 rounded-lg text-[14px] font-semibold transition-all"
+          className="flex items-center gap-2 px-6 py-3 rounded-xl text-[14px] font-semibold transition-all shadow-sm mt-2"
           style={{ background: 'var(--color-primary)', color: 'white', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
           onMouseEnter={e => (e.currentTarget.style.background = '#1E2D4A')}
           onMouseLeave={e => (e.currentTarget.style.background = 'var(--color-primary)')}
