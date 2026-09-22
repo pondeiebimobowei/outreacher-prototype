@@ -4,7 +4,7 @@ import { Icon, icons } from '../../lib/icons'
 import type { CompanyEntry, ConvMessage } from '../../lib/workspaceStore'
 import { calcFollowUpDueAt, loadWorkspace } from '../../lib/workspaceStore'
 import { getContactData } from './ContactsTab'
-import type { ProtoContact } from './ContactsTab'
+import type { CompanyContactView } from './ContactsTab'
 
 // ─── Opportunity config ───────────────────────────────────────────────────────
 
@@ -73,7 +73,7 @@ function GateCard({ icon, heading, body, cta, onCta, ctaVariant = 'default' }: {
 
 function CampaignSetup({ entry, contact, onUpdate, onNavigate }: {
   entry: CompanyEntry
-  contact: ProtoContact
+  contact: CompanyContactView
   onUpdate: (patch: Partial<CompanyEntry>) => void
   onNavigate: (tab: string) => void
 }) {
@@ -293,7 +293,7 @@ function SendingView({ contactName }: { contactName: string }) {
 
 function CampaignSent({ entry, contact, onNavigate }: {
   entry: CompanyEntry
-  contact: ProtoContact
+  contact: CompanyContactView
   onNavigate: (tab: string) => void
 }) {
   return (
@@ -358,7 +358,7 @@ function CampaignSent({ entry, contact, onNavigate }: {
 
 function PreSendReview({ entry, contact, onUpdate, onNavigate }: {
   entry: CompanyEntry
-  contact: ProtoContact
+  contact: CompanyContactView
   onUpdate: (patch: Partial<CompanyEntry>) => void
   onNavigate: (tab: string) => void
 }) {
