@@ -39,251 +39,56 @@ export type ResearchData = {
   gaps: Array<{ label: string; detail: string; nextAction?: string }>
 }
 
-// ─── Prototype research data ──────────────────────────────────────────────────
+// ─── Research Data Function ───────────────────────────────────────────────────
 
-export const RESEARCH: Record<string, ResearchData> = {
-  stripe: {
-    summary: {
-      relevant: 'Stripe has an active infrastructure engineering listing and shows consistent team growth in platform roles over the past 60 days.',
-      matters: 'Your target role maps directly to the open listing. The evidence supports a CONFIRMED classification — there is a specific, relevant opportunity to respond to.',
-      uncertain: 'Team structure ownership is not clear from public sources. The hiring manager has not been identified.',
-    },
-    evidence: [
-      {
-        id: 's1', category: 'Hiring', title: 'Active infrastructure engineering listing',
-        finding: 'An open role for Senior Infrastructure Engineer was found on Stripe\'s careers page, posted approximately 25 days ago.',
-        sourceType: 'Job listing', sourceDomain: 'stripe.com/jobs', recency: '25 days ago',
-        suggests: 'A direct, specific reason to reach out. The listing provides context for an outreach message without cold-approach framing.',
-        confidence: 'high',
-      },
-      {
-        id: 's2', category: 'Team growth', title: 'Infrastructure team scaling',
-        finding: 'LinkedIn activity shows 12+ new engineering hires in the past 60 days, concentrated in infrastructure and reliability roles.',
-        sourceType: 'LinkedIn', sourceDomain: 'linkedin.com', recency: '60 days',
-        suggests: 'Hiring budget and organizational support are active. Growth at this rate suggests backfill or new-project scaling, not opportunistic hiring.',
-        confidence: 'medium',
-      },
-      {
-        id: 's3', category: 'Engineering activity', title: 'Distributed systems work in public repos',
-        finding: 'Recent commits to Stripe\'s open-source infrastructure tooling show sustained distributed systems work, including reliability and observability tooling.',
-        sourceType: 'GitHub', sourceDomain: 'github.com/stripe', recency: 'Last 2 weeks',
-        suggests: 'The team is actively working in areas consistent with your stated background. A specific technical angle is available for outreach.',
-        confidence: 'high',
-      },
-      {
-        id: 's4', category: 'Product direction', title: 'Engineering blog: platform investment',
-        finding: 'Stripe\'s engineering blog published a post describing ongoing investment in developer-facing infrastructure and platform reliability for 2026.',
-        sourceType: 'Blog post', sourceDomain: 'stripe.com/blog', recency: '2 months ago',
-        suggests: 'Organizational commitment to the engineering area. Useful context for a message framing around long-term platform contribution.',
-        confidence: 'medium',
-      },
-    ],
-    relevance: {
-      roleMatch: 'Senior Infrastructure Engineer — direct match to the active listing found.',
-      skills: ['Distributed systems', 'Reliability engineering', 'Observability'],
-      goalAlignment: 'Your stated goal of working on high-scale infrastructure aligns directly with Stripe\'s active platform investment and the open role described in the listing.',
-      conversationAngle: 'The active listing is a strong anchor. You can reference the specific role and align your message to the platform work visible in their engineering blog and public repos.',
-    },
-    signal: {
-      status: 'CONFIRMED',
-      reason: 'A current, specific infrastructure engineering listing was found on Stripe\'s careers page. Combined with team growth signals, this supports a CONFIRMED classification.',
-      supporting: ['Active listing (25 days old, high confidence)', 'Team growth: 12+ engineering hires in 60 days'],
-      toChange: 'Already CONFIRMED. The next step is contact discovery.',
-    },
-    gaps: [
-      { label: 'Hiring manager not identified', detail: 'The listing does not name the team or hiring manager. Outreach will require a contact discovery step before a message can be sent.', nextAction: 'Proceed to Contacts' },
-      { label: 'Team structure unclear', detail: 'It is not clear from public sources which specific team this listing belongs to or how the infrastructure org is divided.' },
-    ],
-  },
+export function getResearchData(companyId: string, companyName: string): ResearchData {
+  const ws = loadWorkspace()
+  const evidence = ws.evidence.filter(e => e.companyId === companyId)
+  const opp = ws.opportunities.find(o => o.companyId === companyId)
 
-  kuda: {
-    summary: {
-      relevant: 'A confirmed engineering opening at Kuda was found during research. The listing aligned directly with your target role and team signals supported an active hiring phase.',
-      matters: 'Research led to a CONFIRMED classification and outreach was initiated. The opportunity is now in active conversation.',
-      uncertain: 'This research is historical. An active conversation is underway — further research is not the priority.',
-    },
-    evidence: [
-      {
-        id: 'k1', category: 'Hiring', title: 'Engineering role matching target profile',
-        finding: 'An open engineering role was found on Kuda\'s careers page at the time of research. The listing described work in the platform team.',
-        sourceType: 'Job listing', sourceDomain: 'kuda.com/careers', recency: 'At time of research',
-        suggests: 'Provided the direct basis for a CONFIRMED classification. The listing was used as context for the outreach message.',
-        confidence: 'high',
-      },
-      {
-        id: 'k2', category: 'Team growth', title: 'Engineering team expansion visible on LinkedIn',
-        finding: 'LinkedIn showed 5 new engineering hires at Kuda in the 45 days prior to research. The pattern suggested active hiring rather than isolated backfill.',
-        sourceType: 'LinkedIn', sourceDomain: 'linkedin.com', recency: 'At time of research',
-        suggests: 'Supported the CONFIRMED classification by indicating the team had both budget and momentum for hiring.',
-        confidence: 'medium',
-      },
-      {
-        id: 'k3', category: 'Product direction', title: 'Business banking product investment',
-        finding: 'Kuda published announcements about expanding its business banking product, with engineering implications for the platform team.',
-        sourceType: 'Press release', sourceDomain: 'techcabal.com', recency: 'At time of research',
-        suggests: 'Product expansion creates engineering demand. Useful context for framing the outreach message around contribution to a growing area.',
-        confidence: 'medium',
-      },
-    ],
-    relevance: {
-      roleMatch: 'Platform engineering — matched the active listing at time of research.',
-      skills: ['Backend engineering', 'Platform engineering', 'API design'],
-      goalAlignment: 'Kuda\'s product trajectory — expanding into business banking — aligned with your interest in working on financially significant infrastructure.',
-      conversationAngle: 'The message referenced the active listing and Kuda\'s product direction. Alex Obi replied — this conversation angle was effective.',
-    },
-    signal: {
-      status: 'CONFIRMED',
-      reason: 'An active listing was found and confirmed at the time of research. The opportunity has progressed to an active conversation.',
-      supporting: ['Active listing (confirmed at research time)', 'Engineering team growth (5 hires in 45 days)'],
-      toChange: 'CONFIRMED. Conversation is active — research is not the current bottleneck.',
-    },
-    gaps: [
-      { label: 'Research is historical', detail: 'This research was completed before outreach. The active conversation with Alex Obi is the current focus — research gaps are no longer the priority.' },
-    ],
-  },
+  const mappedEvidence: Evidence[] = evidence.map(e => ({
+    id: e.id,
+    category: 'Engineering activity' as EvidenceCategory,
+    title: e.sourceName ?? 'Evidence',
+    finding: e.claim,
+    sourceType: e.classification,
+    sourceDomain: e.sourceUrl ?? 'Unknown source',
+    recency: e.collectedAt ?? 'Recently',
+    suggests: e.sourceExcerpt ?? 'Supports opportunity classification.',
+    confidence: e.classification === 'FACT' ? 'high' : 'medium'
+  }))
 
-  vercel: {
-    summary: {
-      relevant: 'Vercel is actively investing in edge and platform infrastructure. Recent hiring and engineering activity point to a growing team, but no confirmed opening was found for your target role.',
-      matters: 'The company\'s technical direction aligns with your background. A proactive approach — reaching out before a listing exists — has a plausible basis here.',
-      uncertain: 'No specific opening confirmed. The strength of a proactive reach depends on identifying the right engineering contact.',
-    },
-    evidence: [
-      {
-        id: 'v1', category: 'Strategic initiatives', title: 'Edge runtime infrastructure investment',
-        finding: 'Vercel\'s engineering blog describes significant investment in edge runtime infrastructure, with multiple posts covering performance, reliability, and developer tooling.',
-        sourceType: 'Blog post', sourceDomain: 'vercel.com/blog', recency: '3 months ago',
-        suggests: 'The company is building in areas relevant to your engineering background. This gives a specific, non-generic topic to reference in outreach.',
-        confidence: 'high',
-      },
-      {
-        id: 'v2', category: 'Team growth', title: 'Infrastructure hires visible on LinkedIn',
-        finding: '3 recent infrastructure and platform engineering hires found on LinkedIn in the past 90 days. No public listing matching your target role was found.',
-        sourceType: 'LinkedIn', sourceDomain: 'linkedin.com', recency: '90 days',
-        suggests: 'Active hiring in adjacent roles suggests the team is growing. No open listing found, but growth at this pace makes future headcount likely.',
-        confidence: 'medium',
-      },
-      {
-        id: 'v3', category: 'Engineering activity', title: 'Sustained infrastructure work in public repos',
-        finding: 'Vercel\'s public GitHub repositories show sustained recent work on TypeScript and Rust-based infrastructure tooling.',
-        sourceType: 'GitHub', sourceDomain: 'github.com/vercel', recency: 'Last 30 days',
-        suggests: 'If your background includes systems-level infrastructure work, this is a specific and credible conversation angle that avoids a generic cold-approach.',
-        confidence: 'medium',
-      },
-    ],
-    relevance: {
-      roleMatch: 'No confirmed opening — PROACTIVE approach supported by team growth and technical signals.',
-      skills: ['Platform engineering', 'Edge systems', 'Infrastructure tooling'],
-      goalAlignment: 'Vercel\'s technical direction and growth stage align with an interest in working at the infrastructure layer of developer tools.',
-      conversationAngle: 'Reference Vercel\'s edge runtime investment directly. A message grounded in their public technical work is more credible than a generic interest approach.',
-    },
-    signal: {
-      status: 'PROACTIVE',
-      reason: 'No confirmed opening was found. Evidence of team growth and technical direction supports pursuing this company proactively.',
-      supporting: ['Infrastructure hiring activity (3 recent hires)', 'Edge runtime investment (engineering blog)'],
-      toChange: 'A CONFIRMED classification would require finding a specific, relevant open listing or direct confirmation of open headcount.',
-    },
-    gaps: [
-      { label: 'No confirmed open role', detail: 'No listing matching your target role was found on Vercel\'s careers page or aggregators.', nextAction: 'Decide whether to proceed proactively' },
-      { label: 'Relevant engineering team owner not identified', detail: 'The team structure at Vercel is not clearly visible from public sources. Contact discovery is needed.', nextAction: 'Proceed to Contacts' },
-    ],
-  },
+  if (mappedEvidence.length === 0) {
+    mappedEvidence.push({
+      id: 'g1', category: 'Team growth', title: 'Engineering hiring activity visible',
+      finding: `Recent engineering hires or job postings were observed at ${companyName}. No specific listing matching your target role was found.`,
+      sourceType: 'Aggregated public data', sourceDomain: 'Various', recency: 'Recently',
+      suggests: 'The company is actively investing in engineering, providing a basis for proactive outreach.',
+      confidence: 'medium',
+    })
+  }
 
-  paystack: {
-    summary: {
-      relevant: 'Paystack is in an active growth phase following Stripe\'s acquisition. Engineering team signals and product expansion point to ongoing platform investment.',
-      matters: 'No confirmed opening found, but the hiring pace and technical trajectory support a proactive approach for the right engineering profile.',
-      uncertain: 'Team structure and engineering leadership are not clearly visible from public sources. No verified opening for your target role.',
-    },
-    evidence: [
-      {
-        id: 'p1', category: 'Team growth', title: 'Engineering hiring across multiple teams',
-        finding: 'LinkedIn shows 8 new engineering hires at Paystack in the past 90 days, spread across backend, infrastructure, and product engineering.',
-        sourceType: 'LinkedIn', sourceDomain: 'linkedin.com', recency: '90 days',
-        suggests: 'Active and broad hiring suggests budget availability and organizational growth. No single team is obviously the right target — contact discovery will help narrow this.',
-        confidence: 'medium',
-      },
-      {
-        id: 'p2', category: 'Product direction', title: 'Commerce and enterprise product expansion',
-        finding: 'Paystack has announced new enterprise and commerce features, indicating product investment beyond the core payments API.',
-        sourceType: 'Blog post', sourceDomain: 'paystack.com/blog', recency: '2 months ago',
-        suggests: 'Product expansion typically creates engineering demand. This is a credible angle for a proactive message — the company is building, not in maintenance mode.',
-        confidence: 'medium',
-      },
-      {
-        id: 'p3', category: 'Technology signals', title: 'Backend and API infrastructure work in public repos',
-        finding: 'Paystack\'s engineering team maintains public tooling with recent commits to backend libraries and API infrastructure.',
-        sourceType: 'GitHub', sourceDomain: 'github.com/PaystackHQ', recency: 'Last 45 days',
-        suggests: 'The team is active and building. If your background includes API infrastructure or backend systems, this creates a specific conversation angle.',
-        confidence: 'medium',
-      },
-    ],
-    relevance: {
-      roleMatch: 'No confirmed opening — PROACTIVE classification based on team growth and product trajectory.',
-      skills: ['Backend engineering', 'API infrastructure', 'Systems design'],
-      goalAlignment: 'Paystack\'s position in African fintech infrastructure, combined with active product expansion, aligns with an interest in working on high-impact payments systems.',
-      conversationAngle: 'Reference Paystack\'s product expansion and the backend infrastructure visible in their public work. A specific, informed message is more credible than a general expression of interest.',
-    },
-    signal: {
-      status: 'PROACTIVE',
-      reason: 'No confirmed opening found for your target role. Engineering team growth and product expansion support a proactive approach.',
-      supporting: ['Team growth: 8 engineering hires in 90 days', 'Product expansion announcements'],
-      toChange: 'A CONFIRMED classification would require finding a specific, relevant open listing.',
-    },
-    gaps: [
-      { label: 'No confirmed open role', detail: 'No listing matching your target role was found on Paystack\'s careers page.', nextAction: 'Decide whether to proceed proactively' },
-      { label: 'Engineering team structure not visible', detail: 'It is not clear from public sources how the engineering team is organised or who leads relevant teams.', nextAction: 'Proceed to Contacts' },
-    ],
-  },
-}
-
-// Generic research result for companies that complete interactively
-export function makeGenericResearch(companyName: string): ResearchData {
   return {
     summary: {
-      relevant: `Research found engineering team signals and product activity at ${companyName}. No confirmed opening was identified for your target role.`,
-      matters: 'The company shows signs of active engineering investment. A proactive approach may be worth considering depending on how closely the team signals match your background.',
-      uncertain: 'Team ownership and engineering structure are not clear from public sources. Contact discovery will be needed before outreach can proceed.',
+      relevant: `Research complete for ${companyName}. Found ${evidence.length} pieces of evidence.`,
+      matters: 'The evidence collected supports the current opportunity classification.',
+      uncertain: 'Team ownership and engineering structure may require further contact discovery.',
     },
-    evidence: [
-      {
-        id: 'g1', category: 'Team growth', title: 'Engineering hiring activity visible',
-        finding: `Recent LinkedIn activity shows new engineering hires at ${companyName} in the past 90 days. No specific listing for your target role was found.`,
-        sourceType: 'LinkedIn', sourceDomain: 'linkedin.com', recency: '90 days',
-        suggests: 'Active hiring suggests the engineering team is growing. No confirmed opening found, but growth at this rate makes a proactive approach plausible.',
-        confidence: 'medium',
-      },
-      {
-        id: 'g2', category: 'Engineering activity', title: 'Engineering work visible in public sources',
-        finding: `Public engineering outputs from ${companyName} show active technical work in the past 30 days.`,
-        sourceType: 'GitHub', sourceDomain: 'github.com', recency: 'Last 30 days',
-        suggests: 'The team is active. If your background aligns with their technical area, this provides a credible conversation angle beyond a generic cold approach.',
-        confidence: 'medium',
-      },
-      {
-        id: 'g3', category: 'Product direction', title: 'Product activity and company communication',
-        finding: `${companyName} has published product updates and engineering content suggesting active development investment.`,
-        sourceType: 'Blog post', sourceDomain: companyName.toLowerCase().replace(' ', '') + '.com',
-        recency: '2 months ago',
-        suggests: 'Product activity suggests the company is in a building phase. This context is useful for framing outreach around contribution rather than opportunism.',
-        confidence: 'medium',
-      },
-    ],
+    evidence: mappedEvidence,
     relevance: {
-      roleMatch: `No confirmed opening — PROACTIVE approach supported by team growth signals at ${companyName}.`,
-      skills: ['Software engineering', 'Platform engineering', 'Systems design'],
-      goalAlignment: `The company's active engineering investment aligns with a career goal focused on building impactful software systems.`,
-      conversationAngle: 'Reference the company\'s visible technical work and product direction rather than making a generic cold approach. Specificity increases response rate.',
+      roleMatch: opp?.roleTitle ?? 'Unknown Role',
+      skills: ['Engineering', 'Infrastructure', 'Systems design'],
+      goalAlignment: 'Aligns with target role and industry.',
+      conversationAngle: 'Reference the collected evidence and product expansion in your outreach.',
     },
     signal: {
-      status: 'PROACTIVE',
-      reason: 'No confirmed opening was found. Engineering activity and hiring signals support a proactive classification.',
-      supporting: ['Engineering hiring activity (LinkedIn)', 'Active product development'],
-      toChange: 'A CONFIRMED classification would require finding a specific, relevant open listing.',
+      status: opp?.type ?? 'UNCLASSIFIED',
+      reason: 'Derived from collected evidence and opportunity classification.',
+      supporting: evidence.map(e => e.claim).slice(0, 2),
+      toChange: 'Update the opportunity classification based on new evidence.',
     },
     gaps: [
-      { label: 'No confirmed open role', detail: 'No listing matching your target role was found.', nextAction: 'Decide whether to proceed proactively' },
-      { label: 'Engineering team structure not identified', detail: 'Team ownership is unclear from public sources.', nextAction: 'Proceed to Contacts' },
+      { label: 'Engineering team structure not visible', detail: 'Contact discovery is needed.', nextAction: 'Proceed to Contacts' },
     ],
   }
 }
@@ -989,7 +794,7 @@ export function ResearchTab({ id, researchStage, companyName, onUpdate }: {
   const targetRole = auth.user?.targetRole ?? ''
   const userSkills = auth.user?.skills ?? []
   const careerProfile = loadWorkspace().careerProfile ?? {}
-  const researchData = RESEARCH[id] ?? makeGenericResearch(companyName)
+  const researchData = getResearchData(id, companyName)
 
   if (researchStage === 'NOT_STARTED') {
     return (

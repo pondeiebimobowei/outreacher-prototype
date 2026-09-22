@@ -3,15 +3,15 @@ import { Icon, icons } from '../../lib/icons'
 import type { CompanyEntry, OppStatus } from '../../lib/workspaceStore'
 import { loadWorkspace } from '../../lib/workspaceStore'
 import { getContactData } from './ContactsTab'
-import type { ProtoContact } from './ContactsTab'
-import { RESEARCH } from './ResearchTab'
+import type { CompanyContactView } from './ContactsTab'
+import { getResearchData } from './ResearchTab'
 
 // ─── Prototype draft generation ───────────────────────────────────────────────
 
 function generateDraft(
   companyId: string,
   companyName: string,
-  contact: ProtoContact,
+  contact: CompanyContactView,
   oppStatus: OppStatus,
   variant: number,
 ): { subject: string; message: string } {
@@ -59,7 +59,7 @@ function generateDraft(
   }
 }
 
-function getOutreachReasoning(companyName: string, contact: ProtoContact, oppStatus: OppStatus) {
+function getOutreachReasoning(companyName: string, contact: CompanyContactView, oppStatus: OppStatus) {
   return {
     companySignal: contact.opportunityConnection,
     companySource: contact.evidence[0]?.source ?? 'Research findings',
@@ -175,13 +175,13 @@ const OPP_CFG = {
 }
 
 function OutreachNotStarted({ contact, entry, onGenerate, onNavigate }: {
-  contact: ProtoContact
+  contact: CompanyContactView
   entry: CompanyEntry
   onGenerate: () => void
   onNavigate: (tab: string) => void
 }) {
   const cfg = OPP_CFG[entry.oppStatus]
-  const researchData = RESEARCH[entry.id] ?? null
+  const researchData = getResearchData(entry.id, entry.name)
   const careerProfile = loadWorkspace().careerProfile ?? {}
   const profileHeadline = careerProfile.professionalHeadline
   const targetIndustries = careerProfile.targetIndustries ?? []
@@ -333,7 +333,7 @@ function OutreachNotStarted({ contact, entry, onGenerate, onNavigate }: {
 // ─── Context panel (left in two-column layout) ────────────────────────────────
 
 function ContextPanel({ contact, entry, reasoning, showReasoning, onToggleReasoning }: {
-  contact: ProtoContact
+  contact: CompanyContactView
   entry: CompanyEntry
   reasoning: ReturnType<typeof getOutreachReasoning>
   showReasoning: boolean
@@ -481,7 +481,7 @@ function MessagePanel({
   contact, subject, message, entry, generatedSubject, generatedMessage,
   onSubjectChange, onMessageChange, onApprove, onRegenerate,
 }: {
-  contact: ProtoContact
+  contact: CompanyContactView
   subject: string
   message: string
   entry: CompanyEntry
@@ -626,7 +626,7 @@ function MessagePanel({
 // ─── Approved state ───────────────────────────────────────────────────────────
 
 function OutreachApproved({ contact, entry, subject, message, onNavigate, onEdit, onCreateCampaign }: {
-  contact: ProtoContact
+  contact: CompanyContactView
   entry: CompanyEntry
   subject: string
   message: string
@@ -812,7 +812,7 @@ function OutreachApproved({ contact, entry, subject, message, onNavigate, onEdit
 // ─── Sent state ───────────────────────────────────────────────────────────────
 
 function OutreachSent({ contact, entry, onNavigate }: {
-  contact: ProtoContact
+  contact: CompanyContactView
   entry: CompanyEntry
   onNavigate: (tab: string) => void
 }) {
@@ -910,7 +910,7 @@ function GateCard({ icon, heading, body, cta, onCta, ctaVariant = 'default' }: {
 
 function OutreachWorkspace({ entry, contact, onUpdate, onNavigate }: {
   entry: CompanyEntry
-  contact: ProtoContact
+  contact: CompanyContactView
   onUpdate: (patch: Partial<CompanyEntry>) => void
   onNavigate: (tab: string) => void
 }) {
