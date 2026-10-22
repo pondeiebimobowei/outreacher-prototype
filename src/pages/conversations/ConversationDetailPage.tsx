@@ -15,10 +15,10 @@ import { ConversationTab } from '../companies/ConversationTab'
 // ─── Relationship status badge ────────────────────────────────────────────────
 
 const REL_CFG = {
-  OPEN:        { label: 'Open',        color: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE', dot: '#3B82F6' },
+  OPEN: { label: 'Open', color: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE', dot: '#3B82F6' },
   OPPORTUNITY: { label: 'Opportunity', color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
-  NURTURE:     { label: 'Nurture',     color: '#92400E', bg: '#FFF7ED', border: '#FED7AA', dot: '#F59E0B' },
-  CLOSED:      { label: 'Closed',      color: '#6B7280', bg: '#F3F4F6', border: '#E5E7EB', dot: '#9CA3AF' },
+  NURTURE: { label: 'Nurture', color: '#92400E', bg: '#FFF7ED', border: '#FED7AA', dot: '#F59E0B' },
+  CLOSED: { label: 'Closed', color: '#6B7280', bg: '#F3F4F6', border: '#E5E7EB', dot: '#9CA3AF' },
 }
 
 // ─── Context links bar ────────────────────────────────────────────────────────
@@ -125,7 +125,7 @@ export function ConversationDetailPage() {
   const currentEntry: CompanyEntry = (ws.companies.find(c => c.id === id) as CompanyEntry | undefined) ?? resolvedEntry
 
   return (
-    <div className="flex flex-col h-full max-w-[900px] mx-auto">
+    <div className="flex flex-col h-full max-w-225 mx-auto">
       {/* Breadcrumb + page header */}
       <div className="px-4 sm:px-5 pt-5 pb-4">
         <div className="flex items-center gap-1.5 text-[12.5px] mb-4" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>
@@ -138,7 +138,7 @@ export function ConversationDetailPage() {
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-3.5">
             <div
-              className="w-11 h-11 rounded-xl flex items-center justify-center font-bold text-[13px] flex-shrink-0"
+              className="w-11 h-11 rounded-xl flex items-center justify-center font-bold text-[13px] shrink-0"
               style={{ background: contact?.avatarBg ?? 'var(--color-muted)', color: contact ? '#fff' : 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif', border: contact ? 'none' : '1px solid var(--color-border)' }}
             >
               {contact?.avatarInitials ?? resolvedEntry.name[0]}

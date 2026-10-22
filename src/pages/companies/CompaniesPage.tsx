@@ -26,8 +26,8 @@ export type { OppStatus }
 // ─── Status config ─────────────────────────────────────────────────────────────
 
 const oppConfig: Record<OppStatus, { color: string; bg: string; border: string; dot: string; label: string }> = {
-  CONFIRMED:    { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981', label: 'CONFIRMED' },
-  PROACTIVE:    { color: '#3730A3', bg: '#EEF2FF', border: '#C7D2FE', dot: '#4F46E5', label: 'PROACTIVE' },
+  CONFIRMED: { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981', label: 'CONFIRMED' },
+  PROACTIVE: { color: '#3730A3', bg: '#EEF2FF', border: '#C7D2FE', dot: '#4F46E5', label: 'PROACTIVE' },
   UNCLASSIFIED: { color: '#713F12', bg: '#FEFCE8', border: '#FDE68A', dot: '#F59E0B', label: 'UNCLASSIFIED' },
 }
 
@@ -38,7 +38,7 @@ function StatusBadge({ status }: { status: OppStatus }) {
       className="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-wide px-2.5 py-1 rounded-full whitespace-nowrap"
       style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}`, fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: '0.04em' }}
     >
-      <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: cfg.dot }} />
+      <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: cfg.dot }} />
       {cfg.label}
     </span>
   )
@@ -47,13 +47,13 @@ function StatusBadge({ status }: { status: OppStatus }) {
 // ─── Company monogram ─────────────────────────────────────────────────────────
 
 const MONOGRAM_COLORS: Record<string, { bg: string; text: string }> = {
-  kuda:        { bg: '#1B4DFF', text: '#fff' },
-  stripe:      { bg: '#635BFF', text: '#fff' },
-  paystack:    { bg: '#00C3F7', text: '#fff' },
-  vercel:      { bg: '#0E1726', text: '#fff' },
+  kuda: { bg: '#1B4DFF', text: '#fff' },
+  stripe: { bg: '#635BFF', text: '#fff' },
+  paystack: { bg: '#00C3F7', text: '#fff' },
+  vercel: { bg: '#0E1726', text: '#fff' },
   flutterwave: { bg: '#F5A623', text: '#fff' },
-  linear:      { bg: '#5E6AD2', text: '#fff' },
-  moniepoint:  { bg: '#0066FF', text: '#fff' },
+  linear: { bg: '#5E6AD2', text: '#fff' },
+  moniepoint: { bg: '#0066FF', text: '#fff' },
 }
 
 function Monogram({ name, id, archived }: { name: string; id: string; archived?: boolean }) {
@@ -61,7 +61,7 @@ function Monogram({ name, id, archived }: { name: string; id: string; archived?:
   const colors = archived ? { bg: 'var(--color-muted)', text: 'var(--color-muted-fg)' } : base
   return (
     <div
-      className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[14px] flex-shrink-0 select-none"
+      className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[14px] shrink-0 select-none"
       style={{ background: colors.bg, color: colors.text, fontFamily: 'Plus Jakarta Sans, sans-serif' }}
     >
       {name[0]}
@@ -74,12 +74,12 @@ function Monogram({ name, id, archived }: { name: string; id: string; archived?:
 function ColumnHeaders() {
   return (
     <div className="hidden sm:flex items-center gap-4 px-5 py-2.5" style={{ borderBottom: '1px solid var(--color-border)' }}>
-      <div className="w-[220px] flex-shrink-0"><ColLabel>Company</ColLabel></div>
-      <div className="w-[140px] flex-shrink-0"><ColLabel>Status</ColLabel></div>
+      <div className="w-[220px] shrink-0"><ColLabel>Company</ColLabel></div>
+      <div className="w-[140px] shrink-0"><ColLabel>Status</ColLabel></div>
       <div className="flex-1 min-w-0"><ColLabel>Current state</ColLabel></div>
-      <div className="w-[100px] flex-shrink-0 text-right"><ColLabel>Last activity</ColLabel></div>
-      <div className="w-[160px] flex-shrink-0"><ColLabel>Next action</ColLabel></div>
-      <div className="w-8 flex-shrink-0" />
+      <div className="w-[100px] shrink-0 text-right"><ColLabel>Last activity</ColLabel></div>
+      <div className="w-[160px] shrink-0"><ColLabel>Next action</ColLabel></div>
+      <div className="w-8 shrink-0" />
     </div>
   )
 }
@@ -136,7 +136,7 @@ function CompanyRow({ entry, onClick, onEdit, onArchive, onUnarchive }: {
                   {entry.name}
                 </p>
                 {isArchived && (
-                  <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded flex-shrink-0" style={{ background: 'var(--color-muted)', color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+                  <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded shrink-0" style={{ background: 'var(--color-muted)', color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                     Archived
                   </span>
                 )}
@@ -147,7 +147,7 @@ function CompanyRow({ entry, onClick, onEdit, onArchive, onUnarchive }: {
               </p>
             </div>
           </div>
-          <div className="flex-shrink-0 pt-0.5">
+          <div className="shrink-0 pt-0.5">
             <StatusBadge status={entry.oppStatus} />
           </div>
         </div>
@@ -165,7 +165,7 @@ function CompanyRow({ entry, onClick, onEdit, onArchive, onUnarchive }: {
 
       {/* Desktop row */}
       <div className="hidden sm:flex items-center gap-4 px-5 py-3.5">
-        <div className="w-[220px] flex-shrink-0 flex items-center gap-3 min-w-0">
+        <div className="w-[220px] shrink-0 flex items-center gap-3 min-w-0">
           <Monogram name={entry.name} id={entry.id} archived={isArchived} />
           <div className="min-w-0">
             <div className="flex items-center gap-2">
@@ -173,12 +173,12 @@ function CompanyRow({ entry, onClick, onEdit, onArchive, onUnarchive }: {
                 {entry.name}
               </p>
               {entry.isDemo && (
-                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded flex-shrink-0" style={{ background: '#FEF9C3', color: '#713F12', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded shrink-0" style={{ background: '#FEF9C3', color: '#713F12', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                   Demo
                 </span>
               )}
               {isArchived && (
-                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded flex-shrink-0" style={{ background: 'var(--color-muted)', color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded shrink-0" style={{ background: 'var(--color-muted)', color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                   Archived
                 </span>
               )}
@@ -189,20 +189,20 @@ function CompanyRow({ entry, onClick, onEdit, onArchive, onUnarchive }: {
             </p>
           </div>
         </div>
-        <div className="w-[140px] flex-shrink-0"><StatusBadge status={entry.oppStatus} /></div>
+        <div className="w-[140px] shrink-0"><StatusBadge status={entry.oppStatus} /></div>
         <div className="flex-1 min-w-0">
           <p className="text-[13px] truncate" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>{stateLabel}</p>
         </div>
-        <div className="w-[100px] flex-shrink-0 text-right">
+        <div className="w-[100px] shrink-0 text-right">
           <p className="text-[12.5px]" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>{entry.lastActivity}</p>
         </div>
-        <div className="w-[160px] flex-shrink-0">
+        <div className="w-[160px] shrink-0">
           <span className="text-[13px] font-medium truncate block" style={{ color: actionable ? 'var(--color-accent)' : 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif', fontStyle: actionable ? 'normal' : 'italic' }}>
             {nextAction}
           </span>
         </div>
         {/* Row actions */}
-        <div className="w-8 flex-shrink-0 relative" ref={menuRef}>
+        <div className="w-8 shrink-0 relative" ref={menuRef}>
           <button
             className="w-8 h-8 rounded-md flex items-center justify-center transition-colors"
             style={{ color: 'var(--color-muted-fg)' }}
@@ -323,8 +323,8 @@ function EmptyState({ searching, onAdd, onLoadDemo }: { searching: boolean; onAd
 // ─── Company form (shared by Add + Edit) ──────────────────────────────────────
 
 const STATUS_DESCRIPTIONS: Record<OppStatus, string> = {
-  CONFIRMED:    'Evidence of a relevant opening exists.',
-  PROACTIVE:    'Company fit supports outreach despite no confirmed opening.',
+  CONFIRMED: 'Evidence of a relevant opening exists.',
+  PROACTIVE: 'Company fit supports outreach despite no confirmed opening.',
   UNCLASSIFIED: 'Not enough evidence yet. Start here if unsure.',
 }
 
@@ -387,7 +387,7 @@ function CompanyFormModal({ initial, mode, onClose, onSave }: CompanyFormProps) 
       onMouseDown={e => { if (e.target === overlayRef.current) onClose() }}
     >
       <div className="w-full max-w-[500px] rounded-2xl shadow-2xl max-h-[90vh] flex flex-col" style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }}>
-        <div className="flex items-center justify-between px-6 py-5 flex-shrink-0" style={{ borderBottom: '1px solid var(--color-border)' }}>
+        <div className="flex items-center justify-between px-6 py-5 shrink-0" style={{ borderBottom: '1px solid var(--color-border)' }}>
           <div>
             <h2 className="text-[17px] font-bold" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
               {isEdit ? 'Edit company' : 'Add company'}
@@ -503,7 +503,7 @@ function CompanyFormModal({ initial, mode, onClose, onSave }: CompanyFormProps) 
                     onMouseEnter={e => { if (!selected) e.currentTarget.style.background = 'var(--color-muted)' }}
                     onMouseLeave={e => { if (!selected) e.currentTarget.style.background = 'transparent' }}
                   >
-                    <div className="w-3.5 h-3.5 rounded-full mt-0.5 flex-shrink-0" style={{ background: selected ? cfg.dot : 'var(--color-border)' }} />
+                    <div className="w-3.5 h-3.5 rounded-full mt-0.5 shrink-0" style={{ background: selected ? cfg.dot : 'var(--color-border)' }} />
                     <div>
                       <p className="text-[12.5px] font-bold" style={{ color: selected ? cfg.color : 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: '0.04em' }}>{s}</p>
                       <p className="text-[12px] mt-0.5" style={{ color: 'var(--color-muted-fg)' }}>{STATUS_DESCRIPTIONS[s]}</p>
@@ -515,7 +515,7 @@ function CompanyFormModal({ initial, mode, onClose, onSave }: CompanyFormProps) 
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-3 px-6 py-4 flex-shrink-0" style={{ borderTop: '1px solid var(--color-border)' }}>
+        <div className="flex items-center justify-end gap-3 px-6 py-4 shrink-0" style={{ borderTop: '1px solid var(--color-border)' }}>
           <button onClick={onClose} disabled={saving} className="px-4 py-2.5 rounded-lg text-[13.5px] font-medium transition-all"
             style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
             onMouseEnter={e => { e.currentTarget.style.background = 'var(--color-muted)'; e.currentTarget.style.color = 'var(--color-primary)' }}
@@ -551,7 +551,7 @@ function ArchiveConfirmModal({ company, onClose, onConfirm }: { company: Company
       style={{ background: 'rgba(14,23,38,0.4)', backdropFilter: 'blur(4px)' }}
       onMouseDown={e => { if (e.target === overlayRef.current) onClose() }}
     >
-      <div className="w-full max-w-[400px] rounded-2xl shadow-2xl" style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }}>
+      <div className="w-full max-w-100 rounded-2xl shadow-2xl" style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }}>
         <div className="px-6 py-5">
           <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: '#FFFBEB' }}>
             <span style={{ color: '#F59E0B' }}><Icon d={icons.archive ?? 'M21 8v13H3V8M1 3h22v5H1zM10 12h4'} size={18} /></span>
@@ -635,7 +635,7 @@ function FilterBar({ entries, activeFilter, onFilter, archiveFilter, onArchiveFi
       </div>
 
       <div className="flex items-center gap-3 flex-wrap">
-        <div className="relative flex-1 sm:flex-shrink-0" style={{ minWidth: 180 }}>
+        <div className="relative flex-1 sm:shrink-0" style={{ minWidth: 180 }}>
           <div className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--color-muted-fg)' }}>
             <Icon d={icons.search} size={14} />
           </div>
@@ -697,7 +697,7 @@ function SkeletonRow() {
       <div className="sm:hidden px-4 py-4 flex flex-col gap-2.5">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg flex-shrink-0 animate-pulse" style={{ background: 'var(--color-muted)' }} />
+            <div className="w-9 h-9 rounded-lg shrink-0 animate-pulse" style={{ background: 'var(--color-muted)' }} />
             <div className="space-y-1.5">
               <div className="h-3.5 w-28 rounded animate-pulse" style={{ background: 'var(--color-muted)' }} />
               <div className="h-2.5 w-20 rounded animate-pulse" style={{ background: 'var(--color-muted)' }} />
@@ -712,8 +712,8 @@ function SkeletonRow() {
         </div>
       </div>
       <div className="hidden sm:flex items-center gap-4 px-5 py-3.5">
-        <div className="w-[220px] flex-shrink-0 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg flex-shrink-0 animate-pulse" style={{ background: 'var(--color-muted)' }} />
+        <div className="w-[220px] shrink-0 flex items-center gap-3">
+          <div className="w-9 h-9 rounded-lg shrink-0 animate-pulse" style={{ background: 'var(--color-muted)' }} />
           <div className="flex-1 space-y-1.5">
             <div className="h-3.5 rounded animate-pulse" style={{ background: 'var(--color-muted)', width: '70%' }} />
             <div className="h-2.5 rounded animate-pulse" style={{ background: 'var(--color-muted)', width: '50%' }} />
@@ -747,7 +747,7 @@ function DemoBanner({ onClear }: { onClear: () => void }) {
       </div>
       <button
         onClick={onClear}
-        className="flex items-center gap-1.5 text-[12.5px] font-semibold flex-shrink-0 transition-colors"
+        className="flex items-center gap-1.5 text-[12.5px] font-semibold shrink-0 transition-colors"
         style={{ color: '#78350F', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
         onMouseEnter={e => (e.currentTarget.style.color = '#92400E')}
         onMouseLeave={e => (e.currentTarget.style.color = '#78350F')}
@@ -865,7 +865,7 @@ export function CompaniesPage() {
 
   return (
     <>
-      <div className="max-w-[980px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
+      <div className="max-w-245 mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
         <div className="flex items-start justify-between mb-6 gap-4">
           <div>
             <h1 className="text-[26px] font-bold tracking-tight" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
@@ -877,7 +877,7 @@ export function CompaniesPage() {
           </div>
           <button
             onClick={() => setShowModal(true)}
-            className="flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all"
+            className="shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all"
             style={{ background: 'var(--color-primary)', color: 'white', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
             onMouseEnter={e => (e.currentTarget.style.background = '#1E2D4A')}
             onMouseLeave={e => (e.currentTarget.style.background = 'var(--color-primary)')}

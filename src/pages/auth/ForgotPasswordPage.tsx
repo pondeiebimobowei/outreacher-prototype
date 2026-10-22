@@ -20,7 +20,7 @@ export function ForgotPasswordPage() {
   }
 
   return (
-    <div className="w-full max-w-[400px]">
+    <div className="w-full max-w-100">
       <div className="flex items-center gap-2 mb-8 lg:hidden">
         <div className="w-7 h-7 rounded-md flex items-center justify-center" style={{ background: 'var(--color-accent)' }}>
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">

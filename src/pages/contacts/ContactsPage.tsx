@@ -29,13 +29,13 @@ export type ContactListItem = {
 // ─── Config ───────────────────────────────────────────────────────────────────
 
 export const LIFECYCLE_CFG: Record<ContactLifecycleState, { label: string; color: string; bg: string; border: string; dot: string }> = {
-  DISCOVERED: { label: 'Discovered',     color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#9CA3AF' },
-  SELECTED:   { label: 'Selected',       color: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE', dot: '#3B82F6' },
-  CONTACTED:  { label: 'Contacted',      color: '#5B21B6', bg: '#F5F3FF', border: '#DDD6FE', dot: '#7C3AED' },
-  REPLIED:    { label: 'Replied',        color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
-  ACTIVE:     { label: 'Active',         color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#059669' },
-  NURTURE:    { label: 'Nurture',        color: '#92400E', bg: '#FFF7ED', border: '#FED7AA', dot: '#F59E0B' },
-  CLOSED:     { label: 'Closed',         color: '#6B7280', bg: '#F3F4F6', border: '#E5E7EB', dot: '#9CA3AF' },
+  DISCOVERED: { label: 'Discovered', color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#9CA3AF' },
+  SELECTED: { label: 'Selected', color: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE', dot: '#3B82F6' },
+  CONTACTED: { label: 'Contacted', color: '#5B21B6', bg: '#F5F3FF', border: '#DDD6FE', dot: '#7C3AED' },
+  REPLIED: { label: 'Replied', color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
+  ACTIVE: { label: 'Active', color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#059669' },
+  NURTURE: { label: 'Nurture', color: '#92400E', bg: '#FFF7ED', border: '#FED7AA', dot: '#F59E0B' },
+  CLOSED: { label: 'Closed', color: '#6B7280', bg: '#F3F4F6', border: '#E5E7EB', dot: '#9CA3AF' },
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -115,7 +115,7 @@ function ContactRow({ item, onClick }: { item: ContactListItem; onClick: () => v
     >
       {/* Avatar */}
       <div
-        className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[12px] flex-shrink-0"
+        className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[12px] shrink-0"
         style={{ background: item.person.avatarBg, color: '#fff', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
       >
         {item.person.avatarInitials}
@@ -138,10 +138,10 @@ function ContactRow({ item, onClick }: { item: ContactListItem; onClick: () => v
             </span>
           </div>
           <span
-            className="flex-shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full"
+            className="shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full"
             style={{ background: lcfg.bg, color: lcfg.color, border: `1px solid ${lcfg.border}`, fontFamily: 'Plus Jakarta Sans, sans-serif' }}
           >
-            <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: lcfg.dot }} />
+            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: lcfg.dot }} />
             {lcfg.label}
           </span>
         </div>
@@ -149,7 +149,7 @@ function ContactRow({ item, onClick }: { item: ContactListItem; onClick: () => v
           <p className="text-[12.5px]" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>
             {lastInteraction}
           </p>
-          <span className="text-[12px] font-medium flex-shrink-0 flex items-center gap-1" style={{ color: 'var(--color-accent)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+          <span className="text-[12px] font-medium shrink-0 flex items-center gap-1" style={{ color: 'var(--color-accent)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
             {nextAction} <Icon d={icons.arrowRight} size={11} />
           </span>
         </div>
@@ -167,7 +167,7 @@ function EmptyState({ onAdd }: { onAdd: () => void }) {
       <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: 'var(--color-muted)', color: 'var(--color-muted-fg)' }}>
         <Icon d={icons.contacts} size={26} strokeWidth={1.5} />
       </div>
-      <div className="text-center max-w-[400px]">
+      <div className="text-center max-w-100">
         <h2 className="text-[20px] font-bold mb-2" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>No contacts yet</h2>
         <p className="text-[14px] leading-relaxed" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>
           Contacts appear here when you discover people while researching companies, or when you add them directly.
@@ -226,7 +226,7 @@ export function ContactsPage() {
   }
 
   return (
-    <div className="max-w-[900px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
+    <div className="max-w-225 mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
       {/* Header */}
       <div className="flex items-start justify-between gap-4 mb-6">
         <div>
@@ -239,7 +239,7 @@ export function ContactsPage() {
         </div>
         <button
           onClick={() => setShowAddModal(true)}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all flex-shrink-0"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all shrink-0"
           style={{ background: 'var(--color-primary)', color: 'white', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
         >
           <Icon d={icons.plus} size={15} />

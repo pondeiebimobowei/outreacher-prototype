@@ -178,7 +178,7 @@ function NeedsAttentionSection() {
             onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--color-border)')}
           >
             <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+              className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
               style={{ background: item.iconBg }}
             >
               <span style={{ color: item.iconColor, display: 'flex' }}>
@@ -195,7 +195,7 @@ function NeedsAttentionSection() {
             </div>
             <button
               onClick={e => { e.stopPropagation(); navigate(item.route) }}
-              className="flex items-center gap-1 text-[12.5px] font-semibold flex-shrink-0 transition-colors"
+              className="flex items-center gap-1 text-[12.5px] font-semibold shrink-0 transition-colors"
               style={{ color: 'var(--color-accent)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
               onMouseEnter={e => (e.currentTarget.style.opacity = '0.75')}
               onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
@@ -236,7 +236,7 @@ function ContextBanners() {
             </p>
           </div>
           <button onClick={() => navigate('/profile')}
-            className="text-[12.5px] font-semibold flex-shrink-0 transition-colors"
+            className="text-[12.5px] font-semibold shrink-0 transition-colors"
             style={{ color: '#4F46E5', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
             onMouseEnter={e => (e.currentTarget.style.color = '#3730A3')}
             onMouseLeave={e => (e.currentTarget.style.color = '#4F46E5')}>
@@ -254,7 +254,7 @@ function ContextBanners() {
             </p>
           </div>
           <button onClick={() => navigate('/outreaches')}
-            className="text-[12.5px] font-semibold flex-shrink-0 transition-colors"
+            className="text-[12.5px] font-semibold shrink-0 transition-colors"
             style={{ color: '#7C3AED', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
             onMouseEnter={e => (e.currentTarget.style.color = '#6D28D9')}
             onMouseLeave={e => (e.currentTarget.style.color = '#7C3AED')}>
@@ -272,7 +272,7 @@ function ContextBanners() {
             </p>
           </div>
           <button onClick={() => navigate('/sender-accounts')}
-            className="text-[12.5px] font-semibold flex-shrink-0 transition-colors"
+            className="text-[12.5px] font-semibold shrink-0 transition-colors"
             style={{ color: '#D97706', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
             onMouseEnter={e => (e.currentTarget.style.color = '#92400E')}
             onMouseLeave={e => (e.currentTarget.style.color = '#D97706')}>
@@ -291,8 +291,8 @@ function getUrgency(entry: CompanyEntry): number {
   if (entry.convOutcome) {
     const rel = deriveRelationshipStatus(entry)
     if (rel === 'OPPORTUNITY') return 9  // still needs attention
-    if (rel === 'NURTURE')     return 2  // goes to "Keep in touch" section
-    if (rel === 'CLOSED')      return 1  // terminal
+    if (rel === 'NURTURE') return 2  // goes to "Keep in touch" section
+    if (rel === 'CLOSED') return 1  // terminal
   }
   if (entry.convStage === 'REPLIED') return 10
   if (entry.convStage === 'ACTIVE') return 9
@@ -367,13 +367,13 @@ function getQueueStatus(entry: CompanyEntry): 'reply' | 'review' | 'research' {
 }
 
 const MONOGRAM_COLORS: Record<string, { bg: string; text: string }> = {
-  kuda:        { bg: '#1B4DFF', text: '#fff' },
-  stripe:      { bg: '#635BFF', text: '#fff' },
-  paystack:    { bg: '#00C3F7', text: '#fff' },
-  vercel:      { bg: '#0E1726', text: '#fff' },
+  kuda: { bg: '#1B4DFF', text: '#fff' },
+  stripe: { bg: '#635BFF', text: '#fff' },
+  paystack: { bg: '#00C3F7', text: '#fff' },
+  vercel: { bg: '#0E1726', text: '#fff' },
   flutterwave: { bg: '#F5A623', text: '#fff' },
-  linear:      { bg: '#5E6AD2', text: '#fff' },
-  moniepoint:  { bg: '#0066FF', text: '#fff' },
+  linear: { bg: '#5E6AD2', text: '#fff' },
+  moniepoint: { bg: '#0066FF', text: '#fff' },
 }
 
 // ─── Empty state ──────────────────────────────────────────────────────────────
@@ -387,7 +387,7 @@ function EmptyDashboard({ onAddCompany }: { onAddCompany: () => void }) {
       >
         <Icon d={icons.companies} size={30} strokeWidth={1.5} />
       </div>
-      <div className="text-center max-w-[420px]">
+      <div className="text-center max-w-105">
         <h2 className="text-[22px] font-bold mb-2.5" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
           You haven't started pursuing a company yet
         </h2>
@@ -395,7 +395,7 @@ function EmptyDashboard({ onAddCompany }: { onAddCompany: () => void }) {
           Add a company you genuinely want to work with. Outreacher will help you research it, find the right person, and reach out with evidence.
         </p>
       </div>
-      <div className="flex flex-col items-center gap-3 w-full max-w-[360px]">
+      <div className="flex flex-col items-center gap-3 w-full max-w-90">
         <button
           onClick={onAddCompany}
           className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-[14px] font-semibold transition-all"
@@ -406,7 +406,7 @@ function EmptyDashboard({ onAddCompany }: { onAddCompany: () => void }) {
           <Icon d={icons.plus} size={16} /> Add your first company
         </button>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-[600px] mt-2">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-150 mt-2">
         {[
           { icon: icons.search, title: 'Research', desc: 'Gather company signals and evidence before deciding to pursue.' },
           { icon: icons.contacts, title: 'Identify contacts', desc: 'Find the right person — not just any person.' },
@@ -433,7 +433,7 @@ function EmptyDashboard({ onAddCompany }: { onAddCompany: () => void }) {
 
 const queueStatusConfig = {
   review: { label: 'Review needed', dot: '#F59E0B', bg: '#FFFBEB', text: '#92400E' },
-  reply:  { label: 'Reply received', dot: '#10B981', bg: '#ECFDF5', text: '#065F46' },
+  reply: { label: 'Reply received', dot: '#10B981', bg: '#ECFDF5', text: '#065F46' },
   research: { label: 'Research ready', dot: '#4F46E5', bg: '#EEF2FF', text: '#3730A3' },
 } as const
 
@@ -453,7 +453,7 @@ function QueueRow({ entry, onClick }: { entry: CompanyEntry; onClick: () => void
       onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
     >
       <div
-        className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[14px] flex-shrink-0 mt-0.5"
+        className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[14px] shrink-0 mt-0.5"
         style={{ background: MONOGRAM_COLORS[entry.id]?.bg ?? 'var(--color-muted)', color: MONOGRAM_COLORS[entry.id]?.text ?? 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
       >
         {entry.name[0]}
@@ -483,7 +483,7 @@ function QueueRow({ entry, onClick }: { entry: CompanyEntry; onClick: () => void
           {ctaLabel} <Icon d={icons.arrowRight} size={11} />
         </button>
       </div>
-      <span className="text-[11.5px] flex-shrink-0 mt-1" style={{ color: 'var(--color-muted-fg)' }}>{entry.lastActivity}</span>
+      <span className="text-[11.5px] shrink-0 mt-1" style={{ color: 'var(--color-muted-fg)' }}>{entry.lastActivity}</span>
     </div>
   )
 }
@@ -495,8 +495,8 @@ function NurtureRow({ entry, onClick }: { entry: CompanyEntry; onClick: () => vo
   const reasonText = entry.convOutcome === 'FOLLOW_UP_LATER'
     ? 'Reconnect when a relevant opportunity arises.'
     : entry.convOutcome === 'NOT_HIRING'
-    ? 'Watch for future hiring activity.'
-    : 'Keep this relationship warm.'
+      ? 'Watch for future hiring activity.'
+      : 'Keep this relationship warm.'
 
   return (
     <div
@@ -507,7 +507,7 @@ function NurtureRow({ entry, onClick }: { entry: CompanyEntry; onClick: () => vo
       onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
     >
       <div
-        className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[14px] flex-shrink-0 mt-0.5"
+        className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[14px] shrink-0 mt-0.5"
         style={{ background: MONOGRAM_COLORS[entry.id]?.bg ?? 'var(--color-muted)', color: MONOGRAM_COLORS[entry.id]?.text ?? 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
       >
         {entry.name[0]}
@@ -525,7 +525,7 @@ function NurtureRow({ entry, onClick }: { entry: CompanyEntry; onClick: () => vo
       </div>
       <button
         onClick={e => { e.stopPropagation(); onClick() }}
-        className="flex-shrink-0 mt-1 text-[12px] font-semibold flex items-center gap-1 transition-colors"
+        className="shrink-0 mt-1 text-[12px] font-semibold flex items-center gap-1 transition-colors"
         style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
         onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-primary)')}
         onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-muted-fg)')}
@@ -566,8 +566,8 @@ function KeepInTouchSection({ entries, onNavigate }: { entries: CompanyEntry[]; 
 // ─── Hero "continue" card ─────────────────────────────────────────────────────
 
 const oppConfig = {
-  CONFIRMED:    { color: '#A5B4FC', bg: 'rgba(79,70,229,0.35)' },
-  PROACTIVE:    { color: '#A5B4FC', bg: 'rgba(79,70,229,0.25)' },
+  CONFIRMED: { color: '#A5B4FC', bg: 'rgba(79,70,229,0.35)' },
+  PROACTIVE: { color: '#A5B4FC', bg: 'rgba(79,70,229,0.25)' },
   UNCLASSIFIED: { color: '#FDE68A', bg: 'rgba(245,158,11,0.25)' },
 } as const
 
@@ -594,7 +594,7 @@ function HeroCard({ entry, onClick }: { entry: CompanyEntry; onClick: () => void
           style={{ background: 'radial-gradient(circle at 70% 30%, #4F46E5, transparent)' }} />
         <div className="relative z-10">
           <div className="flex items-start gap-3 mb-3">
-            <div className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[15px] flex-shrink-0"
+            <div className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[15px] shrink-0"
               style={{ background: monoColors.bg, color: monoColors.text, fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
               {entry.name[0]}
             </div>
@@ -632,8 +632,8 @@ function HeroCard({ entry, onClick }: { entry: CompanyEntry; onClick: () => void
 
 function OpportunitySummary({ entries }: { entries: CompanyEntry[] }) {
   const counts = {
-    CONFIRMED:    entries.filter(e => e.oppStatus === 'CONFIRMED').length,
-    PROACTIVE:    entries.filter(e => e.oppStatus === 'PROACTIVE').length,
+    CONFIRMED: entries.filter(e => e.oppStatus === 'CONFIRMED').length,
+    PROACTIVE: entries.filter(e => e.oppStatus === 'PROACTIVE').length,
     UNCLASSIFIED: entries.filter(e => e.oppStatus === 'UNCLASSIFIED').length,
   }
   const configs = [
@@ -675,8 +675,8 @@ function OpportunitySummary({ entries }: { entries: CompanyEntry[] }) {
 function ActivityItem({ company, event, detail, time, isLast }: { company: string; event: string; detail: string; time: string; isLast?: boolean }) {
   return (
     <div className="flex gap-4 relative">
-      {!isLast && <div className="absolute left-[11px] top-6 bottom-0 w-px" style={{ background: 'var(--color-border)' }} />}
-      <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 relative z-10"
+      {!isLast && <div className="absolute left-2.75 top-6 bottom-0 w-px" style={{ background: 'var(--color-border)' }} />}
+      <div className="w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5 relative z-10"
         style={{ background: 'var(--color-muted)', border: '2px solid var(--color-border)' }}>
         <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--color-accent)' }} />
       </div>
@@ -707,7 +707,7 @@ export function DashboardPage() {
 
   if (companies.length === 0) {
     return (
-      <div className="max-w-[980px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
+      <div className="max-w-245 mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
         <div className="mb-8">
           <h1 className="text-[26px] font-bold tracking-tight" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
             {greeting}, {firstName}
@@ -759,7 +759,7 @@ export function DashboardPage() {
     .slice(0, 5)
 
   return (
-    <div className="max-w-[980px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
+    <div className="max-w-245 mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
       <div className="mb-8">
         <h1 className="text-[26px] font-bold tracking-tight" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
           {greeting}, {firstName}
@@ -806,7 +806,7 @@ export function DashboardPage() {
         </div>
 
         {/* Right: activity */}
-        <div className="w-full xl:w-[260px] flex-shrink-0">
+        <div className="w-full xl:w-65 shrink-0">
           <div className="sticky top-0">
             <h2 className="text-[13.5px] font-bold tracking-wide uppercase mb-3"
               style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: '0.06em' }}>

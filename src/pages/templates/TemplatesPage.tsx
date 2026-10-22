@@ -12,12 +12,12 @@ import {
 // ─── Category config ──────────────────────────────────────────────────────────
 
 const CAT_CFG: Record<TemplateCategory, { color: string; bg: string; border: string }> = {
-  NETWORKING:     { color: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE' },
-  REFERRAL:       { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0' },
+  NETWORKING: { color: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE' },
+  REFERRAL: { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0' },
   HIRING_MANAGER: { color: '#5B21B6', bg: '#F5F3FF', border: '#DDD6FE' },
-  RECRUITER:      { color: '#92400E', bg: '#FFF7ED', border: '#FED7AA' },
-  FOLLOW_UP:      { color: '#92400E', bg: '#FEF3C7', border: '#FDE68A' },
-  GENERAL:        { color: '#374151', bg: '#F3F4F6', border: '#E5E7EB' },
+  RECRUITER: { color: '#92400E', bg: '#FFF7ED', border: '#FED7AA' },
+  FOLLOW_UP: { color: '#92400E', bg: '#FEF3C7', border: '#FDE68A' },
+  GENERAL: { color: '#374151', bg: '#F3F4F6', border: '#E5E7EB' },
 }
 
 const TEMPLATE_VARIABLES = ['{{firstName}}', '{{company}}', '{{role}}']
@@ -170,7 +170,7 @@ function TemplateEditor({ template, onSave, onClose }: {
               </div>
 
               {/* Variables panel */}
-              <div className="w-full lg:w-[180px] flex-shrink-0 px-4 py-5 flex flex-col gap-3" style={{ borderTop: '1px solid var(--color-border)', borderLeft: 'none' }}>
+              <div className="w-full lg:w-[180px] shrink-0 px-4 py-5 flex flex-col gap-3" style={{ borderTop: '1px solid var(--color-border)', borderLeft: 'none' }}>
                 <div className="lg:border-l-0 lg:pt-0">
                   <p className="text-[11px] font-bold uppercase tracking-wide mb-2.5" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: '0.07em' }}>
                     Personalization
@@ -281,7 +281,7 @@ function TemplateCard({ template, onEdit, onDuplicate, onArchive }: {
             {TEMPLATE_CATEGORY_LABELS[template.category]}
           </span>
         </div>
-        <div className="relative flex-shrink-0">
+        <div className="relative shrink-0">
           <button
             onClick={() => setMenuOpen(v => !v)}
             className="w-7 h-7 rounded-md flex items-center justify-center transition-all"
@@ -289,7 +289,7 @@ function TemplateCard({ template, onEdit, onDuplicate, onArchive }: {
             onMouseEnter={e => { e.currentTarget.style.background = 'var(--color-muted)'; e.currentTarget.style.color = 'var(--color-primary)' }}
             onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--color-muted-fg)' }}
           >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5" /><circle cx="12" cy="12" r="1.5" /><circle cx="12" cy="19" r="1.5" /></svg>
           </button>
           {menuOpen && (
             <>
@@ -349,7 +349,7 @@ function EmptyState({ onCreate }: { onCreate: () => void }) {
       <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: 'var(--color-muted)', color: 'var(--color-muted-fg)' }}>
         <Icon d={icons.fileText} size={26} strokeWidth={1.5} />
       </div>
-      <div className="text-center max-w-[400px]">
+      <div className="text-center max-w-100">
         <h2 className="text-[20px] font-bold mb-2" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
           No templates yet
         </h2>
@@ -427,7 +427,7 @@ export function TemplatesPage() {
   }
 
   return (
-    <div className="max-w-[980px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
+    <div className="max-w-245 mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
       {/* Header */}
       <div className="flex items-start justify-between gap-4 mb-6">
         <div>
@@ -440,7 +440,7 @@ export function TemplatesPage() {
         </div>
         <button
           onClick={() => setEditingTemplate({})}
-          className="flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all"
+          className="shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all"
           style={{ background: 'var(--color-primary)', color: 'white', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
           onMouseEnter={e => (e.currentTarget.style.background = '#1E2D4A')}
           onMouseLeave={e => (e.currentTarget.style.background = 'var(--color-primary)')}

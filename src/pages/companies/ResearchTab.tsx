@@ -96,23 +96,23 @@ export function getResearchData(companyId: string, companyName: string): Researc
 // ─── Shared constants ─────────────────────────────────────────────────────────
 
 const CATEGORY_COLORS: Record<EvidenceCategory, { bg: string; text: string; dot: string }> = {
-  'Hiring':               { bg: '#ECFDF5', text: '#065F46', dot: '#10B981' },
-  'Team growth':          { bg: '#EFF6FF', text: '#1E40AF', dot: '#3B82F6' },
+  'Hiring': { bg: '#ECFDF5', text: '#065F46', dot: '#10B981' },
+  'Team growth': { bg: '#EFF6FF', text: '#1E40AF', dot: '#3B82F6' },
   'Engineering activity': { bg: '#F5F3FF', text: '#4C1D95', dot: '#8B5CF6' },
-  'Product direction':    { bg: '#EEF2FF', text: '#3730A3', dot: '#4F46E5' },
-  'Strategic initiatives':{ bg: '#FFFBEB', text: '#78350F', dot: '#F59E0B' },
-  'Technology signals':   { bg: '#F0FDFA', text: '#134E4A', dot: '#14B8A6' },
+  'Product direction': { bg: '#EEF2FF', text: '#3730A3', dot: '#4F46E5' },
+  'Strategic initiatives': { bg: '#FFFBEB', text: '#78350F', dot: '#F59E0B' },
+  'Technology signals': { bg: '#F0FDFA', text: '#134E4A', dot: '#14B8A6' },
 }
 
 const CONFIDENCE_CONFIG: Record<Confidence, { label: string; color: string }> = {
-  high:       { label: 'High confidence', color: '#10B981' },
-  medium:     { label: 'Medium confidence', color: '#F59E0B' },
+  high: { label: 'High confidence', color: '#10B981' },
+  medium: { label: 'Medium confidence', color: '#F59E0B' },
   unverified: { label: 'Unverified', color: '#94A3B8' },
 }
 
 const OPP_CONFIG = {
-  CONFIRMED:    { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
-  PROACTIVE:    { color: '#3730A3', bg: '#EEF2FF', border: '#C7D2FE', dot: '#4F46E5' },
+  CONFIRMED: { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
+  PROACTIVE: { color: '#3730A3', bg: '#EEF2FF', border: '#C7D2FE', dot: '#4F46E5' },
   UNCLASSIFIED: { color: '#713F12', bg: '#FEFCE8', border: '#FDE68A', dot: '#F59E0B' },
 }
 
@@ -134,7 +134,7 @@ function EvidenceCard({ item, expanded, onToggle }: {
       style={{ border: '1px solid var(--color-border)', background: 'var(--color-card)' }}
     >
       <div className="px-5 py-4 flex flex-col gap-5">
-        
+
         {/* Finding */}
         <div>
           <div className="flex items-center gap-2 mb-2">
@@ -142,7 +142,7 @@ function EvidenceCard({ item, expanded, onToggle }: {
               className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full"
               style={{ background: catCfg.bg, color: catCfg.text, fontFamily: 'Plus Jakarta Sans, sans-serif' }}
             >
-              <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: catCfg.dot }} />
+              <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: catCfg.dot }} />
               Finding
             </span>
           </div>
@@ -464,7 +464,7 @@ function OpportunitySignalCard({ signal }: { signal: ResearchData['signal'] }) {
             <ul className="flex flex-col gap-1.5">
               {signal.supporting.map((s, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ background: cfg.dot }} />
+                  <span className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style={{ background: cfg.dot }} />
                   <span className="text-[12.5px] leading-relaxed" style={{ color: 'var(--color-primary)', fontFamily: 'Inter, sans-serif' }}>
                     {s}
                   </span>
@@ -505,7 +505,7 @@ function ResearchGaps({ gaps }: { gaps: ResearchData['gaps'] }) {
         {gaps.map((gap, i) => (
           <div key={i} className="px-5 py-4 flex items-start gap-3">
             <div
-              className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+              className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
               style={{ background: '#FFFBEB' }}
             >
               <span style={{ color: '#F59E0B' }}><Icon d={icons.alertCircle} size={13} strokeWidth={2} /></span>
@@ -547,7 +547,7 @@ function ResearchNotStarted({ companyName, onStart }: { companyName: string; onS
       >
         <Icon d={icons.search} size={24} strokeWidth={1.7} />
       </div>
-      <div className="max-w-[440px]">
+      <div className="max-w-110">
         <p
           className="text-[18px] font-bold mb-2"
           style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
@@ -561,14 +561,14 @@ function ResearchNotStarted({ companyName, onStart }: { companyName: string; onS
           Research gives you evidence about:
         </p>
       </div>
-      <div className="max-w-[380px] w-full flex flex-col gap-2.5">
+      <div className="max-w-95 w-full flex flex-col gap-2.5">
         {bullets.map((b, i) => (
           <div
             key={i}
             className="flex items-center gap-3 px-4 py-3 rounded-xl text-left"
             style={{ background: 'var(--color-muted)', border: '1px solid var(--color-border)' }}
           >
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'var(--color-card)', color: 'var(--color-accent)' }}>
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'var(--color-card)', color: 'var(--color-accent)' }}>
               <Icon d={b.icon} size={13} />
             </div>
             <p className="text-[13px]" style={{ color: 'var(--color-primary)', fontFamily: 'Inter, sans-serif' }}>{b.text}</p>
@@ -620,7 +620,7 @@ function ResearchInProgress({ companyName, onComplete }: { companyName: string; 
           <Icon d={icons.search} size={24} strokeWidth={1.7} className="animate-bounce" />
         </div>
       </div>
-      <div className="max-w-[420px]">
+      <div className="max-w-105">
         <p className="text-[18px] font-bold mb-2" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
           Researching {companyName}
         </p>
@@ -632,7 +632,7 @@ function ResearchInProgress({ companyName, onComplete }: { companyName: string; 
       <div className="max-w-[320px] w-full flex flex-col gap-3 mt-4 text-left">
         {phases.map((p, i) => (
           <div key={i} className="flex items-center gap-3 transition-opacity duration-500" style={{ opacity: i <= phase ? 1 : 0.3 }}>
-            <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: i < phase ? '#10B981' : i === phase ? '#EEF2FF' : 'var(--color-muted)' }}>
+            <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ background: i < phase ? '#10B981' : i === phase ? '#EEF2FF' : 'var(--color-muted)' }}>
               {i < phase ? (
                 <Icon d={icons.check} size={12} className="text-white" strokeWidth={3} />
               ) : i === phase ? (
@@ -681,7 +681,7 @@ function ResearchCompleteHeader({ companyName, onRefresh }: { companyName: strin
       </div>
       <button
         onClick={onRefresh}
-        className="flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-medium transition-all flex-shrink-0"
+        className="flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-medium transition-all shrink-0"
         style={{ border: '1px solid var(--color-border)', color: 'var(--color-muted-fg)', background: 'var(--color-muted)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
         onMouseEnter={e => { e.currentTarget.style.color = 'var(--color-primary)'; e.currentTarget.style.borderColor = 'var(--color-primary)' }}
         onMouseLeave={e => { e.currentTarget.style.color = 'var(--color-muted-fg)'; e.currentTarget.style.borderColor = 'var(--color-border)' }}
@@ -718,7 +718,7 @@ function ResearchComplete({ data, companyName, targetRole, userSkills, careerPro
           <ResearchGaps gaps={data.gaps} />
         </div>
         {/* Right sidebar */}
-        <div className="w-full xl:w-[256px] flex-shrink-0 flex flex-col gap-4">
+        <div className="w-full xl:w-[256px] shrink-0 flex flex-col gap-4">
           <RelevanceCard relevance={data.relevance} targetRole={targetRole} userSkills={userSkills} careerProfile={careerProfile} />
           <OpportunitySignalCard signal={data.signal} />
         </div>

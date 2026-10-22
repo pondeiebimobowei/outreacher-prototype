@@ -136,7 +136,7 @@ export function AddContactModal({
                   <button key={ct} type="button" onClick={() => setForm(f => ({ ...f, contactType: ct }))}
                     className="flex items-start gap-2.5 p-3 rounded-lg text-left transition-all"
                     style={{ border: `1px solid ${active ? 'var(--color-accent)' : 'var(--color-border)'}`, background: active ? 'var(--color-muted)' : 'transparent' }}>
-                    <div className="w-3.5 h-3.5 rounded-full mt-0.5 flex-shrink-0" style={{ background: active ? 'var(--color-accent)' : 'var(--color-border)' }} />
+                    <div className="w-3.5 h-3.5 rounded-full mt-0.5 shrink-0" style={{ background: active ? 'var(--color-accent)' : 'var(--color-border)' }} />
                     <div>
                       <p className="text-[12.5px] font-bold" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                         {ct === 'PERSON' ? 'Person' : 'Role / Inbox'}

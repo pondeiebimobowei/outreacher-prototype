@@ -119,7 +119,7 @@ function GenerationView({ onComplete }: { onComplete: () => void }) {
           {done ? 'Review the draft and approve when ready.' : 'Connecting research, evidence, and contact context.'}
         </p>
       </div>
-      <div className="w-full max-w-[360px] flex flex-col gap-2.5">
+      <div className="w-full max-w-90 flex flex-col gap-2.5">
         {GENERATION_STEPS.map((s, i) => {
           const isActive = i === step && !done
           const isComplete = i < step || done
@@ -133,7 +133,7 @@ function GenerationView({ onComplete }: { onComplete: () => void }) {
               }}
             >
               <div
-                className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+                className="w-5 h-5 rounded-full flex items-center justify-center shrink-0"
                 style={{ background: isComplete ? '#10B981' : isActive ? '#8B5CF6' : 'var(--color-border)', color: 'white' }}
               >
                 {isComplete ? (
@@ -169,8 +169,8 @@ function GenerationView({ onComplete }: { onComplete: () => void }) {
 // ─── Pre-generation view ──────────────────────────────────────────────────────
 
 const OPP_CFG = {
-  CONFIRMED:    { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981', label: 'CONFIRMED OPPORTUNITY' },
-  PROACTIVE:    { color: '#3730A3', bg: '#EEF2FF', border: '#C7D2FE', dot: '#4F46E5', label: 'PROACTIVE OUTREACH' },
+  CONFIRMED: { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981', label: 'CONFIRMED OPPORTUNITY' },
+  PROACTIVE: { color: '#3730A3', bg: '#EEF2FF', border: '#C7D2FE', dot: '#4F46E5', label: 'PROACTIVE OUTREACH' },
   UNCLASSIFIED: { color: '#713F12', bg: '#FEFCE8', border: '#FDE68A', dot: '#F59E0B', label: 'UNCLASSIFIED' },
 }
 
@@ -207,7 +207,7 @@ function OutreachNotStarted({ contact, entry, onGenerate, onNavigate }: {
             <p className="text-[15px] font-bold mt-0.5" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>{entry.name}</p>
           </div>
           <span
-            className="inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full flex-shrink-0"
+            className="inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0"
             style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}`, fontFamily: 'Plus Jakarta Sans, sans-serif' }}
           >
             <span className="w-1.5 h-1.5 rounded-full" style={{ background: cfg.dot }} />
@@ -222,7 +222,7 @@ function OutreachNotStarted({ contact, entry, onGenerate, onNavigate }: {
             <ul className="flex flex-col gap-1.5">
               {[researchData.relevance.goalAlignment, researchData.relevance.conversationAngle].map((reason, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ background: 'var(--color-accent)' }} />
+                  <span className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style={{ background: 'var(--color-accent)' }} />
                   <p className="text-[13px] leading-relaxed" style={{ color: 'var(--color-primary)', fontFamily: 'Inter, sans-serif' }}>{reason}</p>
                 </li>
               ))}
@@ -250,7 +250,7 @@ function OutreachNotStarted({ contact, entry, onGenerate, onNavigate }: {
         {/* Contact identity + why this person */}
         <div className="flex items-start gap-3 mb-3">
           <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-[13px] flex-shrink-0"
+            className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-[13px] shrink-0"
             style={{ background: contact.avatarBg, color: '#fff', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
           >
             {contact.avatarInitials}
@@ -281,7 +281,7 @@ function OutreachNotStarted({ contact, entry, onGenerate, onNavigate }: {
           <div className="flex flex-col gap-2">
             {keyEvidence.map(ev => (
               <div key={ev.id} className="flex items-start gap-2">
-                <span className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ background: '#10B981' }} />
+                <span className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style={{ background: '#10B981' }} />
                 <div>
                   <p className="text-[12.5px] font-medium leading-snug" style={{ color: 'var(--color-primary)', fontFamily: 'Inter, sans-serif' }}>{ev.title}</p>
                   <p className="text-[11.5px]" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>{ev.sourceType} · {ev.recency}</p>
@@ -341,7 +341,7 @@ function ContextPanel({ contact, entry, reasoning, showReasoning, onToggleReason
 }) {
   const cfg = OPP_CFG[entry.oppStatus]
   return (
-    <div className="xl:w-[280px] flex-shrink-0">
+    <div className="xl:w-70 shrink-0">
       {/* Section header */}
       <div className="px-5 py-4" style={{ borderBottom: '1px solid var(--color-border)' }}>
         <p className="text-[10.5px] font-bold uppercase tracking-wide" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: '0.07em' }}>
@@ -357,7 +357,7 @@ function ContextPanel({ contact, entry, reasoning, showReasoning, onToggleReason
           </p>
           <div className="flex items-center gap-3">
             <div
-              className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[12px] flex-shrink-0"
+              className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[12px] shrink-0"
               style={{ background: contact.avatarBg, color: '#fff', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
             >
               {contact.avatarInitials}
@@ -436,7 +436,7 @@ function ContextPanel({ contact, entry, reasoning, showReasoning, onToggleReason
               Why this message?
             </span>
             <span
-              className="flex-shrink-0 transition-transform"
+              className="shrink-0 transition-transform"
               style={{ transform: showReasoning ? 'rotate(90deg)' : 'rotate(0deg)', color: 'var(--color-muted-fg)' }}
             >
               <Icon d={icons.chevronRight} size={15} />
@@ -522,12 +522,12 @@ function MessagePanel({
       <div className="flex-1 p-5 xl:p-6 flex flex-col gap-0">
         {/* To: */}
         <div className="flex items-center gap-3 py-2.5" style={{ borderBottom: '1px solid var(--color-border)' }}>
-          <span className="text-[12px] font-semibold flex-shrink-0 w-16" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+          <span className="text-[12px] font-semibold shrink-0 w-16" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
             To:
           </span>
           <div className="flex items-center gap-2">
             <div
-              className="w-6 h-6 rounded flex items-center justify-center font-bold text-[10px] flex-shrink-0"
+              className="w-6 h-6 rounded flex items-center justify-center font-bold text-[10px] shrink-0"
               style={{ background: contact.avatarBg, color: '#fff', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
             >
               {contact.avatarInitials}
@@ -543,7 +543,7 @@ function MessagePanel({
 
         {/* Subject */}
         <div className="flex items-center gap-3 py-2.5" style={{ borderBottom: '1px solid var(--color-border)' }}>
-          <label htmlFor="outreach-subject" className="text-[12px] font-semibold flex-shrink-0 w-16" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+          <label htmlFor="outreach-subject" className="text-[12px] font-semibold shrink-0 w-16" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
             Subject:
           </label>
           <input
@@ -650,7 +650,7 @@ function OutreachApproved({ contact, entry, subject, message, onNavigate, onEdit
         now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false }) +
         ' · ' +
         now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-      
+
       const outreachMsg = {
         id: 'msg_' + Date.now(),
         direction: 'outbound' as const,
@@ -659,7 +659,7 @@ function OutreachApproved({ contact, entry, subject, message, onNavigate, onEdit
         body: message,
         timestamp: sentAt,
       }
-      
+
       onUpdate({
         outreachStage: 'SENT',
         convStage: 'NONE',
@@ -680,7 +680,7 @@ function OutreachApproved({ contact, entry, subject, message, onNavigate, onEdit
       >
         <div className="flex items-start gap-4">
           <div
-            className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+            className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
             style={{ background: isSent ? '#DBEAFE' : 'rgba(255,255,255,0.15)' }}
           >
             <span style={{ color: isSent ? '#1D4ED8' : 'white' }}>
@@ -714,7 +714,7 @@ function OutreachApproved({ contact, entry, subject, message, onNavigate, onEdit
             <span className="text-[11.5px] font-semibold" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>To:</span>
             <div className="flex items-center gap-2">
               <div
-                className="w-5 h-5 rounded flex items-center justify-center font-bold text-[9px] flex-shrink-0"
+                className="w-5 h-5 rounded flex items-center justify-center font-bold text-[9px] shrink-0"
                 style={{ background: contact.avatarBg, color: '#fff', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
               >
                 {contact.avatarInitials}
@@ -762,10 +762,10 @@ function OutreachApproved({ contact, entry, subject, message, onNavigate, onEdit
             onMouseEnter={e => { if (sendPhase === 'review') e.currentTarget.style.background = '#1E2D4A' }}
             onMouseLeave={e => { if (sendPhase === 'review') e.currentTarget.style.background = 'var(--color-primary)' }}
           >
-            <span className={`flex items-center gap-2 transition-transform duration-300 ${sendPhase === 'sending' ? 'translate-y-[-30px]' : ''}`}>
+            <span className={`flex items-center gap-2 transition-transform duration-300 ${sendPhase === 'sending' ? '-translate-y-7.5' : ''}`}>
               Send outreach <Icon d={icons.send} size={14} />
             </span>
-            <span className={`absolute inset-0 flex items-center justify-center gap-2 transition-transform duration-300 ${sendPhase === 'sending' ? 'translate-y-0' : 'translate-y-[30px]'}`}>
+            <span className={`absolute inset-0 flex items-center justify-center gap-2 transition-transform duration-300 ${sendPhase === 'sending' ? 'translate-y-0' : 'translate-y-7.5'}`}>
               Sending...
             </span>
           </button>
@@ -814,7 +814,7 @@ function OutreachSent({ contact, entry, onNavigate }: {
         }
       >
         <div
-          className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
+          className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
           style={hasReply ? { background: '#10B981', color: 'white' } : { background: '#8B5CF6', color: 'white' }}
         >
           <Icon d={hasReply ? icons.replies : icons.campaigns} size={16} />
@@ -869,7 +869,7 @@ function GateCard({ icon, heading, body, cta, onCta, ctaVariant = 'default' }: {
       >
         <Icon d={icon} size={20} strokeWidth={1.7} />
       </div>
-      <div className="text-center max-w-[400px]">
+      <div className="text-center max-w-100">
         <p className="text-[17px] font-bold mb-2" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
           {heading}
         </p>
@@ -969,7 +969,7 @@ function OutreachWorkspace({ entry, contact, onUpdate, onNavigate }: {
 
   // GENERATING
   if (generating) {
-    return <GenerationView onComplete={() => {/* handled by setTimeout above */}} />
+    return <GenerationView onComplete={() => {/* handled by setTimeout above */ }} />
   }
 
   // SENT

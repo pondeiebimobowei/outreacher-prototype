@@ -182,7 +182,7 @@ function AccountCard({ account, integration, onEdit, onDelete, onSetDefault }: {
     <div className="p-5 rounded-xl" style={{ border: `1px solid ${account.isDefault ? 'var(--color-accent)' : 'var(--color-border)'}`, background: 'var(--color-card)' }}>
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3.5">
-          <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'var(--color-muted)' }}>
+          <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'var(--color-muted)' }}>
             <span style={{ color: 'var(--color-primary)' }}><Icon d={icons.atSign} size={17} /></span>
           </div>
           <div>
@@ -206,7 +206,7 @@ function AccountCard({ account, integration, onEdit, onDelete, onSetDefault }: {
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex items-center gap-2 shrink-0">
           {!account.isDefault && (
             <button
               onClick={onSetDefault}
@@ -310,7 +310,7 @@ export function SenderAccountsPage() {
   const hasIntegrations = ws.integrations.some(i => i.status === 'CONNECTED')
 
   return (
-    <div className="max-w-[720px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
+    <div className="max-w-180 mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
       {/* Header */}
       <div className="flex items-start justify-between gap-4 mb-8">
         <div>
@@ -324,7 +324,7 @@ export function SenderAccountsPage() {
         {hasIntegrations && (
           <button
             onClick={() => setModal({ kind: 'create' })}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all flex-shrink-0"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all shrink-0"
             style={{ background: 'var(--color-primary)', color: 'white', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
           >
             <Icon d={icons.plus} size={15} />
@@ -353,7 +353,7 @@ export function SenderAccountsPage() {
           <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: 'var(--color-muted)' }}>
             <span style={{ color: 'var(--color-muted-fg)' }}><Icon d={icons.atSign} size={26} /></span>
           </div>
-          <div className="text-center max-w-[360px]">
+          <div className="text-center max-w-90">
             <h2 className="text-[18px] font-bold mb-2" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>No sender accounts yet</h2>
             <p className="text-[13.5px] leading-relaxed" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>
               Create a sender account to define who your outreach emails come from.

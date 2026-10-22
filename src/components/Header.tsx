@@ -44,7 +44,7 @@ export function Header({ onMenuClick, onOpenSearch }: { onMenuClick: () => void;
       {/* Mobile: hamburger */}
       <button
         onClick={onMenuClick}
-        className="lg:hidden flex items-center justify-center w-10 h-10 rounded-lg transition-colors flex-shrink-0"
+        className="lg:hidden flex items-center justify-center w-10 h-10 rounded-lg transition-colors shrink-0"
         style={{ color: 'var(--color-muted-fg)' }}
         onMouseEnter={e => { e.currentTarget.style.background = 'var(--color-muted)'; e.currentTarget.style.color = 'var(--color-primary)' }}
         onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--color-muted-fg)' }}
@@ -59,7 +59,7 @@ export function Header({ onMenuClick, onOpenSearch }: { onMenuClick: () => void;
 
       {/* Mobile: logo text (only shown when sidebar is hidden) */}
       <span
-        className="lg:hidden font-bold text-[14px] tracking-tight flex-shrink-0"
+        className="lg:hidden font-bold text-[14px] tracking-tight shrink-0"
         style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
       >
         Outreacher
@@ -86,7 +86,7 @@ export function Header({ onMenuClick, onOpenSearch }: { onMenuClick: () => void;
           Search companies, people, opportunities...
         </span>
         <kbd
-          className="text-[11px] px-1.5 py-0.5 rounded hidden md:flex items-center flex-shrink-0"
+          className="text-[11px] px-1.5 py-0.5 rounded hidden md:flex items-center shrink-0"
           style={{
             background: 'var(--color-muted)',
             color: 'var(--color-muted-fg)',
@@ -147,7 +147,7 @@ export function Header({ onMenuClick, onOpenSearch }: { onMenuClick: () => void;
                   onMouseEnter={e => (e.currentTarget.style.background = 'var(--color-muted)')}
                   onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
                 >
-                  <div className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0" style={{ background: 'var(--color-accent)' }} />
+                  <div className="w-2 h-2 rounded-full mt-1.5 shrink-0" style={{ background: 'var(--color-accent)' }} />
                   <div>
                     <p className="text-[13px] font-medium" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                       {n.title}
@@ -170,7 +170,7 @@ export function Header({ onMenuClick, onOpenSearch }: { onMenuClick: () => void;
             onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
           >
             <div
-              className="w-8 h-8 rounded-full flex items-center justify-center text-white text-[12px] font-bold flex-shrink-0"
+              className="w-8 h-8 rounded-full flex items-center justify-center text-white text-[12px] font-bold shrink-0"
               style={{ background: 'linear-gradient(135deg, #4F46E5, #7C3AED)' }}
             >
               {initials}

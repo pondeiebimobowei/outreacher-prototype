@@ -7,8 +7,8 @@ import { getContactsForCompany, getContactData } from '../companies/ContactsTab'
 // ─── Status config ────────────────────────────────────────────────────────────
 
 const OPP_CFG: Record<OppStatus, { label: string; color: string; bg: string; border: string; dot: string }> = {
-  CONFIRMED:    { label: 'Confirmed',    color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
-  PROACTIVE:    { label: 'Proactive',    color: '#3730A3', bg: '#EEF2FF', border: '#C7D2FE', dot: '#4F46E5' },
+  CONFIRMED: { label: 'Confirmed', color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
+  PROACTIVE: { label: 'Proactive', color: '#3730A3', bg: '#EEF2FF', border: '#C7D2FE', dot: '#4F46E5' },
   UNCLASSIFIED: { label: 'Unclassified', color: '#92400E', bg: '#FEF3C7', border: '#FDE68A', dot: '#F59E0B' },
 }
 
@@ -17,7 +17,7 @@ const OPP_CFG: Record<OppStatus, { label: string; color: string; bg: string; bor
 function getEvidenceSnippet(entry: CompanyEntry): string {
   const ws = loadWorkspace()
   const opp = ws.opportunities.find(o => o.companyId === entry.id)
-  
+
   if (opp) {
     if (opp.roleTitle && opp.roleTitle.trim().length > 0 && opp.roleTitle !== 'Unknown — Research In Progress') {
       return `Active opportunity: ${opp.roleTitle}`
@@ -62,7 +62,7 @@ function OppCard({ entry, onClick }: { entry: CompanyEntry; onClick: () => void 
           </div>
         </div>
         <span
-          className="flex-shrink-0 inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full"
+          className="shrink-0 inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full"
           style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}`, fontFamily: 'Plus Jakarta Sans, sans-serif' }}
         >
           <span className="w-1.5 h-1.5 rounded-full" style={{ background: cfg.dot }} />
@@ -122,7 +122,7 @@ function EmptyState() {
       <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: 'var(--color-muted)', color: 'var(--color-muted-fg)' }}>
         <Icon d={icons.opportunities} size={26} strokeWidth={1.5} />
       </div>
-      <div className="text-center max-w-[400px]">
+      <div className="text-center max-w-100">
         <h2 className="text-[20px] font-bold mb-2" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>No opportunities yet</h2>
         <p className="text-[14px] leading-relaxed" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>
           Opportunities appear when your company research gives you a credible reason to pursue a relationship.
@@ -179,7 +179,7 @@ export function OpportunitiesPage() {
   }
 
   return (
-    <div className="max-w-[980px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
+    <div className="max-w-245 mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
       {/* Header */}
       <div className="flex items-start justify-between gap-4 mb-6">
         <div>

@@ -111,7 +111,7 @@ function WorkspaceSwitcher({ collapsed }: { collapsed: boolean }) {
         onMouseLeave={e => (e.currentTarget.style.background = open ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.06)')}
       >
         <div
-          className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0"
+          className="w-5 h-5 rounded flex items-center justify-center shrink-0"
           style={{ background: 'rgba(255,255,255,0.15)' }}
         >
           <span className="text-[9px] font-bold text-white uppercase tracking-tight leading-none">
@@ -187,7 +187,7 @@ function WorkspaceDropdownContent({ workspaces, activeId, creating, newName, inp
           onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
         >
           <div
-            className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0"
+            className="w-5 h-5 rounded flex items-center justify-center shrink-0"
             style={{ background: ws.id === activeId ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.1)' }}
           >
             <span className="text-[9px] font-bold text-white uppercase tracking-tight leading-none">
@@ -288,12 +288,12 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
     >
       {/* Logo row */}
       <div
-        className="flex items-center h-[60px] px-4 flex-shrink-0"
+        className="flex items-center h-[60px] px-4 shrink-0"
         style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}
       >
         <div className="flex items-center gap-2.5 flex-1 min-w-0">
           <div
-            className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0"
+            className="w-7 h-7 rounded-md flex items-center justify-center shrink-0"
             style={{ background: 'var(--color-accent)' }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -308,7 +308,7 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
         </div>
         <button
           onClick={onToggle}
-          className="flex-shrink-0 rounded-md p-1 transition-colors"
+          className="shrink-0 rounded-md p-1 transition-colors"
           style={{ color: 'var(--color-sidebar-fg)' }}
           onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.08)')}
           onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
@@ -347,7 +347,7 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
                   style={{ background: 'var(--color-accent)' }}
                 />
               )}
-              <span className="flex-shrink-0" style={{ color: isActive ? 'white' : 'var(--color-sidebar-fg)' }}>
+              <span className="shrink-0" style={{ color: isActive ? 'white' : 'var(--color-sidebar-fg)' }}>
                 <Icon d={icons[item.iconKey]} size={17} strokeWidth={isActive ? 1.8 : 1.5} />
               </span>
               {!collapsed && (
@@ -378,7 +378,7 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
 
       {/* Bottom nav */}
       <div
-        className="flex-shrink-0 py-3 px-2 flex flex-col gap-0.5"
+        className="shrink-0 py-3 px-2 flex flex-col gap-0.5"
         style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
       >
         {bottomNavItems.map(item => {
@@ -397,7 +397,7 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
               onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = 'rgba(255,255,255,0.07)' }}
               onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = 'transparent' }}
             >
-              <span className="flex-shrink-0">
+              <span className="shrink-0">
                 <Icon d={icons[item.iconKey]} size={17} strokeWidth={1.5} />
               </span>
               {!collapsed && (

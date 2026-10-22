@@ -137,20 +137,20 @@ export function getOpportunityData(companyId: string, companyName: string, statu
 // ─── Shared constants ─────────────────────────────────────────────────────────
 
 const OPP_CONFIG = {
-  CONFIRMED:    { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
-  PROACTIVE:    { color: '#3730A3', bg: '#EEF2FF', border: '#C7D2FE', dot: '#4F46E5' },
+  CONFIRMED: { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
+  PROACTIVE: { color: '#3730A3', bg: '#EEF2FF', border: '#C7D2FE', dot: '#4F46E5' },
   UNCLASSIFIED: { color: '#713F12', bg: '#FEFCE8', border: '#FDE68A', dot: '#F59E0B' },
 }
 
 const CONF_CONFIG = {
-  high:       { label: 'High confidence', color: '#10B981' },
-  medium:     { label: 'Medium confidence', color: '#F59E0B' },
+  high: { label: 'High confidence', color: '#10B981' },
+  medium: { label: 'Medium confidence', color: '#F59E0B' },
   unverified: { label: 'Unverified', color: '#94A3B8' },
 }
 
 const STATUS_LABELS: Record<OppStatus, { headline: string; description: string }> = {
-  CONFIRMED:    { headline: 'Confirmed opportunity', description: 'There is actual evidence of a relevant opening at this company.' },
-  PROACTIVE:    { headline: 'Proactive opportunity', description: 'No confirmed opening found. Company signals provide a credible basis for outreach before a listing exists.' },
+  CONFIRMED: { headline: 'Confirmed opportunity', description: 'There is actual evidence of a relevant opening at this company.' },
+  PROACTIVE: { headline: 'Proactive opportunity', description: 'No confirmed opening found. Company signals provide a credible basis for outreach before a listing exists.' },
   UNCLASSIFIED: { headline: 'Unclassified', description: 'There is not enough evidence to responsibly classify this opportunity yet.' },
 }
 
@@ -225,7 +225,7 @@ function OpeningCard({ opening, companyName }: { opening: Opening; companyName: 
         <a
           href="#"
           onClick={e => e.preventDefault()}
-          className="flex items-center gap-1.5 text-[12.5px] font-medium px-3 py-2 rounded-lg flex-shrink-0 transition-all"
+          className="flex items-center gap-1.5 text-[12.5px] font-medium px-3 py-2 rounded-lg shrink-0 transition-all"
           style={{ border: '1px solid var(--color-border)', color: 'var(--color-accent)', background: 'var(--color-card)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
           onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--color-accent)'; e.currentTarget.style.background = '#EEF2FF' }}
           onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.background = 'var(--color-card)' }}
@@ -285,7 +285,7 @@ function ProactiveCaseCard({ proactiveCase, companyName }: { proactiveCase: Proa
           {proactiveCase.signals.map((signal, i) => (
             <div key={i} className="px-5 py-4 flex items-start gap-3">
               <span
-                className="text-[11px] font-bold px-2.5 py-1 rounded-full flex-shrink-0 mt-0.5 whitespace-nowrap"
+                className="text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0 mt-0.5 whitespace-nowrap"
                 style={{ background: '#EEF2FF', color: '#3730A3', border: '1px solid #C7D2FE', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
               >
                 {signal.type}
@@ -324,7 +324,7 @@ function ProactiveCaseCard({ proactiveCase, companyName }: { proactiveCase: Proa
           <ul className="flex flex-col gap-2.5">
             {proactiveCase.toStrengthen.map((item, i) => (
               <li key={i} className="flex items-start gap-2.5">
-                <span className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[11px] font-bold" style={{ background: '#FDE68A', color: '#78350F', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+                <span className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 text-[11px] font-bold" style={{ background: '#FDE68A', color: '#78350F', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                   {i + 1}
                 </span>
                 <p className="text-[13px] leading-relaxed" style={{ color: '#78350F', fontFamily: 'Inter, sans-serif' }}>{item}</p>
@@ -416,7 +416,7 @@ function EvidenceTraceability({ evidence }: { evidence: EvidenceItem[] }) {
           const conf = CONF_CONFIG[item.confidence]
           return (
             <div key={i} className="px-5 py-3.5 flex items-start gap-3">
-              <span className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ background: conf.color }} />
+              <span className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style={{ background: conf.color }} />
               <div className="flex-1 min-w-0">
                 <p className="text-[13px] leading-snug font-medium" style={{ color: 'var(--color-primary)', fontFamily: 'Inter, sans-serif' }}>
                   {item.finding}
@@ -436,13 +436,13 @@ function EvidenceTraceability({ evidence }: { evidence: EvidenceItem[] }) {
                   <span className="text-[11.5px]" style={{ color: 'var(--color-muted-fg)' }}>{item.recency}</span>
                   <span style={{ color: 'var(--color-border)' }}>·</span>
                   <span className="flex items-center gap-1 text-[11.5px]" style={{ color: 'var(--color-muted-fg)' }}>
-                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: conf.color }} />
+                    <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: conf.color }} />
                     {conf.label}
                   </span>
                 </div>
               </div>
               <span
-                className="text-[11px] font-medium px-2 py-0.5 rounded flex-shrink-0 cursor-pointer transition-colors"
+                className="text-[11px] font-medium px-2 py-0.5 rounded shrink-0 cursor-pointer transition-colors"
                 style={{ background: 'var(--color-muted)', color: 'var(--color-muted-fg)', border: '1px solid var(--color-border)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
               >
                 From research →
@@ -547,7 +547,7 @@ function ChangeClassificationPanel({ current, onConfirm, onCancel }: {
               }}
             >
               <div
-                className="w-4 h-4 rounded-full border-2 flex-shrink-0 mt-0.5 flex items-center justify-center"
+                className="w-4 h-4 rounded-full border-2 shrink-0 mt-0.5 flex items-center justify-center"
                 style={{ borderColor: isSelected ? cfg.dot : 'var(--color-border)' }}
               >
                 {isSelected && <span className="w-2 h-2 rounded-full" style={{ background: cfg.dot }} />}
@@ -635,7 +635,7 @@ function NextStepHandoff({ status, onNavigate }: { status: OppStatus; onNavigate
         </div>
         <button
           onClick={() => onNavigate('Research')}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all flex-shrink-0"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all shrink-0"
           style={{ background: '#78350F', color: 'white', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
           onMouseEnter={e => (e.currentTarget.style.background = '#92400E')}
           onMouseLeave={e => (e.currentTarget.style.background = '#78350F')}
@@ -665,7 +665,7 @@ function NextStepHandoff({ status, onNavigate }: { status: OppStatus; onNavigate
       </div>
       <button
         onClick={() => onNavigate('Contacts')}
-        className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all flex-shrink-0"
+        className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all shrink-0"
         style={{ background: 'var(--color-accent)', color: 'white', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
         onMouseEnter={e => (e.currentTarget.style.background = '#4338CA')}
         onMouseLeave={e => (e.currentTarget.style.background = 'var(--color-accent)')}
@@ -684,7 +684,7 @@ function UnclassifiedNoResearch({ companyName, onNavigate }: { companyName: stri
       <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: '#FFFBEB', color: '#F59E0B' }}>
         <Icon d={icons.alertCircle} size={22} strokeWidth={1.7} />
       </div>
-      <div className="max-w-[400px]">
+      <div className="max-w-100">
         <p className="text-[17px] font-bold mb-2" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
           Research required before classification
         </p>
@@ -764,7 +764,7 @@ export function OpportunitiesTab({ id, companyName, status, hasResearch, onNavig
               "{changeNote.reason}"
             </p>
           </div>
-          <button onClick={() => setChangeNote(null)} className="ml-auto flex-shrink-0" style={{ color: '#10B981' }}>
+          <button onClick={() => setChangeNote(null)} className="ml-auto shrink-0" style={{ color: '#10B981' }}>
             <Icon d={icons.x} size={13} />
           </button>
         </div>
@@ -798,7 +798,7 @@ export function OpportunitiesTab({ id, companyName, status, hasResearch, onNavig
           </div>
           <button
             onClick={() => isKudaConversation ? onNavigate('Contacts') : onNavigate(displayStatus === 'UNCLASSIFIED' ? 'Research' : 'Contacts')}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all flex-shrink-0 self-start"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all shrink-0 self-start"
             style={{ background: 'var(--color-primary)', color: 'white', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
             onMouseEnter={e => (e.currentTarget.style.background = '#1E2D4A')}
             onMouseLeave={e => (e.currentTarget.style.background = 'var(--color-primary)')}
@@ -834,7 +834,7 @@ export function OpportunitiesTab({ id, companyName, status, hasResearch, onNavig
               style={{ background: '#FFFBEB', border: '1px solid #FDE68A' }}
             >
               <div className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#FDE68A', color: '#78350F' }}>
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: '#FDE68A', color: '#78350F' }}>
                   <Icon d={icons.alertCircle} size={16} strokeWidth={2} />
                 </div>
                 <div>
@@ -857,7 +857,7 @@ export function OpportunitiesTab({ id, companyName, status, hasResearch, onNavig
         </div>
 
         {/* Sidebar */}
-        <div className="w-full xl:w-[256px] flex-shrink-0 flex flex-col gap-4">
+        <div className="w-full xl:w-[256px] shrink-0 flex flex-col gap-4">
           {data.relevance && (
             <RelevancePanel relevance={data.relevance} targetRole={targetRole} userSkills={userSkills} />
           )}

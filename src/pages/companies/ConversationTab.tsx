@@ -116,40 +116,40 @@ function getFollowUpContent(
 // ─── Opportunity config ───────────────────────────────────────────────────────
 
 const OPP_CFG = {
-  CONFIRMED:    { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981', label: 'CONFIRMED' },
-  PROACTIVE:    { color: '#3730A3', bg: '#EEF2FF', border: '#C7D2FE', dot: '#4F46E5', label: 'PROACTIVE' },
+  CONFIRMED: { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981', label: 'CONFIRMED' },
+  PROACTIVE: { color: '#3730A3', bg: '#EEF2FF', border: '#C7D2FE', dot: '#4F46E5', label: 'PROACTIVE' },
   UNCLASSIFIED: { color: '#713F12', bg: '#FEFCE8', border: '#FDE68A', dot: '#F59E0B', label: 'UNCLASSIFIED' },
 }
 
 // ─── Outcome options ──────────────────────────────────────────────────────────
 
 const OUTCOME_OPTIONS: { value: ConvOutcome; label: string; desc: string; dot: string }[] = [
-  { value: 'INTERESTED',      label: CONV_OUTCOME_LABELS.INTERESTED,      desc: 'Open to connecting or exploring further',  dot: '#10B981' },
-  { value: 'FOLLOW_UP_LATER', label: CONV_OUTCOME_LABELS.FOLLOW_UP_LATER, desc: 'Not now, but open to future contact',      dot: '#4F46E5' },
-  { value: 'REFERRED',        label: CONV_OUTCOME_LABELS.REFERRED,        desc: 'Suggested another person or team',         dot: '#8B5CF6' },
-  { value: 'APPLICATION',     label: CONV_OUTCOME_LABELS.APPLICATION,     desc: 'Identified a specific role to apply for',  dot: '#0369A1' },
-  { value: 'NOT_A_FIT',       label: CONV_OUTCOME_LABELS.NOT_A_FIT,       desc: 'Timing or role mismatch',                  dot: '#F59E0B' },
-  { value: 'NOT_HIRING',      label: CONV_OUTCOME_LABELS.NOT_HIRING,      desc: 'No openings at this time',                 dot: '#EA580C' },
-  { value: 'NO_RESPONSE',     label: CONV_OUTCOME_LABELS.NO_RESPONSE,     desc: 'No reply after outreach and follow-ups',   dot: '#94A3B8' },
-  { value: 'CLOSED',          label: CONV_OUTCOME_LABELS.CLOSED,          desc: 'Conversation concluded',                   dot: '#64748B' },
+  { value: 'INTERESTED', label: CONV_OUTCOME_LABELS.INTERESTED, desc: 'Open to connecting or exploring further', dot: '#10B981' },
+  { value: 'FOLLOW_UP_LATER', label: CONV_OUTCOME_LABELS.FOLLOW_UP_LATER, desc: 'Not now, but open to future contact', dot: '#4F46E5' },
+  { value: 'REFERRED', label: CONV_OUTCOME_LABELS.REFERRED, desc: 'Suggested another person or team', dot: '#8B5CF6' },
+  { value: 'APPLICATION', label: CONV_OUTCOME_LABELS.APPLICATION, desc: 'Identified a specific role to apply for', dot: '#0369A1' },
+  { value: 'NOT_A_FIT', label: CONV_OUTCOME_LABELS.NOT_A_FIT, desc: 'Timing or role mismatch', dot: '#F59E0B' },
+  { value: 'NOT_HIRING', label: CONV_OUTCOME_LABELS.NOT_HIRING, desc: 'No openings at this time', dot: '#EA580C' },
+  { value: 'NO_RESPONSE', label: CONV_OUTCOME_LABELS.NO_RESPONSE, desc: 'No reply after outreach and follow-ups', dot: '#94A3B8' },
+  { value: 'CLOSED', label: CONV_OUTCOME_LABELS.CLOSED, desc: 'Conversation concluded', dot: '#64748B' },
 ]
 
 const OUTCOME_DOTS: Record<ConvOutcome, string> = {
-  INTERESTED:      '#10B981',
+  INTERESTED: '#10B981',
   FOLLOW_UP_LATER: '#4F46E5',
-  REFERRED:        '#8B5CF6',
-  APPLICATION:     '#0369A1',
-  NOT_A_FIT:       '#F59E0B',
-  NOT_HIRING:      '#EA580C',
-  NO_RESPONSE:     '#94A3B8',
-  CLOSED:          '#64748B',
+  REFERRED: '#8B5CF6',
+  APPLICATION: '#0369A1',
+  NOT_A_FIT: '#F59E0B',
+  NOT_HIRING: '#EA580C',
+  NO_RESPONSE: '#94A3B8',
+  CLOSED: '#64748B',
 }
 
 const REL_STATUS_CFG: Record<NonNullable<RelationshipStatus>, { label: string; color: string; bg: string; border: string; dot: string }> = {
-  OPEN:        { label: 'Active',       color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
-  OPPORTUNITY: { label: 'Opportunity',  color: '#92400E', bg: '#FFFBEB', border: '#FDE68A', dot: '#F59E0B' },
-  NURTURE:     { label: 'Nurture',      color: '#3730A3', bg: '#EEF2FF', border: '#C7D2FE', dot: '#4F46E5' },
-  CLOSED:      { label: 'Closed',       color: '#374151', bg: 'var(--color-muted)', border: 'var(--color-border)', dot: '#94A3B8' },
+  OPEN: { label: 'Active', color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
+  OPPORTUNITY: { label: 'Opportunity', color: '#92400E', bg: '#FFFBEB', border: '#FDE68A', dot: '#F59E0B' },
+  NURTURE: { label: 'Nurture', color: '#3730A3', bg: '#EEF2FF', border: '#C7D2FE', dot: '#4F46E5' },
+  CLOSED: { label: 'Closed', color: '#374151', bg: 'var(--color-muted)', border: 'var(--color-border)', dot: '#94A3B8' },
 }
 
 // ─── Gate card ────────────────────────────────────────────────────────────────
@@ -166,7 +166,7 @@ function GateCard({ icon, heading, body, cta, onCta }: {
       <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: 'var(--color-muted)', color: 'var(--color-muted-fg)' }}>
         <Icon d={icon} size={20} strokeWidth={1.7} />
       </div>
-      <div className="text-center max-w-[400px]">
+      <div className="text-center max-w-100">
         <p className="text-[17px] font-bold mb-2" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
           {heading}
         </p>
@@ -195,7 +195,7 @@ function ContextPanel({ entry, contact }: { entry: CompanyEntry; contact: Compan
   const oppCfg = OPP_CFG[entry.oppStatus]
 
   return (
-    <div className="xl:w-[280px] flex-shrink-0">
+    <div className="xl:w-70 shrink-0">
       <div className="px-5 py-4" style={{ borderBottom: '1px solid var(--color-border)' }}>
         <p className="text-[10.5px] font-bold uppercase tracking-wide" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: '0.07em' }}>
           Context
@@ -209,7 +209,7 @@ function ContextPanel({ entry, contact }: { entry: CompanyEntry; contact: Compan
           </p>
           <div className="flex items-center gap-3">
             <div
-              className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[12px] flex-shrink-0"
+              className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[12px] shrink-0"
               style={{ background: contact.avatarBg, color: '#fff', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
             >
               {contact.avatarInitials}
@@ -286,7 +286,7 @@ function ContextPanel({ entry, contact }: { entry: CompanyEntry; contact: Compan
                   Outcome
                 </p>
                 <div className="flex items-center gap-1.5 mb-1.5">
-                  <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: OUTCOME_DOTS[entry.convOutcome] }} />
+                  <span className="w-2 h-2 rounded-full shrink-0" style={{ background: OUTCOME_DOTS[entry.convOutcome] }} />
                   <span className="text-[13px] font-semibold" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                     {CONV_OUTCOME_LABELS[entry.convOutcome]}
                   </span>
@@ -352,7 +352,7 @@ function OutgoingBubble({ message, contact }: { message: ConvMessage; contact: C
           <>
             <div className="px-4 py-3 flex items-center gap-2" style={{ borderBottom: '1px solid var(--color-border)', background: 'var(--color-muted)' }}>
               <div
-                className="w-5 h-5 rounded flex items-center justify-center font-bold text-[9px] flex-shrink-0"
+                className="w-5 h-5 rounded flex items-center justify-center font-bold text-[9px] shrink-0"
                 style={{ background: contact.avatarBg, color: '#fff', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
               >
                 {contact.avatarInitials}
@@ -383,7 +383,7 @@ function IncomingBubble({ message, contact }: { message: ConvMessage; contact: C
       <div className="flex items-center gap-2 justify-between flex-wrap">
         <div className="flex items-center gap-2">
           <div
-            className="w-6 h-6 rounded-md flex items-center justify-center font-bold text-[10px] flex-shrink-0"
+            className="w-6 h-6 rounded-md flex items-center justify-center font-bold text-[10px] shrink-0"
             style={{ background: contact.avatarBg, color: '#fff', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
           >
             {contact.avatarInitials}
@@ -431,7 +431,7 @@ function StopFollowUps({ entry, contact, onUpdate }: {
     return (
       <div className="rounded-xl p-4 flex flex-col gap-3" style={{ background: '#FFFBEB', border: '1px solid #FDE68A' }}>
         <div className="flex items-start gap-2.5">
-          <span className="flex-shrink-0 mt-0.5" style={{ color: '#92400E' }}>
+          <span className="shrink-0 mt-0.5" style={{ color: '#92400E' }}>
             <Icon d={icons.alertCircle} size={15} />
           </span>
           <p className="text-[12.5px] leading-relaxed" style={{ color: '#78350F', fontFamily: 'Inter, sans-serif' }}>
@@ -565,7 +565,7 @@ function RecordOutcome({ entry, onUpdate }: {
             </p>
             <button
               onClick={() => { setNoteText(entry.convOutcomeNote ?? ''); setEditingNote(true) }}
-              className="text-[11px] flex-shrink-0 font-medium"
+              className="text-[11px] shrink-0 font-medium"
               style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}
             >
               Edit
@@ -605,7 +605,7 @@ function RecordOutcome({ entry, onUpdate }: {
                 border: isSelected ? '1.5px solid var(--color-accent)' : '1px solid var(--color-border)',
               }}
             >
-              <span className="w-2 h-2 rounded-full flex-shrink-0 mt-1" style={{ background: opt.dot }} />
+              <span className="w-2 h-2 rounded-full shrink-0 mt-1" style={{ background: opt.dot }} />
               <div className="min-w-0">
                 <p className="text-[12.5px] font-semibold leading-snug" style={{ color: isSelected ? 'var(--color-accent)' : 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                   {opt.label}
@@ -805,7 +805,7 @@ function FollowUpDraftPanel({ entry, contact, onUpdate }: {
     return (
       <div className="rounded-xl p-5 flex flex-col gap-4" style={{ background: '#FFFBEB', border: '1px solid #FDE68A' }}>
         <div className="flex items-start gap-2.5">
-          <span className="flex-shrink-0 mt-0.5" style={{ color: '#92400E' }}>
+          <span className="shrink-0 mt-0.5" style={{ color: '#92400E' }}>
             <Icon d={icons.alertCircle} size={15} />
           </span>
           <div>
@@ -843,7 +843,7 @@ function FollowUpDraftPanel({ entry, contact, onUpdate }: {
     <div className="rounded-xl overflow-hidden" style={{ border: '1px solid var(--color-border)', background: 'var(--color-card)' }}>
       <div className="px-4 py-3 flex items-center justify-between" style={{ borderBottom: '1px solid var(--color-border)', background: 'var(--color-muted)' }}>
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0" style={{ background: '#EDE9FE', color: '#7C3AED' }}>
+          <div className="w-6 h-6 rounded-md flex items-center justify-center shrink-0" style={{ background: '#EDE9FE', color: '#7C3AED' }}>
             <Icon d={icons.campaigns} size={12} />
           </div>
           <p className="text-[12px] font-bold" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
@@ -989,7 +989,7 @@ function AwaitingReplyView({ entry, contact, onUpdate, messages }: {
             className="rounded-xl p-4 flex items-start gap-3"
             style={{ background: 'var(--color-muted)', border: '1px solid var(--color-border)' }}
           >
-            <div className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0" style={{ background: 'var(--color-border)', color: 'var(--color-muted-fg)' }}>
+            <div className="w-6 h-6 rounded-md flex items-center justify-center shrink-0" style={{ background: 'var(--color-border)', color: 'var(--color-muted-fg)' }}>
               <Icon d={icons.check} size={12} strokeWidth={2.5} />
             </div>
             <p className="text-[12.5px] leading-relaxed" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>
@@ -1003,7 +1003,7 @@ function AwaitingReplyView({ entry, contact, onUpdate, messages }: {
           style={{ background: 'var(--color-muted)', border: '1px dashed var(--color-border)' }}
         >
           <div className="flex items-start gap-3">
-            <div className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0" style={{ background: '#EDE9FE', color: '#7C3AED' }}>
+            <div className="w-7 h-7 rounded-md flex items-center justify-center shrink-0" style={{ background: '#EDE9FE', color: '#7C3AED' }}>
               <Icon d={icons.campaigns} size={14} />
             </div>
             <div>
@@ -1112,7 +1112,7 @@ function FollowUpDueView({ entry, contact, onUpdate, messages }: {
           style={{ background: '#FFFBEB', border: '1px solid #FDE68A' }}
         >
           <div className="flex items-start gap-3">
-            <div className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0" style={{ background: '#FEF3C7', color: '#92400E' }}>
+            <div className="w-7 h-7 rounded-md flex items-center justify-center shrink-0" style={{ background: '#FEF3C7', color: '#92400E' }}>
               <Icon d={icons.clock} size={14} />
             </div>
             <div>
@@ -1141,7 +1141,7 @@ function FollowUpDueView({ entry, contact, onUpdate, messages }: {
           style={{ background: 'var(--color-muted)', border: '1px dashed var(--color-border)' }}
         >
           <div className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0" style={{ background: '#EDE9FE', color: '#7C3AED' }}>
+            <div className="w-5 h-5 rounded flex items-center justify-center shrink-0" style={{ background: '#EDE9FE', color: '#7C3AED' }}>
               <Icon d={icons.campaigns} size={11} />
             </div>
             <p className="text-[11.5px] font-semibold" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
@@ -1310,7 +1310,7 @@ function StoppedView({ entry, contact, onUpdate, messages }: {
           className="rounded-xl p-4 flex items-start gap-3"
           style={{ background: 'var(--color-muted)', border: '1px solid var(--color-border)' }}
         >
-          <div className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0" style={{ background: 'var(--color-border)', color: 'var(--color-muted-fg)' }}>
+          <div className="w-7 h-7 rounded-md flex items-center justify-center shrink-0" style={{ background: 'var(--color-border)', color: 'var(--color-muted-fg)' }}>
             <Icon d={icons.clock} size={14} />
           </div>
           <div>

@@ -46,7 +46,7 @@ function GateCard({ icon, heading, body, cta, onCta, ctaVariant = 'default' }: {
       >
         <Icon d={icon} size={20} strokeWidth={1.7} />
       </div>
-      <div className="text-center max-w-[400px]">
+      <div className="text-center max-w-100">
         <p className="text-[17px] font-bold mb-2" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
           {heading}
         </p>
@@ -91,7 +91,7 @@ function CampaignSetup({ entry, contact, onUpdate, onNavigate }: {
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
         <div
-          className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-[16px] flex-shrink-0"
+          className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-[16px] shrink-0"
           style={{ background: contact.avatarBg, color: '#fff', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
         >
           {contact.avatarInitials}
@@ -190,7 +190,7 @@ function CampaignSetup({ entry, contact, onUpdate, onNavigate }: {
         </div>
 
         {/* Right: recipient + opportunity */}
-        <div className="xl:w-[280px] flex-shrink-0 flex flex-col gap-4">
+        <div className="xl:w-70 shrink-0 flex flex-col gap-4">
           {/* Recipient */}
           <div className="rounded-xl p-5" style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }}>
             <p
@@ -201,7 +201,7 @@ function CampaignSetup({ entry, contact, onUpdate, onNavigate }: {
             </p>
             <div className="flex items-center gap-3">
               <div
-                className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[12px] flex-shrink-0"
+                className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[12px] shrink-0"
                 style={{ background: contact.avatarBg, color: '#fff', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
               >
                 {contact.avatarInitials}
@@ -277,7 +277,7 @@ function SendingView({ contactName }: { contactName: string }) {
           <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
         </svg>
       </div>
-      <div className="text-center max-w-[340px]">
+      <div className="text-center max-w-85">
         <p className="text-[17px] font-bold mb-2" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
           Sending outreach to {contactName}…
         </p>
@@ -303,7 +303,7 @@ function CampaignSent({ entry, contact, onNavigate }: {
         style={{ background: 'linear-gradient(135deg, #065F46 0%, #047857 100%)', border: '1px solid #A7F3D0' }}
         role="status"
       >
-        <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.15)' }}>
+        <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ background: 'rgba(255,255,255,0.15)' }}>
           <span style={{ color: 'white' }}><Icon d={icons.campaigns} size={18} /></span>
         </div>
         <div>
@@ -328,7 +328,7 @@ function CampaignSent({ entry, contact, onNavigate }: {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[12px] flex-shrink-0" style={{ background: contact.avatarBg, color: '#fff', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+          <div className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[12px] shrink-0" style={{ background: contact.avatarBg, color: '#fff', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
             {contact.avatarInitials}
           </div>
           <div>
@@ -424,7 +424,7 @@ function PreSendReview({ entry, contact, onUpdate, onNavigate }: {
         aria-live="polite"
       >
         <div
-          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+          className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
           style={{ background: '#E0F2FE', color: '#0369A1' }}
         >
           <Icon d={icons.campaigns} size={16} />
@@ -528,7 +528,7 @@ function PreSendReview({ entry, contact, onUpdate, onNavigate }: {
             </p>
             <div className="flex items-center gap-3 mb-3">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-[13px] flex-shrink-0"
+                className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-[13px] shrink-0"
                 style={{ background: contact.avatarBg, color: '#fff', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
               >
                 {contact.avatarInitials}
@@ -590,7 +590,7 @@ function PreSendReview({ entry, contact, onUpdate, onNavigate }: {
                 className="flex items-start gap-2.5 py-2"
                 style={{ borderTop: i === 0 ? '1px solid var(--color-border)' : undefined }}
               >
-                <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5" style={{ background: 'var(--color-accent)' }} />
+                <span className="w-1.5 h-1.5 rounded-full shrink-0 mt-1.5" style={{ background: 'var(--color-accent)' }} />
                 <div className="min-w-0">
                   <p className="text-[12.5px] leading-snug" style={{ color: 'var(--color-primary)', fontFamily: 'Inter, sans-serif' }}>
                     {ev.text}
@@ -607,7 +607,7 @@ function PreSendReview({ entry, contact, onUpdate, onNavigate }: {
         </div>
 
         {/* Right: message + actions */}
-        <div className="xl:w-[360px] flex-shrink-0 flex flex-col gap-4">
+        <div className="xl:w-90 shrink-0 flex flex-col gap-4">
 
           {/* Message preview */}
           <div
@@ -628,12 +628,12 @@ function PreSendReview({ entry, contact, onUpdate, onNavigate }: {
             </div>
             {/* To */}
             <div className="px-5 py-3 flex items-center gap-2" style={{ borderBottom: '1px solid var(--color-border)' }}>
-              <span className="text-[11.5px] font-semibold w-14 flex-shrink-0" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+              <span className="text-[11.5px] font-semibold w-14 shrink-0" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                 To:
               </span>
               <div className="flex items-center gap-2">
                 <div
-                  className="w-5 h-5 rounded flex items-center justify-center font-bold text-[9px] flex-shrink-0"
+                  className="w-5 h-5 rounded flex items-center justify-center font-bold text-[9px] shrink-0"
                   style={{ background: contact.avatarBg, color: '#fff', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
                 >
                   {contact.avatarInitials}
@@ -665,7 +665,7 @@ function PreSendReview({ entry, contact, onUpdate, onNavigate }: {
             {sendPhase === 'confirming' ? (
               <>
                 <div className="rounded-lg p-3.5 flex items-start gap-2.5" style={{ background: '#EDE9FE', border: '1px solid #DDD6FE' }}>
-                  <span className="flex-shrink-0 mt-0.5" style={{ color: '#7C3AED' }}>
+                  <span className="shrink-0 mt-0.5" style={{ color: '#7C3AED' }}>
                     <Icon d={icons.alertCircle} size={15} />
                   </span>
                   <p className="text-[12.5px] leading-relaxed" style={{ color: '#4C1D95', fontFamily: 'Inter, sans-serif' }}>
@@ -718,7 +718,7 @@ function PreSendReview({ entry, contact, onUpdate, onNavigate }: {
             {showEditWarning ? (
               <div>
                 <div className="flex items-start gap-2.5 mb-3">
-                  <span className="flex-shrink-0 mt-0.5" style={{ color: '#92400E' }}>
+                  <span className="shrink-0 mt-0.5" style={{ color: '#92400E' }}>
                     <Icon d={icons.alertCircle} size={15} />
                   </span>
                   <p className="text-[12.5px] leading-relaxed" style={{ color: '#78350F', fontFamily: 'Inter, sans-serif' }}>
@@ -793,7 +793,7 @@ function CampaignDomainBanner({ entry, onViewCampaign }: {
       style={{ background: '#EFF6FF', border: '1px solid #BFDBFE' }}
     >
       <div className="flex items-center gap-3 min-w-0">
-        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#DBEAFE', color: '#1D4ED8' }}>
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: '#DBEAFE', color: '#1D4ED8' }}>
           <Icon d={icons.campaigns} size={15} />
         </div>
         <div className="min-w-0">
@@ -807,7 +807,7 @@ function CampaignDomainBanner({ entry, onViewCampaign }: {
       </div>
       <button
         onClick={onViewCampaign}
-        className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12.5px] font-semibold transition-all"
+        className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12.5px] font-semibold transition-all"
         style={{ background: '#1D4ED8', color: 'white', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
         onMouseEnter={e => (e.currentTarget.style.background = '#1E40AF')}
         onMouseLeave={e => (e.currentTarget.style.background = '#1D4ED8')}

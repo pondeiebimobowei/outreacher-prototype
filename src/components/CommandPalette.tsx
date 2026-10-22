@@ -15,13 +15,13 @@ import {
 // ─── Icon map ─────────────────────────────────────────────────────────────────
 
 const TYPE_ICON: Record<SearchResultType, string | string[]> = {
-  company:      icons.companies,
-  contact:      icons.user,
-  opportunity:  icons.opportunities,
+  company: icons.companies,
+  contact: icons.user,
+  opportunity: icons.opportunities,
   conversation: icons.replies,
-  campaign:     icons.campaigns,
-  template:     icons.fileText,
-  outreach:     icons.outreach,
+  campaign: icons.campaigns,
+  template: icons.fileText,
+  outreach: icons.outreach,
 }
 
 // ─── Commands ─────────────────────────────────────────────────────────────────
@@ -38,24 +38,24 @@ type Command = {
 }
 
 const COMMAND_GROUP_LABELS: Record<CommandGroup, string> = {
-  nav:      'Navigate',
-  create:   'Create',
+  nav: 'Navigate',
+  create: 'Create',
   workflow: 'Workflow',
 }
 
 const NAV_COMMANDS: Command[] = [
-  { id: 'nav-dashboard',     label: 'Go to Dashboard',     icon: icons.dashboard,     route: '/dashboard',     group: 'nav' },
-  { id: 'nav-companies',     label: 'Go to Companies',     icon: icons.companies,     route: '/companies',     group: 'nav' },
+  { id: 'nav-dashboard', label: 'Go to Dashboard', icon: icons.dashboard, route: '/dashboard', group: 'nav' },
+  { id: 'nav-companies', label: 'Go to Companies', icon: icons.companies, route: '/companies', group: 'nav' },
   { id: 'nav-opportunities', label: 'Go to Opportunities', icon: icons.opportunities, route: '/opportunities', group: 'nav' },
-  { id: 'nav-contacts',      label: 'Go to People',        icon: icons.contacts,      route: '/contacts',      group: 'nav' },
-  { id: 'nav-conversations', label: 'Go to Conversations', icon: icons.replies,       route: '/conversations', group: 'nav' },
-  { id: 'nav-campaigns',     label: 'Go to Campaigns',     icon: icons.campaigns,     route: '/campaigns',     group: 'nav' },
-  { id: 'nav-templates',     label: 'Go to Templates',     icon: icons.fileText,      route: '/templates',     group: 'nav' },
-  { id: 'nav-settings',      label: 'Go to Settings',      icon: icons.settings,      route: '/settings',      group: 'nav' },
+  { id: 'nav-contacts', label: 'Go to People', icon: icons.contacts, route: '/contacts', group: 'nav' },
+  { id: 'nav-conversations', label: 'Go to Conversations', icon: icons.replies, route: '/conversations', group: 'nav' },
+  { id: 'nav-campaigns', label: 'Go to Campaigns', icon: icons.campaigns, route: '/campaigns', group: 'nav' },
+  { id: 'nav-templates', label: 'Go to Templates', icon: icons.fileText, route: '/templates', group: 'nav' },
+  { id: 'nav-settings', label: 'Go to Settings', icon: icons.settings, route: '/settings', group: 'nav' },
 ]
 
 const CREATE_COMMANDS: Command[] = [
-  { id: 'create-company',  label: 'Add company',     icon: icons.plus, route: '/companies', group: 'create' },
+  { id: 'create-company', label: 'Add company', icon: icons.plus, route: '/companies', group: 'create' },
   { id: 'create-campaign', label: 'Create campaign', icon: icons.plus, route: '/campaigns', group: 'create' },
   { id: 'create-template', label: 'Create template', icon: icons.plus, route: '/templates', group: 'create' },
 ]
@@ -121,7 +121,7 @@ function GroupHeader({ label }: { label: string }) {
 function StatusPill({ label, color, bg }: { label: string; color?: string; bg?: string }) {
   return (
     <span
-      className="inline-flex items-center text-[10.5px] font-semibold px-2 py-0.5 rounded-full flex-shrink-0"
+      className="inline-flex items-center text-[10.5px] font-semibold px-2 py-0.5 rounded-full shrink-0"
       style={{
         background: bg ?? 'var(--color-muted)',
         color: color ?? 'var(--color-muted-fg)',
@@ -165,7 +165,7 @@ function ResultItem({
       }}
     >
       <span
-        className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0"
+        className="w-7 h-7 rounded-md flex items-center justify-center shrink-0"
         style={{
           background: active ? 'var(--color-card)' : 'var(--color-muted)',
           color: 'var(--color-muted-fg)',
@@ -228,7 +228,7 @@ function CommandItem({
       }}
     >
       <span
-        className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0"
+        className="w-7 h-7 rounded-md flex items-center justify-center shrink-0"
         style={{
           background: active ? 'var(--color-card)' : 'var(--color-muted)',
           color: 'var(--color-muted-fg)',
@@ -399,7 +399,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
       >
         {/* Input bar */}
         <div
-          className="flex items-center gap-3 px-4 flex-shrink-0"
+          className="flex items-center gap-3 px-4 shrink-0"
           style={{ height: 54, borderBottom: '1px solid var(--color-border)' }}
         >
           <span style={{ color: 'var(--color-muted-fg)', flexShrink: 0 }} aria-hidden="true">
@@ -426,7 +426,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
           {query && (
             <button
               onClick={() => { setQuery(''); inputRef.current?.focus() }}
-              className="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-md"
+              className="shrink-0 flex items-center justify-center w-6 h-6 rounded-md"
               style={{ color: 'var(--color-muted-fg)' }}
               onMouseEnter={e => (e.currentTarget.style.background = 'var(--color-muted)')}
               onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
@@ -437,7 +437,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
             </button>
           )}
           <kbd
-            className="text-[10.5px] px-1.5 py-0.5 rounded flex-shrink-0 hidden sm:block"
+            className="text-[10.5px] px-1.5 py-0.5 rounded shrink-0 hidden sm:block"
             style={{
               background: 'var(--color-muted)',
               color: 'var(--color-muted-fg)',
@@ -576,7 +576,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
         {/* Footer */}
         <div
           id="palette-hint"
-          className="flex items-center gap-5 px-4 py-2 flex-shrink-0"
+          className="flex items-center gap-5 px-4 py-2 shrink-0"
           style={{ borderTop: '1px solid var(--color-border)' }}
           aria-hidden="true"
         >

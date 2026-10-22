@@ -15,9 +15,9 @@ import {
 // ─── Status config ────────────────────────────────────────────────────────────
 
 const STATUS_CFG: Record<OutreachStatus, { label: string; color: string; bg: string; border: string; dot: string }> = {
-  DRAFT:    { label: 'Draft',    color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#9CA3AF' },
-  READY:    { label: 'Ready',    color: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE', dot: '#3B82F6' },
-  SENT:     { label: 'Sent',     color: '#5B21B6', bg: '#F5F3FF', border: '#DDD6FE', dot: '#8B5CF6' },
+  DRAFT: { label: 'Draft', color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#9CA3AF' },
+  READY: { label: 'Ready', color: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE', dot: '#3B82F6' },
+  SENT: { label: 'Sent', color: '#5B21B6', bg: '#F5F3FF', border: '#DDD6FE', dot: '#8B5CF6' },
   ARCHIVED: { label: 'Archived', color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#6B7280' },
 }
 
@@ -34,7 +34,7 @@ function EmptyState({ onExplore }: { onExplore: () => void }) {
       >
         <Icon d={icons.send} size={26} strokeWidth={1.5} />
       </div>
-      <div className="text-center max-w-[400px]">
+      <div className="text-center max-w-100">
         <h2
           className="text-[20px] font-bold mb-2"
           style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
@@ -106,7 +106,7 @@ function OutreachCard({
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex items-center gap-3 min-w-0">
           <div
-            className="w-9 h-9 rounded-lg flex items-center justify-center text-[13px] font-bold flex-shrink-0"
+            className="w-9 h-9 rounded-lg flex items-center justify-center text-[13px] font-bold shrink-0"
             style={{ background: contactAvatarBg, color: 'white', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
           >
             {contactInitials}
@@ -127,7 +127,7 @@ function OutreachCard({
           </div>
         </div>
         <span
-          className="flex-shrink-0 inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full"
+          className="shrink-0 inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full"
           style={{
             background: cfg.bg,
             color: cfg.color,
@@ -224,10 +224,10 @@ export function OutreachesPage() {
   const outreaches = ws.outreaches
 
   const counts: Record<FilterStatus, number> = {
-    ALL:      outreaches.length,
-    DRAFT:    outreaches.filter(o => o.status === 'DRAFT').length,
-    READY:    outreaches.filter(o => o.status === 'READY').length,
-    SENT:     outreaches.filter(o => o.status === 'SENT').length,
+    ALL: outreaches.length,
+    DRAFT: outreaches.filter(o => o.status === 'DRAFT').length,
+    READY: outreaches.filter(o => o.status === 'READY').length,
+    SENT: outreaches.filter(o => o.status === 'SENT').length,
     ARCHIVED: outreaches.filter(o => o.status === 'ARCHIVED').length,
   }
 
@@ -236,14 +236,14 @@ export function OutreachesPage() {
     : outreaches.filter(o => o.status === filter)
 
   const filters: { key: FilterStatus; label: string }[] = [
-    { key: 'ALL',   label: 'All' },
+    { key: 'ALL', label: 'All' },
     { key: 'DRAFT', label: 'Draft' },
     { key: 'READY', label: 'Ready' },
-    { key: 'SENT',  label: 'Sent' },
+    { key: 'SENT', label: 'Sent' },
   ]
 
   return (
-    <div className="max-w-[980px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
+    <div className="max-w-245 mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
       {/* Header */}
       <div className="flex items-start justify-between gap-4 mb-6">
         <div>
@@ -262,7 +262,7 @@ export function OutreachesPage() {
         </div>
         <button
           disabled
-          className="flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-lg text-[13.5px] font-semibold opacity-40 cursor-not-allowed"
+          className="shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-lg text-[13.5px] font-semibold opacity-40 cursor-not-allowed"
           style={{ background: 'var(--color-primary)', color: 'white', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
         >
           <Icon d={icons.plus} size={14} /> New outreach

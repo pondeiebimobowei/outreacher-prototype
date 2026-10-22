@@ -25,30 +25,30 @@ type SelectableContact = {
 }
 
 const SELECTABLE_CONTACTS: SelectableContact[] = [
-  { id: 'alex-obi',      name: 'Alex Obi',      companyId: 'kuda',      companyName: 'Kuda',      role: 'Head of Engineering' },
-  { id: 'priya-mehta',   name: 'Priya Mehta',   companyId: 'stripe',    companyName: 'Stripe',    role: 'Engineering Manager' },
-  { id: 'james-wu',      name: 'James Wu',       companyId: 'stripe',    companyName: 'Stripe',    role: 'Staff Software Engineer' },
-  { id: 'sara-okonkwo',  name: 'Sara Okonkwo',   companyId: 'stripe',    companyName: 'Stripe',    role: 'Senior Backend Engineer' },
-  { id: 'dele-adeyemi',  name: 'Dele Adeyemi',   companyId: 'paystack',  companyName: 'Paystack',  role: 'Engineering Manager' },
-  { id: 'amara-nwosu',   name: 'Amara Nwosu',    companyId: 'paystack',  companyName: 'Paystack',  role: 'Senior Product Manager' },
+  { id: 'alex-obi', name: 'Alex Obi', companyId: 'kuda', companyName: 'Kuda', role: 'Head of Engineering' },
+  { id: 'priya-mehta', name: 'Priya Mehta', companyId: 'stripe', companyName: 'Stripe', role: 'Engineering Manager' },
+  { id: 'james-wu', name: 'James Wu', companyId: 'stripe', companyName: 'Stripe', role: 'Staff Software Engineer' },
+  { id: 'sara-okonkwo', name: 'Sara Okonkwo', companyId: 'stripe', companyName: 'Stripe', role: 'Senior Backend Engineer' },
+  { id: 'dele-adeyemi', name: 'Dele Adeyemi', companyId: 'paystack', companyName: 'Paystack', role: 'Engineering Manager' },
+  { id: 'amara-nwosu', name: 'Amara Nwosu', companyId: 'paystack', companyName: 'Paystack', role: 'Senior Product Manager' },
 ]
 
 // ─── Status config ────────────────────────────────────────────────────────────
 
 const STATUS_CFG: Record<CampaignStatus, { color: string; bg: string; border: string; dot: string }> = {
-  DRAFT:     { color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#9CA3AF' },
-  READY:     { color: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE', dot: '#3B82F6' },
-  SENDING:   { color: '#92400E', bg: '#FEF3C7', border: '#FDE68A', dot: '#F59E0B' },
-  ACTIVE:    { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
-  PAUSED:    { color: '#92400E', bg: '#FFF7ED', border: '#FED7AA', dot: '#F97316' },
+  DRAFT: { color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#9CA3AF' },
+  READY: { color: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE', dot: '#3B82F6' },
+  SENDING: { color: '#92400E', bg: '#FEF3C7', border: '#FDE68A', dot: '#F59E0B' },
+  ACTIVE: { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
+  PAUSED: { color: '#92400E', bg: '#FFF7ED', border: '#FED7AA', dot: '#F97316' },
   COMPLETED: { color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#6B7280' },
 }
 
 const MONOGRAM_COLORS: Record<string, { bg: string; text: string }> = {
-  kuda:        { bg: '#1B4DFF', text: '#fff' },
-  stripe:      { bg: '#635BFF', text: '#fff' },
-  paystack:    { bg: '#00C3F7', text: '#fff' },
-  vercel:      { bg: '#0E1726', text: '#fff' },
+  kuda: { bg: '#1B4DFF', text: '#fff' },
+  stripe: { bg: '#635BFF', text: '#fff' },
+  paystack: { bg: '#00C3F7', text: '#fff' },
+  vercel: { bg: '#0E1726', text: '#fff' },
   flutterwave: { bg: '#F5A623', text: '#fff' },
 }
 
@@ -57,7 +57,7 @@ const MONOGRAM_COLORS: Record<string, { bg: string; text: string }> = {
 function getMemberSummary(members: CampaignMember[]): string {
   const total = members.length
   if (total === 0) return 'No members'
-  const sent = members.filter(m => ['SENT','REPLIED','FOLLOW_UP_DUE','STOPPED','COMPLETED'].includes(m.status)).length
+  const sent = members.filter(m => ['SENT', 'REPLIED', 'FOLLOW_UP_DUE', 'STOPPED', 'COMPLETED'].includes(m.status)).length
   const replied = members.filter(m => m.status === 'REPLIED').length
   if (replied > 0) return `${sent} sent · ${replied} replied`
   if (sent > 0) return `${sent} of ${total} sent`
@@ -72,7 +72,7 @@ function EmptyState({ onCreate }: { onCreate: () => void }) {
       <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: 'var(--color-muted)', color: 'var(--color-muted-fg)' }}>
         <Icon d={icons.campaigns} size={26} strokeWidth={1.5} />
       </div>
-      <div className="text-center max-w-[400px]">
+      <div className="text-center max-w-100">
         <h2 className="text-[20px] font-bold mb-2" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
           No campaigns yet
         </h2>
@@ -121,7 +121,7 @@ function CampaignCard({ campaign, onClick }: { campaign: Campaign; onClick: () =
           )}
         </div>
         <span
-          className="flex-shrink-0 inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full"
+          className="shrink-0 inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full"
           style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}`, fontFamily: 'Plus Jakarta Sans, sans-serif' }}
         >
           <span className="w-1.5 h-1.5 rounded-full" style={{ background: cfg.dot }} />
@@ -256,11 +256,11 @@ function CreateWizard({ templates, onSave, onClose }: {
                   <span
                     className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold"
                     style={{
-                      background: s === step ? 'var(--color-accent)' : step === 'review' || (['name','template','contacts'] as WizardStep[]).indexOf(s) < (['name','template','contacts','review'] as WizardStep[]).indexOf(step) ? '#10B981' : 'var(--color-muted)',
-                      color: s === step || step === 'review' || (['name','template','contacts'] as WizardStep[]).indexOf(s) < (['name','template','contacts','review'] as WizardStep[]).indexOf(step) ? 'white' : 'var(--color-muted-fg)',
+                      background: s === step ? 'var(--color-accent)' : step === 'review' || (['name', 'template', 'contacts'] as WizardStep[]).indexOf(s) < (['name', 'template', 'contacts', 'review'] as WizardStep[]).indexOf(step) ? '#10B981' : 'var(--color-muted)',
+                      color: s === step || step === 'review' || (['name', 'template', 'contacts'] as WizardStep[]).indexOf(s) < (['name', 'template', 'contacts', 'review'] as WizardStep[]).indexOf(step) ? 'white' : 'var(--color-muted-fg)',
                     }}
                   >
-                    {(['name','template','contacts','review'] as WizardStep[]).indexOf(s) < (['name','template','contacts','review'] as WizardStep[]).indexOf(step) ? '✓' : i + 1}
+                    {(['name', 'template', 'contacts', 'review'] as WizardStep[]).indexOf(s) < (['name', 'template', 'contacts', 'review'] as WizardStep[]).indexOf(step) ? '✓' : i + 1}
                   </span>
                   {i < 3 && <div className="w-4 h-px" style={{ background: 'var(--color-border)' }} />}
                 </div>
@@ -317,7 +317,7 @@ function CreateWizard({ templates, onSave, onClose }: {
                         border: selectedTemplateId === t.id ? '1.5px solid var(--color-accent)' : '1px solid var(--color-border)',
                       }}
                     >
-                      <div className="w-4 h-4 rounded-full border-2 flex-shrink-0 mt-0.5 flex items-center justify-center"
+                      <div className="w-4 h-4 rounded-full border-2 shrink-0 mt-0.5 flex items-center justify-center"
                         style={{ borderColor: selectedTemplateId === t.id ? 'var(--color-accent)' : 'var(--color-border)' }}>
                         {selectedTemplateId === t.id && <span className="w-2 h-2 rounded-full" style={{ background: 'var(--color-accent)' }} />}
                       </div>
@@ -358,13 +358,13 @@ function CreateWizard({ templates, onSave, onClose }: {
                       }}
                     >
                       <div
-                        className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0"
+                        className="w-5 h-5 rounded flex items-center justify-center shrink-0"
                         style={{ background: isSelected ? 'var(--color-accent)' : 'transparent', border: isSelected ? 'none' : '2px solid var(--color-border)' }}
                       >
                         {isSelected && <Icon d={icons.check} size={11} strokeWidth={2.5} className="text-white" />}
                       </div>
                       <div
-                        className="w-7 h-7 rounded-lg flex items-center justify-center text-[11px] font-bold flex-shrink-0"
+                        className="w-7 h-7 rounded-lg flex items-center justify-center text-[11px] font-bold shrink-0"
                         style={{ background: MONOGRAM_COLORS[c.companyId]?.bg ?? 'var(--color-muted)', color: MONOGRAM_COLORS[c.companyId]?.text ?? 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
                       >
                         {c.name[0]}
@@ -414,7 +414,7 @@ function CreateWizard({ templates, onSave, onClose }: {
                   {SELECTABLE_CONTACTS.filter(c => selectedContacts.has(c.id)).map(c => (
                     <div key={c.id} className="flex items-center gap-2.5 px-3 py-2 rounded-lg" style={{ background: 'var(--color-muted)', border: '1px solid var(--color-border)' }}>
                       <div
-                        className="w-6 h-6 rounded-md flex items-center justify-center text-[11px] font-bold flex-shrink-0"
+                        className="w-6 h-6 rounded-md flex items-center justify-center text-[11px] font-bold shrink-0"
                         style={{ background: MONOGRAM_COLORS[c.companyId]?.bg ?? 'var(--color-muted)', color: MONOGRAM_COLORS[c.companyId]?.text ?? 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
                       >
                         {c.name[0]}
@@ -518,7 +518,7 @@ export function CampaignsPage() {
   const campaigns = ws.campaigns
 
   return (
-    <div className="max-w-[980px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
+    <div className="max-w-245 mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
       {/* Header */}
       <div className="flex items-start justify-between gap-4 mb-6">
         <div>
@@ -531,7 +531,7 @@ export function CampaignsPage() {
         </div>
         <button
           onClick={() => setShowCreate(true)}
-          className="flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all"
+          className="shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all"
           style={{ background: 'var(--color-primary)', color: 'white', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
           onMouseEnter={e => (e.currentTarget.style.background = '#1E2D4A')}
           onMouseLeave={e => (e.currentTarget.style.background = 'var(--color-primary)')}

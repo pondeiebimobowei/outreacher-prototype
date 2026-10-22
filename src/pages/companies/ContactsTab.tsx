@@ -30,7 +30,7 @@ export function getContactData(companyId: string, contactId: string): CompanyCon
 export function getContactsForCompany(companyId: string): CompanyContactView[] {
   const ws = loadWorkspace()
   const associations = ws.personCompanyAssociations.filter(a => a.companyId === companyId)
-  
+
   if (associations.length === 0) {
     const company = ws.companies.find(c => c.id === companyId)
     return getGenericContacts(company?.name ?? 'Company')
@@ -39,7 +39,7 @@ export function getContactsForCompany(companyId: string): CompanyContactView[] {
   return associations.map(assoc => {
     const personId = assoc.personId.replace('contact-', '')
     const person = ws.people.find(p => p.id === assoc.personId || p.id === personId || p.id === `contact-${assoc.personId}`)
-    
+
     // Some legacy references use 'contact-name' while association uses 'contact-name'. 
     // Just find by ending if needed
     const actualPerson = person ?? ws.people.find(p => p.id.endsWith(assoc.personId) || assoc.personId.endsWith(p.id))
@@ -108,7 +108,7 @@ function EvidencePanel({ contact, onBackToResearch }: {
       <div className="divide-y" style={{ borderColor: 'var(--color-border)' }}>
         {contact.evidence.map((ev, i) => (
           <div key={i} className="px-5 py-3.5 flex items-start gap-3">
-            <span className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ background: '#4F46E5' }} />
+            <span className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style={{ background: '#4F46E5' }} />
             <div className="flex-1 min-w-0">
               <p className="text-[13px] font-medium leading-snug" style={{ color: 'var(--color-primary)', fontFamily: 'Inter, sans-serif' }}>
                 {ev.text}
@@ -121,7 +121,7 @@ function EvidencePanel({ contact, onBackToResearch }: {
             </div>
             <button
               onClick={onBackToResearch}
-              className="text-[11px] font-medium px-2 py-0.5 rounded flex-shrink-0 transition-colors"
+              className="text-[11px] font-medium px-2 py-0.5 rounded shrink-0 transition-colors"
               style={{ background: 'var(--color-muted)', color: 'var(--color-muted-fg)', border: '1px solid var(--color-border)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
               onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--color-accent)'; e.currentTarget.style.color = 'var(--color-accent)' }}
               onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.color = 'var(--color-muted-fg)' }}
@@ -167,7 +167,7 @@ function ContactReview({ contact, companyName, oppStatus, isSelected, onSelect, 
         >
           <div className="flex items-start gap-4 mb-4">
             <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-[16px] flex-shrink-0"
+              className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-[16px] shrink-0"
               style={{ background: contact.avatarBg, color: '#fff', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
             >
               {contact.avatarInitials}
@@ -264,7 +264,7 @@ function ContactReview({ contact, companyName, oppStatus, isSelected, onSelect, 
             <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x" style={{ borderColor: 'var(--color-border)' }}>
               <div className="px-5 py-4">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#10B981' }} />
+                  <span className="w-2 h-2 rounded-full shrink-0" style={{ background: '#10B981' }} />
                   <p className="text-[11px] font-bold uppercase tracking-wide" style={{ color: '#10B981', fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: '0.07em' }}>
                     Known
                   </p>
@@ -272,7 +272,7 @@ function ContactReview({ contact, companyName, oppStatus, isSelected, onSelect, 
                 <ul className="flex flex-col gap-2">
                   {contact.known.map((item, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      <span style={{ color: '#10B981' }} className="flex-shrink-0 mt-0.5"><Icon d={icons.check} size={13} strokeWidth={2.5} /></span>
+                      <span style={{ color: '#10B981' }} className="shrink-0 mt-0.5"><Icon d={icons.check} size={13} strokeWidth={2.5} /></span>
                       <p className="text-[12.5px] leading-snug" style={{ color: 'var(--color-primary)', fontFamily: 'Inter, sans-serif' }}>
                         {item}
                       </p>
@@ -282,7 +282,7 @@ function ContactReview({ contact, companyName, oppStatus, isSelected, onSelect, 
               </div>
               <div className="px-5 py-4">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#F59E0B' }} />
+                  <span className="w-2 h-2 rounded-full shrink-0" style={{ background: '#F59E0B' }} />
                   <p className="text-[11px] font-bold uppercase tracking-wide" style={{ color: '#92400E', fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: '0.07em' }}>
                     Potentially relevant because
                   </p>
@@ -290,7 +290,7 @@ function ContactReview({ contact, companyName, oppStatus, isSelected, onSelect, 
                 <ul className="flex flex-col gap-2">
                   {contact.maybeRelevant.map((item, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5" style={{ background: '#F59E0B' }} />
+                      <span className="w-1.5 h-1.5 rounded-full shrink-0 mt-1.5" style={{ background: '#F59E0B' }} />
                       <p className="text-[12.5px] leading-snug" style={{ color: '#92400E', fontFamily: 'Inter, sans-serif' }}>
                         {item}
                       </p>
@@ -303,7 +303,7 @@ function ContactReview({ contact, companyName, oppStatus, isSelected, onSelect, 
         </div>
 
         {/* Sidebar: evidence + select */}
-        <div className="w-full xl:w-[256px] flex-shrink-0 flex flex-col gap-4">
+        <div className="w-full xl:w-[256px] shrink-0 flex flex-col gap-4">
           <EvidencePanel contact={contact} onBackToResearch={onBackToResearch} />
 
           {isSelected ? (
@@ -311,7 +311,7 @@ function ContactReview({ contact, companyName, oppStatus, isSelected, onSelect, 
               className="rounded-xl p-5 flex items-start gap-3"
               style={{ background: '#ECFDF5', border: '1px solid #A7F3D0' }}
             >
-              <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#10B981', color: 'white' }}>
+              <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ background: '#10B981', color: 'white' }}>
                 <Icon d={icons.check} size={15} strokeWidth={2.5} />
               </div>
               <div>
@@ -395,7 +395,7 @@ function DiscoveryAnimation({ onComplete }: { onComplete: () => void }) {
           {done ? 'Relevant contacts have been identified.' : 'Finding people relevant to your research and target role.'}
         </p>
       </div>
-      <div className="w-full max-w-[360px] flex flex-col gap-2.5">
+      <div className="w-full max-w-90 flex flex-col gap-2.5">
         {DISCOVERY_STEPS.map((s, i) => {
           const isActive = i === step && !done
           const isComplete = i < step || done
@@ -409,7 +409,7 @@ function DiscoveryAnimation({ onComplete }: { onComplete: () => void }) {
               }}
             >
               <div
-                className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+                className="w-5 h-5 rounded-full flex items-center justify-center shrink-0"
                 style={{
                   background: isComplete ? '#10B981' : isActive ? 'var(--color-accent)' : 'var(--color-border)',
                   color: 'white',
@@ -418,8 +418,8 @@ function DiscoveryAnimation({ onComplete }: { onComplete: () => void }) {
                 {isComplete
                   ? <Icon d={icons.check} size={10} strokeWidth={2.5} />
                   : isActive
-                  ? <span className="w-2 h-2 rounded-full bg-white" />
-                  : null}
+                    ? <span className="w-2 h-2 rounded-full bg-white" />
+                    : null}
               </div>
               <div className="flex-1 min-w-0">
                 <p
@@ -464,7 +464,7 @@ function ContactCard({ contact, isSelected, onReview }: {
       onMouseLeave={e => { if (!isSelected) e.currentTarget.style.borderColor = 'var(--color-border)' }}
     >
       <div
-        className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-[14px] flex-shrink-0"
+        className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-[14px] shrink-0"
         style={{ background: contact.avatarBg, color: '#fff', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
       >
         {contact.avatarInitials}
@@ -509,7 +509,7 @@ function ContactCard({ contact, isSelected, onReview }: {
           </span>
         </div>
       </div>
-      <div className="flex items-center gap-2 flex-shrink-0 self-center">
+      <div className="flex items-center gap-2 shrink-0 self-center">
         <button
           onClick={e => { e.stopPropagation(); onReview() }}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12.5px] font-semibold transition-all"
@@ -535,7 +535,7 @@ function ContactSelectedBanner({ contact, onPrepareOutreach }: { contact: Compan
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-[14px] flex-shrink-0"
+            className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-[14px] shrink-0"
             style={{ background: contact.avatarBg, color: '#fff', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
           >
             {contact.avatarInitials}
@@ -559,7 +559,7 @@ function ContactSelectedBanner({ contact, onPrepareOutreach }: { contact: Compan
         </div>
         <button
           onClick={onPrepareOutreach}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all flex-shrink-0"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all shrink-0"
           style={{ background: 'var(--color-accent)', color: 'white', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
           onMouseEnter={e => (e.currentTarget.style.background = '#4338CA')}
           onMouseLeave={e => (e.currentTarget.style.background = 'var(--color-accent)')}
@@ -596,7 +596,7 @@ export function ContactsTab({ entry, onUpdate, onNavigate, companyName }: {
         <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: 'var(--color-muted)', color: 'var(--color-muted-fg)' }}>
           <Icon d={icons.contacts} size={22} strokeWidth={1.7} />
         </div>
-        <div className="text-center max-w-[420px]">
+        <div className="text-center max-w-105">
           <p className="text-[17px] font-bold mb-2" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
             Complete research first
           </p>
@@ -635,7 +635,7 @@ export function ContactsTab({ entry, onUpdate, onNavigate, companyName }: {
         <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: '#FFFBEB', color: '#F59E0B' }}>
           <Icon d={icons.opportunities} size={22} strokeWidth={1.7} />
         </div>
-        <div className="text-center max-w-[420px]">
+        <div className="text-center max-w-105">
           <p className="text-[17px] font-bold mb-2" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
             Review the opportunity first
           </p>
@@ -666,7 +666,7 @@ export function ContactsTab({ entry, onUpdate, onNavigate, companyName }: {
         >
           <Icon d={icons.contacts} size={26} strokeWidth={1.6} />
         </div>
-        <div className="text-center max-w-[440px]">
+        <div className="text-center max-w-110">
           <p className="text-[18px] font-bold mb-2" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
             No people yet
           </p>
@@ -675,7 +675,7 @@ export function ContactsTab({ entry, onUpdate, onNavigate, companyName }: {
           </p>
         </div>
         <div
-          className="max-w-[400px] w-full rounded-xl p-4"
+          className="max-w-100 w-full rounded-xl p-4"
           style={{ background: entry.oppStatus === 'CONFIRMED' ? '#ECFDF5' : '#EEF2FF', border: `1px solid ${entry.oppStatus === 'CONFIRMED' ? '#A7F3D0' : '#C7D2FE'}` }}
         >
           <p className="text-[12.5px] leading-relaxed" style={{ color: entry.oppStatus === 'CONFIRMED' ? '#065F46' : '#3730A3', fontFamily: 'Inter, sans-serif' }}>
@@ -725,14 +725,14 @@ export function ContactsTab({ entry, onUpdate, onNavigate, companyName }: {
             if (contact) {
               const now = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
               const outreachId = `outreach-${entry.id}-${id}-${Date.now()}`
-              
+
               const personId = contact.id
-              let assoc = ws.personCompanyAssociations.find(a => 
+              let assoc = ws.personCompanyAssociations.find(a =>
                 (a.personId === personId || a.personId === `contact-${personId}`) && a.companyId === entry.id
               )
-              
+
               let updatedWs = { ...ws }
-              
+
               if (!assoc) {
                 const newAssoc = {
                   id: `assoc-${entry.id}-${personId}`,
@@ -747,9 +747,9 @@ export function ContactsTab({ entry, onUpdate, onNavigate, companyName }: {
                 updatedWs.personCompanyAssociations = [...updatedWs.personCompanyAssociations, newAssoc]
                 assoc = newAssoc
               }
-              
+
               const existing = updatedWs.outreaches.find(o => o.companyId === entry.id && (o.personId === personId || o.personId === `contact-${personId}`) && o.status === 'DRAFT')
-              
+
               if (!existing && assoc) {
                 const draft = {
                   id: outreachId,
@@ -797,7 +797,7 @@ export function ContactsTab({ entry, onUpdate, onNavigate, companyName }: {
         </div>
         {contactStage === 'SELECTED' && (
           <span
-            className="inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full flex-shrink-0"
+            className="inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0"
             style={{ background: '#ECFDF5', color: '#065F46', border: '1px solid #A7F3D0', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
           >
             <Icon d={icons.check} size={11} strokeWidth={2.5} /> Contact selected
@@ -822,7 +822,7 @@ export function ContactsTab({ entry, onUpdate, onNavigate, companyName }: {
         className="flex items-start gap-3 px-4 py-3.5 rounded-xl"
         style={{ background: 'var(--color-muted)', border: '1px solid var(--color-border)' }}
       >
-        <span style={{ color: 'var(--color-muted-fg)' }} className="flex-shrink-0 mt-0.5"><Icon d={icons.link} size={15} /></span>
+        <span style={{ color: 'var(--color-muted-fg)' }} className="shrink-0 mt-0.5"><Icon d={icons.link} size={15} /></span>
         <p className="text-[12.5px] leading-relaxed" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>
           Every contact recommendation traces back to research evidence. Use the <strong style={{ color: 'var(--color-primary)' }}>Review</strong> panel to see the specific evidence behind each contact before selecting one.
         </p>

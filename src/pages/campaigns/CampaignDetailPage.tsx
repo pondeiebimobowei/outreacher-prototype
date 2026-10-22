@@ -18,41 +18,41 @@ import {
 // ─── Status configs ────────────────────────────────────────────────────────────
 
 const CAMPAIGN_STATUS_CFG: Record<CampaignStatus, { color: string; bg: string; border: string; dot: string }> = {
-  DRAFT:     { color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#9CA3AF' },
-  READY:     { color: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE', dot: '#3B82F6' },
-  SENDING:   { color: '#92400E', bg: '#FEF3C7', border: '#FDE68A', dot: '#F59E0B' },
-  ACTIVE:    { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
-  PAUSED:    { color: '#92400E', bg: '#FFF7ED', border: '#FED7AA', dot: '#F97316' },
+  DRAFT: { color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#9CA3AF' },
+  READY: { color: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE', dot: '#3B82F6' },
+  SENDING: { color: '#92400E', bg: '#FEF3C7', border: '#FDE68A', dot: '#F59E0B' },
+  ACTIVE: { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
+  PAUSED: { color: '#92400E', bg: '#FFF7ED', border: '#FED7AA', dot: '#F97316' },
   COMPLETED: { color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#6B7280' },
 }
 
 const MEMBER_STATUS_CFG: Record<MemberStatus, { color: string; bg: string; border: string; dot: string }> = {
-  PENDING:       { color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#9CA3AF' },
-  READY:         { color: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE', dot: '#3B82F6' },
-  SENT:          { color: '#5B21B6', bg: '#F5F3FF', border: '#DDD6FE', dot: '#8B5CF6' },
-  REPLIED:       { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
+  PENDING: { color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#9CA3AF' },
+  READY: { color: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE', dot: '#3B82F6' },
+  SENT: { color: '#5B21B6', bg: '#F5F3FF', border: '#DDD6FE', dot: '#8B5CF6' },
+  REPLIED: { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
   FOLLOW_UP_DUE: { color: '#92400E', bg: '#FEF3C7', border: '#FDE68A', dot: '#F59E0B' },
-  STOPPED:       { color: '#991B1B', bg: '#FEF2F2', border: '#FECACA', dot: '#EF4444' },
-  COMPLETED:     { color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#6B7280' },
+  STOPPED: { color: '#991B1B', bg: '#FEF2F2', border: '#FECACA', dot: '#EF4444' },
+  COMPLETED: { color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#6B7280' },
 }
 
 const MONOGRAM_COLORS: Record<string, { bg: string; text: string }> = {
-  kuda:        { bg: '#1B4DFF', text: '#fff' },
-  stripe:      { bg: '#635BFF', text: '#fff' },
-  paystack:    { bg: '#00C3F7', text: '#fff' },
-  vercel:      { bg: '#0E1726', text: '#fff' },
+  kuda: { bg: '#1B4DFF', text: '#fff' },
+  stripe: { bg: '#635BFF', text: '#fff' },
+  paystack: { bg: '#00C3F7', text: '#fff' },
+  vercel: { bg: '#0E1726', text: '#fff' },
   flutterwave: { bg: '#F5A623', text: '#fff' },
 }
 
 function getNextAction(status: MemberStatus): string {
   switch (status) {
-    case 'REPLIED':       return 'Continue conversation'
+    case 'REPLIED': return 'Continue conversation'
     case 'FOLLOW_UP_DUE': return 'Review follow-up'
-    case 'SENT':          return 'Awaiting reply'
-    case 'READY':         return 'Ready to send'
-    case 'PENDING':       return 'Prepare message'
-    case 'STOPPED':       return 'View history'
-    case 'COMPLETED':     return 'View outcome'
+    case 'SENT': return 'Awaiting reply'
+    case 'READY': return 'Ready to send'
+    case 'PENDING': return 'Prepare message'
+    case 'STOPPED': return 'View history'
+    case 'COMPLETED': return 'View outcome'
   }
 }
 
@@ -60,7 +60,7 @@ function getNextAction(status: MemberStatus): string {
 
 function CampaignStats({ members }: { members: CampaignMember[] }) {
   const total = members.length
-  const sent = members.filter(m => ['SENT','REPLIED','FOLLOW_UP_DUE','STOPPED','COMPLETED'].includes(m.status)).length
+  const sent = members.filter(m => ['SENT', 'REPLIED', 'FOLLOW_UP_DUE', 'STOPPED', 'COMPLETED'].includes(m.status)).length
   const replied = members.filter(m => m.status === 'REPLIED').length
   const followUpDue = members.filter(m => m.status === 'FOLLOW_UP_DUE').length
   const stopped = members.filter(m => m.status === 'STOPPED').length
@@ -104,7 +104,7 @@ function MemberCard({ member, onNavigate }: {
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex items-center gap-3">
           <div
-            className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[13px] flex-shrink-0"
+            className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[13px] shrink-0"
             style={{ background: MONOGRAM_COLORS[member.companyId]?.bg ?? 'var(--color-muted)', color: MONOGRAM_COLORS[member.companyId]?.text ?? 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
           >
             {member.contactName[0]}
@@ -123,7 +123,7 @@ function MemberCard({ member, onNavigate }: {
           </div>
         </div>
         <span
-          className="flex-shrink-0 inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full"
+          className="shrink-0 inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full"
           style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}`, fontFamily: 'Plus Jakarta Sans, sans-serif' }}
         >
           <span className="w-1.5 h-1.5 rounded-full" style={{ background: cfg.dot }} />
@@ -206,9 +206,9 @@ function MessagePreviewModal({ member, onClose }: { member: CampaignMember; onCl
 
 function SenderReview({ senderAccount, integration, onClear }: { senderAccount: SenderAccount; integration?: Integration; onClear: () => void }) {
   const fields = [
-    { label: 'From',     value: `${senderAccount.name} <${senderAccount.email}>` },
+    { label: 'From', value: `${senderAccount.name} <${senderAccount.email}>` },
     { label: 'Reply-to', value: senderAccount.replyTo ?? senderAccount.email },
-    { label: 'Via',      value: integration?.name ?? 'Unknown integration' },
+    { label: 'Via', value: integration?.name ?? 'Unknown integration' },
   ]
   return (
     <div className="rounded-xl p-4 mb-4" style={{ background: 'var(--color-muted)', border: '1px solid var(--color-border)' }}>
@@ -219,7 +219,7 @@ function SenderReview({ senderAccount, integration, onClear }: { senderAccount: 
       <div className="flex flex-col gap-1.5">
         {fields.map(f => (
           <div key={f.label} className="flex items-baseline gap-2">
-            <span className="text-[11.5px] font-semibold w-14 flex-shrink-0" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>{f.label}</span>
+            <span className="text-[11.5px] font-semibold w-14 shrink-0" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>{f.label}</span>
             <span className="text-[13px]" style={{ color: 'var(--color-primary)', fontFamily: 'Inter, sans-serif' }}>{f.value}</span>
           </div>
         ))}
@@ -346,7 +346,7 @@ export function CampaignDetailPage() {
 
   if (!campaign) {
     return (
-      <div className="max-w-[980px] mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+      <div className="max-w-245 mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
         <p className="text-[16px] font-bold" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>Campaign not found</p>
         <button onClick={() => navigate('/campaigns')} className="mt-3 text-[13px] font-semibold flex items-center gap-1 mx-auto" style={{ color: 'var(--color-accent)' }}>
           <Icon d={icons.arrowLeft} size={13} /> Back to Campaigns
@@ -360,7 +360,7 @@ export function CampaignDetailPage() {
   const attentionMembers = campaign.members.filter(m => ['REPLIED', 'FOLLOW_UP_DUE'].includes(m.status))
 
   return (
-    <div className="max-w-[980px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
+    <div className="max-w-245 mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
       {/* Breadcrumb */}
       <button
         onClick={() => navigate('/campaigns')}
@@ -376,7 +376,7 @@ export function CampaignDetailPage() {
       <div className="rounded-xl p-5 mb-5" style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }}>
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="flex items-start gap-4">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'var(--color-accent)', color: 'white' }}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'var(--color-accent)', color: 'white' }}>
               <Icon d={icons.campaigns} size={18} strokeWidth={2} />
             </div>
             <div>
@@ -407,7 +407,7 @@ export function CampaignDetailPage() {
               </div>
             </div>
           </div>
-          <div className="flex-shrink-0 flex items-center gap-2">
+          <div className="shrink-0 flex items-center gap-2">
             {campaign.status === 'READY' && !showSend && readyMembers > 0 && (
               <button
                 onClick={() => setShowSend(true)}

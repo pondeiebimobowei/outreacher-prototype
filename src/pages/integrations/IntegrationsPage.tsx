@@ -11,10 +11,10 @@ import {
 // ─── Config ───────────────────────────────────────────────────────────────────
 
 const STATUS_CFG: Record<IntegrationStatus, { label: string; color: string; bg: string; border: string; dot: string }> = {
-  CONNECTED:    { label: 'Connected',    color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
+  CONNECTED: { label: 'Connected', color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
   DISCONNECTED: { label: 'Disconnected', color: '#6B7280', bg: '#F3F4F6', border: '#E5E7EB', dot: '#9CA3AF' },
-  FAILED:       { label: 'Error',        color: '#991B1B', bg: '#FEF2F2', border: '#FECACA', dot: '#EF4444' },
-  PENDING:      { label: 'Pending',      color: '#92400E', bg: '#FFF7ED', border: '#FED7AA', dot: '#F59E0B' },
+  FAILED: { label: 'Error', color: '#991B1B', bg: '#FEF2F2', border: '#FECACA', dot: '#EF4444' },
+  PENDING: { label: 'Pending', color: '#92400E', bg: '#FFF7ED', border: '#FED7AA', dot: '#F59E0B' },
 }
 
 const PROVIDER_CFG: Record<IntegrationProvider, { name: string; description: string; icon: string | string[] }> = {
@@ -235,7 +235,7 @@ function IntegrationCard({ integration, onDisconnect, onReconnect }: {
     <div className="p-5 rounded-xl" style={{ border: '1px solid var(--color-border)', background: 'var(--color-card)' }}>
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3.5">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: integration.provider === 'RESEND' ? '#1D1D1D' : 'var(--color-muted)' }}>
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: integration.provider === 'RESEND' ? '#1D1D1D' : 'var(--color-muted)' }}>
             <span style={{ color: integration.provider === 'RESEND' ? '#F59E0B' : 'var(--color-primary)' }}><Icon d={cfg.icon} size={18} /></span>
           </div>
           <div>
@@ -265,7 +265,7 @@ function IntegrationCard({ integration, onDisconnect, onReconnect }: {
             )}
           </div>
         </div>
-        <div className="flex gap-2 flex-shrink-0">
+        <div className="flex gap-2 shrink-0">
           {integration.status === 'CONNECTED' && (
             <button
               onClick={handleTest}
@@ -316,7 +316,7 @@ function AddProviderCard({ provider, onAdd }: { provider: IntegrationProvider; o
       onMouseLeave={e => (e.currentTarget.style.background = 'var(--color-card)')}
     >
       <div className="flex items-center gap-3.5">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: provider === 'RESEND' ? '#1D1D1D' : 'var(--color-muted)', border: '1px solid var(--color-border)' }}>
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: provider === 'RESEND' ? '#1D1D1D' : 'var(--color-muted)', border: '1px solid var(--color-border)' }}>
           <span style={{ color: provider === 'RESEND' ? '#F59E0B' : 'var(--color-primary)' }}><Icon d={cfg.icon} size={18} /></span>
         </div>
         <div className="flex-1 min-w-0">
@@ -326,7 +326,7 @@ function AddProviderCard({ provider, onAdd }: { provider: IntegrationProvider; o
           </div>
           <p className="text-[12.5px]" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>{cfg.description}</p>
         </div>
-        <div className="flex-shrink-0" style={{ color: 'var(--color-muted-fg)' }}>
+        <div className="shrink-0" style={{ color: 'var(--color-muted-fg)' }}>
           <Icon d={icons.plus} size={16} />
         </div>
       </div>

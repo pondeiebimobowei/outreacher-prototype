@@ -38,7 +38,7 @@ export function LoginPage() {
   }
 
   return (
-    <div className="w-full max-w-[400px]">
+    <div className="w-full max-w-100">
       {/* Mobile logo */}
       <div className="flex items-center gap-2 mb-8 lg:hidden">
         <div className="w-7 h-7 rounded-md flex items-center justify-center" style={{ background: 'var(--color-accent)' }}>
@@ -61,7 +61,7 @@ export function LoginPage() {
           className="flex items-start gap-2.5 px-4 py-3 rounded-lg mb-5 text-[13px]"
           style={{ background: '#FEF2F2', border: '1px solid #FECACA', color: '#B91C1C' }}
         >
-          <Icon d={icons.alertCircle} size={15} className="mt-0.5 flex-shrink-0" />
+          <Icon d={icons.alertCircle} size={15} className="mt-0.5 shrink-0" />
           {serverError}
         </div>
       )}

@@ -18,9 +18,9 @@ import {
 // ─── Status config ────────────────────────────────────────────────────────────
 
 const STATUS_CFG: Record<OutreachStatus, { label: string; color: string; bg: string; border: string; dot: string }> = {
-  DRAFT:    { label: 'Draft',    color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#9CA3AF' },
-  READY:    { label: 'Ready',    color: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE', dot: '#3B82F6' },
-  SENT:     { label: 'Sent',     color: '#5B21B6', bg: '#F5F3FF', border: '#DDD6FE', dot: '#8B5CF6' },
+  DRAFT: { label: 'Draft', color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#9CA3AF' },
+  READY: { label: 'Ready', color: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE', dot: '#3B82F6' },
+  SENT: { label: 'Sent', color: '#5B21B6', bg: '#F5F3FF', border: '#DDD6FE', dot: '#8B5CF6' },
   ARCHIVED: { label: 'Archived', color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#6B7280' },
 }
 
@@ -88,7 +88,7 @@ export function OutreachDetailPage() {
 
   if (!outreach) {
     return (
-      <div className="max-w-[980px] mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+      <div className="max-w-245 mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
         <p
           className="text-[16px] font-bold"
           style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
@@ -172,8 +172,8 @@ export function OutreachDetailPage() {
       )
       const newAccounts = sender
         ? ws2.senderAccounts.map(a =>
-            a.id === sender.id ? { ...a, sentToday: (a.sentToday ?? 0) + 1 } : a
-          )
+          a.id === sender.id ? { ...a, sentToday: (a.sentToday ?? 0) + 1 } : a
+        )
         : ws2.senderAccounts
       const saved = { ...ws2, outreaches: newOutreaches, senderAccounts: newAccounts }
       saveWorkspace(saved)
@@ -183,7 +183,7 @@ export function OutreachDetailPage() {
   }
 
   return (
-    <div className="max-w-[980px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
+    <div className="max-w-245 mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
       {/* Back button */}
       <button
         onClick={() => navigate('/outreaches')}
@@ -203,7 +203,7 @@ export function OutreachDetailPage() {
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="flex items-center gap-3 min-w-0">
             <div
-              className="w-11 h-11 rounded-xl flex items-center justify-center text-[14px] font-bold flex-shrink-0"
+              className="w-11 h-11 rounded-xl flex items-center justify-center text-[14px] font-bold shrink-0"
               style={{ background: contactAvatarBg, color: 'white', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
             >
               {contactInitials}
@@ -258,7 +258,7 @@ export function OutreachDetailPage() {
 
           {/* Action buttons */}
           {outreach.status !== 'SENT' && (
-            <div className="flex items-center gap-2 flex-wrap flex-shrink-0">
+            <div className="flex items-center gap-2 flex-wrap shrink-0">
               {outreach.status === 'DRAFT' && !editing && (
                 <>
                   <button
@@ -433,7 +433,7 @@ export function OutreachDetailPage() {
                 </p>
                 <button
                   onClick={() => navigate(`/conversations/${outreach.conversationId}`)}
-                  className="flex items-center gap-1.5 text-[13px] font-semibold flex-shrink-0 ml-3"
+                  className="flex items-center gap-1.5 text-[13px] font-semibold shrink-0 ml-3"
                   style={{ color: 'var(--color-accent)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
                 >
                   View conversation
@@ -452,7 +452,7 @@ export function OutreachDetailPage() {
         </div>
 
         {/* Right: sidebar context */}
-        <div className="lg:w-[280px] flex-shrink-0 flex flex-col gap-4">
+        <div className="lg:w-70 shrink-0 flex flex-col gap-4">
           {/* Why this person */}
           {assoc?.whyThisPerson && (
             <div

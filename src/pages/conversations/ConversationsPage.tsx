@@ -13,13 +13,13 @@ import { getContactData } from '../companies/ContactsTab'
 // ─── Status config ────────────────────────────────────────────────────────────
 
 const CONV_STATE_CFG: Record<string, { label: string; color: string; bg: string; border: string; dot: string }> = {
-  ACTIVE:         { label: 'Active',          color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#059669' },
-  REPLIED:        { label: 'Replied',          color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
-  FOLLOW_UP_DUE:  { label: 'Follow-up due',   color: '#92400E', bg: '#FEF3C7', border: '#FDE68A', dot: '#F59E0B' },
-  NONE:           { label: 'Sent',             color: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE', dot: '#3B82F6' },
-  STOPPED:        { label: 'Stopped',          color: '#6B7280', bg: '#F3F4F6', border: '#E5E7EB', dot: '#9CA3AF' },
-  NURTURE:        { label: 'Nurture',          color: '#92400E', bg: '#FFF7ED', border: '#FED7AA', dot: '#F59E0B' },
-  OUTCOME:        { label: 'Outcome recorded', color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#6B7280' },
+  ACTIVE: { label: 'Active', color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#059669' },
+  REPLIED: { label: 'Replied', color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
+  FOLLOW_UP_DUE: { label: 'Follow-up due', color: '#92400E', bg: '#FEF3C7', border: '#FDE68A', dot: '#F59E0B' },
+  NONE: { label: 'Sent', color: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE', dot: '#3B82F6' },
+  STOPPED: { label: 'Stopped', color: '#6B7280', bg: '#F3F4F6', border: '#E5E7EB', dot: '#9CA3AF' },
+  NURTURE: { label: 'Nurture', color: '#92400E', bg: '#FFF7ED', border: '#FED7AA', dot: '#F59E0B' },
+  OUTCOME: { label: 'Outcome recorded', color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#6B7280' },
 }
 
 function getConvStateKey(entry: CompanyEntry): string {
@@ -66,7 +66,7 @@ function ConvRow({ entry }: { entry: CompanyEntry }) {
     >
       {/* Avatar */}
       <div
-        className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[12px] flex-shrink-0"
+        className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-[12px] shrink-0"
         style={{ background: contact?.avatarBg ?? 'var(--color-muted)', color: contact ? '#fff' : 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif', border: contact ? 'none' : '1px solid var(--color-border)' }}
       >
         {contact?.avatarInitials ?? entry.name[0]}
@@ -84,7 +84,7 @@ function ConvRow({ entry }: { entry: CompanyEntry }) {
             </span>
           </div>
           <span
-            className="flex-shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full"
+            className="shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full"
             style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}`, fontFamily: 'Plus Jakarta Sans, sans-serif' }}
           >
             <span className="w-1.5 h-1.5 rounded-full" style={{ background: cfg.dot }} />
@@ -100,7 +100,7 @@ function ConvRow({ entry }: { entry: CompanyEntry }) {
           <p className="text-[12px]" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>
             {getLastInteraction(entry)}
           </p>
-          <span className="text-[12px] font-medium flex-shrink-0 flex items-center gap-1" style={{ color: 'var(--color-accent)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+          <span className="text-[12px] font-medium shrink-0 flex items-center gap-1" style={{ color: 'var(--color-accent)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
             {getNextAction(entry)} <Icon d={icons.arrowRight} size={11} />
           </span>
         </div>
@@ -118,7 +118,7 @@ function EmptyState() {
       <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: 'var(--color-muted)', color: 'var(--color-muted-fg)' }}>
         <Icon d={icons.replies} size={26} strokeWidth={1.5} />
       </div>
-      <div className="text-center max-w-[400px]">
+      <div className="text-center max-w-100">
         <h2 className="text-[20px] font-bold mb-2" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>No conversations yet</h2>
         <p className="text-[14px] leading-relaxed" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>
           Conversations appear here once you've sent outreach to a contact. The complete message history and relationship timeline live here.
@@ -184,7 +184,7 @@ export function ConversationsPage() {
   }
 
   return (
-    <div className="max-w-[900px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
+    <div className="max-w-225 mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-[24px] font-bold tracking-tight" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>

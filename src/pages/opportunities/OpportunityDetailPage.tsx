@@ -8,14 +8,14 @@ import { LIFECYCLE_CFG } from '../contacts/ContactsPage'
 // ─── Status config ────────────────────────────────────────────────────────────
 
 const OPP_CFG: Record<OppStatus, { label: string; color: string; bg: string; border: string; dot: string; desc: string }> = {
-  CONFIRMED:    { label: 'Confirmed',    color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981', desc: 'Actual evidence of a relevant opening exists.' },
-  PROACTIVE:    { label: 'Proactive',    color: '#3730A3', bg: '#EEF2FF', border: '#C7D2FE', dot: '#4F46E5', desc: 'No confirmed opening, but company signals provide a credible reason to reach out.' },
+  CONFIRMED: { label: 'Confirmed', color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981', desc: 'Actual evidence of a relevant opening exists.' },
+  PROACTIVE: { label: 'Proactive', color: '#3730A3', bg: '#EEF2FF', border: '#C7D2FE', dot: '#4F46E5', desc: 'No confirmed opening, but company signals provide a credible reason to reach out.' },
   UNCLASSIFIED: { label: 'Unclassified', color: '#92400E', bg: '#FEF3C7', border: '#FDE68A', dot: '#F59E0B', desc: 'Not enough evidence yet to classify. Research must be complete before classification.' },
 }
 
 const CONFIDENCE_CFG = {
-  high:       { label: 'High',       color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0' },
-  medium:     { label: 'Medium',     color: '#92400E', bg: '#FEF3C7', border: '#FDE68A' },
+  high: { label: 'High', color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0' },
+  medium: { label: 'Medium', color: '#92400E', bg: '#FEF3C7', border: '#FDE68A' },
   unverified: { label: 'Unverified', color: '#6B7280', bg: '#F3F4F6', border: '#E5E7EB' },
 }
 
@@ -38,7 +38,7 @@ function EvidenceCard({ evidence }: { evidence: OppData['evidence'] }) {
                 <p className="text-[13.5px] mb-1" style={{ color: 'var(--color-primary)', fontFamily: 'Inter, sans-serif' }}>{ev.finding}</p>
                 <p className="text-[12px]" style={{ color: 'var(--color-accent)', fontFamily: 'Inter, sans-serif' }}>{ev.source} · {ev.recency}</p>
               </div>
-              <span className="flex-shrink-0 text-[11px] font-semibold px-2 py-0.5 rounded-full" style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}`, fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+              <span className="shrink-0 text-[11px] font-semibold px-2 py-0.5 rounded-full" style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}`, fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                 {cfg.label}
               </span>
             </div>
@@ -91,14 +91,14 @@ function ContactsSection({ companyId, companyName, entry }: { companyId: string;
 
           return (
             <div key={contact.id} className="px-5 py-3.5 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-[11px] font-bold flex-shrink-0" style={{ background: contact.avatarBg, color: '#fff', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-[11px] font-bold shrink-0" style={{ background: contact.avatarBg, color: '#fff', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                 {contact.avatarInitials}
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-[13.5px] font-semibold" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>{contact.name}</p>
                 <p className="text-[12px]" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>{contact.role} · {contact.team}</p>
               </div>
-              <span className="flex-shrink-0 text-[11px] font-semibold px-2 py-0.5 rounded-full" style={{ background: lcfg.bg, color: lcfg.color, border: `1px solid ${lcfg.border}`, fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+              <span className="shrink-0 text-[11px] font-semibold px-2 py-0.5 rounded-full" style={{ background: lcfg.bg, color: lcfg.color, border: `1px solid ${lcfg.border}`, fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                 {lcfg.label}
               </span>
             </div>
@@ -137,7 +137,7 @@ export function OpportunityDetailPage() {
   const relatedCampaigns = ws.campaigns.filter(c => c.members.some(m => m.companyId === entry.id))
 
   return (
-    <div className="max-w-[980px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
+    <div className="max-w-245 mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
       {/* Breadcrumb */}
       <div className="flex items-center gap-1.5 text-[12.5px] mb-5" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>
         <button onClick={() => navigate('/opportunities')} className="hover:underline" style={{ color: 'var(--color-accent)' }}>Opportunities</button>
@@ -174,7 +174,7 @@ export function OpportunityDetailPage() {
 
       {/* State explanation */}
       <div className="rounded-xl p-4 mb-6 flex items-start gap-3" style={{ background: cfg.bg, border: `1px solid ${cfg.border}` }}>
-        <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5" style={{ background: cfg.dot }} />
+        <span className="w-1.5 h-1.5 rounded-full shrink-0 mt-1.5" style={{ background: cfg.dot }} />
         <p className="text-[13.5px] leading-relaxed" style={{ color: cfg.color, fontFamily: 'Inter, sans-serif' }}>{oppData.stateExplanation}</p>
       </div>
 
@@ -242,7 +242,7 @@ export function OpportunityDetailPage() {
         </div>
 
         {/* Sidebar */}
-        <div className="xl:w-[280px] flex-shrink-0 flex flex-col gap-4">
+        <div className="xl:w-70 shrink-0 flex flex-col gap-4">
           {/* Opportunity status */}
           <div className="rounded-xl p-4" style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }}>
             <p className="text-[11px] font-bold uppercase tracking-wide mb-3" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: '0.07em' }}>

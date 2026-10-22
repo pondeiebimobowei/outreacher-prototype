@@ -204,7 +204,7 @@ function StepExperience({
           Add up to 12 skills. These shape how Outreacher evaluates company and contact relevance.
         </p>
         <div
-          className="min-h-[52px] rounded-lg px-3 py-2 flex flex-wrap gap-1.5 cursor-text"
+          className="min-h-13 rounded-lg px-3 py-2 flex flex-wrap gap-1.5 cursor-text"
           style={{ border: '1px solid var(--color-border)', background: 'var(--color-card)' }}
           onClick={() => (document.getElementById('skill-input') as HTMLInputElement)?.focus()}
         >
@@ -231,7 +231,7 @@ function StepExperience({
                 if (e.key === 'Backspace' && !skillInput && data.skills.length) removeSkill(data.skills[data.skills.length - 1])
               }}
               placeholder={data.skills.length === 0 ? 'Type a skill and press Enter…' : ''}
-              className="outline-none text-[13px] bg-transparent min-w-[120px] flex-1 py-0.5"
+              className="outline-none text-[13px] bg-transparent min-w-30 flex-1 py-0.5"
               style={{ color: 'var(--color-primary)', fontFamily: 'Inter, sans-serif' }}
             />
           )}
@@ -395,7 +395,7 @@ function CompleteScreen({ firstName, onEnter }: { firstName: string; onEnter: ()
       <h2 className="text-[26px] font-bold mb-2" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', color: 'var(--color-primary)' }}>
         You're all set, {firstName}.
       </h2>
-      <p className="text-[15px] max-w-[340px] leading-relaxed" style={{ color: 'var(--color-muted-fg)' }}>
+      <p className="text-[15px] max-w-85 leading-relaxed" style={{ color: 'var(--color-muted-fg)' }}>
         Outreacher has everything it needs to help you find the right companies, identify relevant contacts, and send outreach grounded in evidence.
       </p>
       <button
@@ -526,7 +526,7 @@ export function OnboardingPage() {
   if (done) {
     return (
       <div className="min-h-screen flex items-center justify-center p-6" style={{ background: 'var(--color-background)' }}>
-        <div className="w-full max-w-[520px]">
+        <div className="w-full max-w-130">
           <CompleteScreen firstName={form.firstName} onEnter={() => navigate('/')} />
         </div>
       </div>
@@ -539,7 +539,7 @@ export function OnboardingPage() {
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'var(--color-background)' }}>
       {/* Header */}
-      <div className="flex items-center justify-between px-4 sm:px-8 h-[60px] flex-shrink-0" style={{ borderBottom: '1px solid var(--color-border)', background: 'var(--color-card)' }}>
+      <div className="flex items-center justify-between px-4 sm:px-8 h-15 shrink-0" style={{ borderBottom: '1px solid var(--color-border)', background: 'var(--color-card)' }}>
         <div className="flex items-center gap-2.5">
           <div className="w-7 h-7 rounded-md flex items-center justify-center" style={{ background: 'var(--color-accent)' }}>
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -563,7 +563,7 @@ export function OnboardingPage() {
 
       {/* Content */}
       <div className="flex-1 flex items-start justify-center px-6 py-10 overflow-y-auto">
-        <div ref={cardRef} className="w-full max-w-[540px]">
+        <div ref={cardRef} className="w-full max-w-135">
           {/* Stepper */}
           <Stepper current={step} total={STEPS.length} />
 

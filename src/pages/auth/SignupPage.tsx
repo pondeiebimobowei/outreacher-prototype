@@ -69,7 +69,7 @@ export function SignupPage() {
   })
 
   return (
-    <div className="w-full max-w-[420px]">
+    <div className="w-full max-w-105">
       <div className="flex items-center gap-2 mb-8 lg:hidden">
         <div className="w-7 h-7 rounded-md flex items-center justify-center" style={{ background: 'var(--color-accent)' }}>
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -180,7 +180,7 @@ export function SignupPage() {
         {/* Terms */}
         <div>
           <label className="flex items-start gap-2.5 cursor-pointer">
-            <div className="relative mt-0.5 flex-shrink-0">
+            <div className="relative mt-0.5 shrink-0">
               <input
                 type="checkbox"
                 checked={agreed}

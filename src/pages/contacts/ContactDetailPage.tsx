@@ -63,7 +63,7 @@ function CompanyCard({ entry }: { entry: CompanyEntry }) {
     <div className="rounded-xl p-4" style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }}>
       <p className="text-[11px] font-bold uppercase tracking-wide mb-3" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: '0.07em' }}>Company</p>
       <div className="flex items-center gap-2.5 mb-3">
-        <div className="w-8 h-8 rounded-lg flex items-center justify-center text-[12px] font-bold flex-shrink-0" style={{ background: 'var(--color-muted)', color: 'var(--color-primary)', border: '1px solid var(--color-border)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center text-[12px] font-bold shrink-0" style={{ background: 'var(--color-muted)', color: 'var(--color-primary)', border: '1px solid var(--color-border)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
           {entry.name[0]}
         </div>
         <div>
@@ -80,8 +80,8 @@ function CompanyCard({ entry }: { entry: CompanyEntry }) {
 
 function OpportunityCard({ entry }: { entry: CompanyEntry }) {
   const statusCfg = {
-    CONFIRMED:    { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
-    PROACTIVE:    { color: '#3730A3', bg: '#EEF2FF', border: '#C7D2FE', dot: '#4F46E5' },
+    CONFIRMED: { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
+    PROACTIVE: { color: '#3730A3', bg: '#EEF2FF', border: '#C7D2FE', dot: '#4F46E5' },
     UNCLASSIFIED: { color: '#92400E', bg: '#FEF3C7', border: '#FDE68A', dot: '#F59E0B' },
   }[entry.oppStatus]
   if (entry.researchStage !== 'COMPLETE') return null
@@ -239,7 +239,7 @@ export function ContactDetailPage() {
   const primaryAction = getPrimaryAction()
 
   return (
-    <div className="max-w-[980px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
+    <div className="max-w-245 mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
       {/* Breadcrumb */}
       <div className="flex items-center gap-1.5 text-[12.5px] mb-5" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>
         <button onClick={() => navigate('/contacts')} className="hover:underline" style={{ color: 'var(--color-accent)' }}>Contacts</button>
@@ -250,7 +250,7 @@ export function ContactDetailPage() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4 mb-7 flex-wrap">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-xl flex items-center justify-center font-bold text-[18px] flex-shrink-0" style={{ background: displayAvatarBg, color: '#fff', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+          <div className="w-14 h-14 rounded-xl flex items-center justify-center font-bold text-[18px] shrink-0" style={{ background: displayAvatarBg, color: '#fff', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
             {displayAvatarInitials}
           </div>
           <div>
@@ -358,7 +358,7 @@ export function ContactDetailPage() {
                 <div className="flex flex-col gap-2">
                   {evidence.map((ev, i) => (
                     <div key={i} className="flex items-start gap-2.5 py-2" style={{ borderTop: '1px solid var(--color-border)' }}>
-                      <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5" style={{ background: 'var(--color-accent)' }} />
+                      <span className="w-1.5 h-1.5 rounded-full shrink-0 mt-1.5" style={{ background: 'var(--color-accent)' }} />
                       <div>
                         <p className="text-[13px] leading-snug" style={{ color: 'var(--color-primary)', fontFamily: 'Inter, sans-serif' }}>{ev.text}</p>
                         <p className="text-[11.5px] mt-0.5" style={{ color: 'var(--color-accent)', fontFamily: 'Inter, sans-serif' }}>{ev.source} · {ev.recency}</p>
@@ -391,7 +391,7 @@ export function ContactDetailPage() {
               <div className="flex flex-col gap-4">
                 {timeline.map((event, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: event.iconBg, color: event.iconColor }}>
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0" style={{ background: event.iconBg, color: event.iconColor }}>
                       <Icon d={event.icon} size={13} strokeWidth={2} />
                     </div>
                     <div className="flex-1 min-w-0 pt-0.5">
@@ -415,7 +415,7 @@ export function ContactDetailPage() {
         </div>
 
         {/* Sidebar */}
-        <div className="xl:w-[280px] flex-shrink-0 flex flex-col gap-4">
+        <div className="xl:w-70 shrink-0 flex flex-col gap-4">
           <CompanyCard entry={primaryEntry} />
           <OpportunityCard entry={primaryEntry} />
           <CampaignCard entry={primaryEntry} />
@@ -442,7 +442,7 @@ export function ContactDetailPage() {
                 if (!co) return null
                 return (
                   <button key={a.companyId} onClick={() => setSelectedCompanyId(a.companyId)} className="flex items-center gap-2 w-full mb-2 text-left" style={{ color: 'var(--color-primary)' }}>
-                    <div className="w-6 h-6 rounded text-[10px] font-bold flex items-center justify-center flex-shrink-0" style={{ background: 'var(--color-muted)', border: '1px solid var(--color-border)' }}>
+                    <div className="w-6 h-6 rounded text-[10px] font-bold flex items-center justify-center shrink-0" style={{ background: 'var(--color-muted)', border: '1px solid var(--color-border)' }}>
                       {co.name[0]}
                     </div>
                     <span className="text-[12.5px] font-medium hover:underline" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>{co.name}</span>

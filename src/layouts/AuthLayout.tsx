@@ -15,7 +15,7 @@ export function AuthLayout() {
     <div className="min-h-screen flex" style={{ background: 'var(--color-background)' }}>
       {/* Left brand panel */}
       <div
-        className="hidden lg:flex flex-col justify-between w-[400px] flex-shrink-0 p-10"
+        className="hidden lg:flex flex-col justify-between w-[400px] shrink-0 p-10"
         style={{ background: 'var(--color-sidebar)' }}
       >
         <div className="flex items-center gap-2.5">

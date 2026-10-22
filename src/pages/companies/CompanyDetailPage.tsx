@@ -29,7 +29,7 @@ type StageStatus = 'pending' | 'active' | 'complete'
 
 type ActivityEvent = {
   type: 'company-added' | 'research-started' | 'research-complete' | 'opportunity-changed'
-    | 'contacts-found' | 'outreach-drafted' | 'outreach-sent' | 'reply-received'
+  | 'contacts-found' | 'outreach-drafted' | 'outreach-sent' | 'reply-received'
   text: string
   time: string
   isRecent?: boolean
@@ -128,8 +128,8 @@ function defaultContent(entry: CompanyEntry): ContentData {
     opportunityExplanation: entry.oppStatus === 'UNCLASSIFIED'
       ? 'This company has been added. Start research to gather the evidence needed to classify this opportunity.'
       : entry.oppStatus === 'PROACTIVE'
-      ? 'Company fit suggests this may be worth pursuing proactively. Research will help confirm whether there is a credible basis for outreach.'
-      : 'A relevant opening has been noted. Research will help confirm the details.',
+        ? 'Company fit suggests this may be worth pursuing proactively. Research will help confirm whether there is a credible basis for outreach.'
+        : 'A relevant opening has been noted. Research will help confirm the details.',
     addedAt: entry.addedAt,
     lastActivity: entry.lastActivity,
     activity: [
@@ -141,8 +141,8 @@ function defaultContent(entry: CompanyEntry): ContentData {
 // ─── Derived lifecycle helpers ────────────────────────────────────────────────
 
 const oppConfig: Record<OppStatus, { color: string; bg: string; border: string; dot: string }> = {
-  CONFIRMED:    { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
-  PROACTIVE:    { color: '#3730A3', bg: '#EEF2FF', border: '#C7D2FE', dot: '#4F46E5' },
+  CONFIRMED: { color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981' },
+  PROACTIVE: { color: '#3730A3', bg: '#EEF2FF', border: '#C7D2FE', dot: '#4F46E5' },
   UNCLASSIFIED: { color: '#713F12', bg: '#FEFCE8', border: '#FDE68A', dot: '#F59E0B' },
 }
 
@@ -160,10 +160,10 @@ const ACTIVITY_COLORS: Record<ActivityEvent['type'], string> = {
 }
 
 const REL_STATUS_CFG: Record<RelationshipStatus, { label: string; color: string; bg: string; border: string; dot: string; desc: string }> = {
-  OPEN:        { label: 'Open',        color: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE', dot: '#3B82F6', desc: 'Conversation is ongoing.' },
+  OPEN: { label: 'Open', color: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE', dot: '#3B82F6', desc: 'Conversation is ongoing.' },
   OPPORTUNITY: { label: 'Opportunity', color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', dot: '#10B981', desc: 'Concrete career opportunity identified.' },
-  NURTURE:     { label: 'Nurture',     color: '#92400E', bg: '#FEF3C7', border: '#FDE68A', dot: '#F59E0B', desc: 'Worth maintaining — no immediate action.' },
-  CLOSED:      { label: 'Closed',      color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#9CA3AF', desc: 'This outreach cycle is complete.' },
+  NURTURE: { label: 'Nurture', color: '#92400E', bg: '#FEF3C7', border: '#FDE68A', dot: '#F59E0B', desc: 'Worth maintaining — no immediate action.' },
+  CLOSED: { label: 'Closed', color: '#374151', bg: '#F3F4F6', border: '#E5E7EB', dot: '#9CA3AF', desc: 'This outreach cycle is complete.' },
 }
 
 const OUTCOME_DOTS: Record<string, string> = {
@@ -427,7 +427,7 @@ function JourneyCompleteCard({ entry, contactName, onAction }: {
       <div className="flex flex-col gap-1.5 mb-3">
         {steps.map((step, i) => (
           <div key={i} className="flex items-center gap-2.5">
-            <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: i === steps.length - 1 ? OUTCOME_DOTS[entry.convOutcome!] : '#10B981' }} />
+            <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: i === steps.length - 1 ? OUTCOME_DOTS[entry.convOutcome!] : '#10B981' }} />
             <span className="text-[12.5px]" style={{ color: 'var(--color-primary)', fontFamily: 'Inter, sans-serif' }}>
               {step}
             </span>
@@ -485,7 +485,7 @@ function RelationshipStatusCard({ entry }: { entry: CompanyEntry }) {
             Outcome
           </p>
           <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: OUTCOME_DOTS[entry.convOutcome] }} />
+            <span className="w-2 h-2 rounded-full shrink-0" style={{ background: OUTCOME_DOTS[entry.convOutcome] }} />
             <span className="text-[13px] font-semibold" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
               {outcomeLabel}
             </span>
@@ -560,7 +560,7 @@ function JourneyProgress({ entry, onStageClick }: {
 }) {
   // Use a subset of stages for the concise progression
   const displayStages: JourneyStage[] = ['Research', 'Opportunity', 'Contacts', 'Outreach', 'Conversation']
-  
+
   return (
     <div className="rounded-xl p-5" style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }}>
       <p className="text-[11.5px] font-bold uppercase tracking-wide mb-4" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: '0.07em' }}>
@@ -571,7 +571,7 @@ function JourneyProgress({ entry, onStageClick }: {
           const tab = STAGE_TO_TAB[stage]
           const label = getStageLabel(stage, entry)
           const isCompleteOrActive = label !== 'Not started' && label !== 'Unclassified' && label !== 'Not discovered'
-          
+
           return (
             <div key={stage} className="flex flex-col sm:flex-row sm:items-center justify-between py-1" style={{ borderBottom: '1px solid rgba(0,0,0,0.03)' }}>
               <button
@@ -583,11 +583,11 @@ function JourneyProgress({ entry, onStageClick }: {
               >
                 {stage}
               </button>
-              <span 
-                className="text-[13px] font-medium" 
-                style={{ 
-                  color: isCompleteOrActive ? 'var(--color-accent)' : 'var(--color-muted-fg)', 
-                  fontFamily: 'Inter, sans-serif' 
+              <span
+                className="text-[13px] font-medium"
+                style={{
+                  color: isCompleteOrActive ? 'var(--color-accent)' : 'var(--color-muted-fg)',
+                  fontFamily: 'Inter, sans-serif'
                 }}
               >
                 {label}
@@ -609,8 +609,8 @@ function NextStepCard({ step, onAction }: { step: NextStepShape; onAction: (tab:
         step.isUrgent
           ? { background: 'linear-gradient(135deg, #0E1726 0%, #1E2D4A 60%, #2D3B5E 100%)', border: '1px solid rgba(255,255,255,0.06)' }
           : step.isWaiting
-          ? { background: 'var(--color-card)', border: '1px solid var(--color-border)' }
-          : { background: 'var(--color-card)', border: '1px solid var(--color-border)', borderLeft: '3px solid var(--color-accent)' }
+            ? { background: 'var(--color-card)', border: '1px solid var(--color-border)' }
+            : { background: 'var(--color-card)', border: '1px solid var(--color-border)', borderLeft: '3px solid var(--color-accent)' }
       }
     >
       {step.isUrgent && (
@@ -697,7 +697,7 @@ function CompanyContextCard({ entry, content }: { entry: CompanyEntry; content: 
         <div className="flex flex-col gap-2.5">
           {rows.map(row => (
             <div key={row.label} className="flex items-start justify-between gap-2">
-              <span className="text-[11.5px] font-semibold uppercase tracking-wide flex-shrink-0" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: '0.06em' }}>
+              <span className="text-[11.5px] font-semibold uppercase tracking-wide shrink-0" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: '0.06em' }}>
                 {row.label}
               </span>
               {row.isLink ? (
@@ -731,9 +731,9 @@ function ActivityFeed({ events }: { events: ActivityEvent[] }) {
         {events.map((event, i) => (
           <div key={i} className="flex gap-3 relative">
             {i < events.length - 1 && (
-              <div className="absolute left-[7px] top-5 bottom-0 w-px" style={{ background: 'var(--color-border)' }} />
+              <div className="absolute left-1.75 top-5 bottom-0 w-px" style={{ background: 'var(--color-border)' }} />
             )}
-            <div className="w-3.5 h-3.5 rounded-full flex-shrink-0 mt-1 relative z-10" style={{ background: ACTIVITY_COLORS[event.type] }} />
+            <div className="w-3.5 h-3.5 rounded-full shrink-0 mt-1 relative z-10" style={{ background: ACTIVITY_COLORS[event.type] }} />
             <div className="pb-4 flex-1 min-w-0">
               <p className="text-[12.5px] font-medium leading-snug"
                 style={{ color: event.isRecent ? 'var(--color-primary)' : 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>
@@ -770,7 +770,7 @@ function OverviewTab({ entry, content, onTabChange }: {
         <JourneyProgress entry={entry} onStageClick={onTabChange} />
         <OpportunityStateCard status={entry.oppStatus} explanation={content.opportunityExplanation} />
       </div>
-      <div className="w-full xl:w-[248px] flex-shrink-0 flex flex-col gap-4">
+      <div className="w-full xl:w-62 shrink-0 flex flex-col gap-4">
         <CompanyContextCard entry={entry} content={content} />
         {entry.convOutcome && <RelationshipStatusCard entry={entry} />}
         {relStatus === 'NURTURE' && <StayConnectedCard entry={entry} onAction={onTabChange} />}
@@ -863,7 +863,7 @@ export function CompanyDetailPage() {
   const workflowLabel = deriveWorkflowLabel(effectiveEntry)
 
   return (
-    <div className="max-w-[980px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
+    <div className="max-w-245 mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
       {/* Breadcrumb */}
       <button onClick={() => navigate('/companies')}
         className="flex items-center gap-1.5 text-[13px] font-medium mb-5 transition-colors"
@@ -877,7 +877,7 @@ export function CompanyDetailPage() {
       <div className="rounded-xl p-5 mb-4" style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }}>
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-[18px] flex-shrink-0"
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-[18px] shrink-0"
               style={{ background: monoColors.bg, color: monoColors.text, fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
               {effectiveEntry.name[0]}
             </div>
@@ -907,7 +907,7 @@ export function CompanyDetailPage() {
               </p>
             </div>
           </div>
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <button onClick={() => setActiveTab(primaryCtaTab)}
               className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-[13.5px] font-semibold transition-all whitespace-nowrap"
               style={{ background: 'var(--color-primary)', color: 'white', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
@@ -924,7 +924,7 @@ export function CompanyDetailPage() {
         style={{ background: 'var(--color-muted)', border: '1px solid var(--color-border)', borderRadius: 12 }}>
         {WORKSPACE_TABS.map(tab => (
           <button key={tab} onClick={() => setActiveTab(tab)}
-            className="flex-shrink-0 sm:flex-1 px-4 sm:px-3 py-2 rounded-lg text-[13.5px] font-medium transition-all whitespace-nowrap"
+            className="shrink-0 sm:flex-1 px-4 sm:px-3 py-2 rounded-lg text-[13.5px] font-medium transition-all whitespace-nowrap"
             style={{
               background: activeTab === tab ? 'var(--color-card)' : 'transparent',
               color: activeTab === tab ? 'var(--color-primary)' : 'var(--color-muted-fg)',

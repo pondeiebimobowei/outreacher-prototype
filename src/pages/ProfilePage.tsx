@@ -134,7 +134,7 @@ function SkillsInput({ skills, onChange }: { skills: string[]; onChange: (s: str
       <FieldLabel>Core skills</FieldLabel>
       <p className="text-[12px] mb-2" style={{ color: 'var(--color-muted-fg)' }}>Up to 12 skills. Used to evaluate contact and opportunity relevance.</p>
       <div
-        className="min-h-[48px] rounded-lg px-3 py-2 flex flex-wrap gap-1.5 cursor-text"
+        className="min-h-12 rounded-lg px-3 py-2 flex flex-wrap gap-1.5 cursor-text"
         style={{ border: '1px solid var(--color-border)', background: 'var(--color-card)' }}
         onClick={() => (document.getElementById('profile-skill-input') as HTMLInputElement)?.focus()}
       >
@@ -154,7 +154,7 @@ function SkillsInput({ skills, onChange }: { skills: string[]; onChange: (s: str
               if (e.key === 'Backspace' && !input && skills.length) remove(skills[skills.length - 1])
             }}
             placeholder={skills.length === 0 ? 'Type a skill and press Enter…' : ''}
-            className="outline-none text-[13px] bg-transparent min-w-[120px] flex-1 py-0.5"
+            className="outline-none text-[13px] bg-transparent min-w-30 flex-1 py-0.5"
             style={{ color: 'var(--color-primary)', fontFamily: 'Inter, sans-serif' }}
           />
         )}
@@ -207,7 +207,7 @@ function SectionCard({
           <h3 className="text-[15px] font-bold" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>{title}</h3>
           <p className="text-[12px] mt-0.5" style={{ color: 'var(--color-muted-fg)' }}>{impact}</p>
         </div>
-        <div className="flex items-center gap-3 ml-4 flex-shrink-0">
+        <div className="flex items-center gap-3 ml-4 shrink-0">
           {showSaved && (
             <span className="flex items-center gap-1 text-[12.5px] font-medium" style={{ color: '#10B981' }}>
               <Icon d={icons.checkCircle} size={14} /> Saved
@@ -570,7 +570,7 @@ function TagInput({ tags, onChange, placeholder }: { tags: string[]; onChange: (
     setInput('')
   }
   return (
-    <div className="flex flex-wrap gap-1.5 p-2.5 rounded-lg min-h-[44px]" style={{ border: '1px solid var(--color-border)', background: 'var(--color-card)' }}>
+    <div className="flex flex-wrap gap-1.5 p-2.5 rounded-lg min-h-11" style={{ border: '1px solid var(--color-border)', background: 'var(--color-card)' }}>
       {tags.map(t => (
         <span key={t} className="inline-flex items-center gap-1 text-[12.5px] font-medium px-2.5 py-1 rounded-full" style={{ background: 'var(--color-muted)', color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
           {t}
@@ -588,7 +588,7 @@ function TagInput({ tags, onChange, placeholder }: { tags: string[]; onChange: (
         }}
         onBlur={() => { if (input.trim()) addTag(input) }}
         placeholder={tags.length ? '' : placeholder}
-        className="flex-1 outline-none min-w-[120px] text-[13px]"
+        className="flex-1 outline-none min-w-30 text-[13px]"
         style={{ background: 'transparent', color: 'var(--color-primary)', fontFamily: 'Inter, sans-serif' }}
       />
     </div>
@@ -868,7 +868,7 @@ function CompletionSidebar({ user }: { user: UserProfile }) {
             <div className="flex flex-col gap-2">
               {missing.map(item => (
                 <div key={item.label} className="flex items-start gap-2">
-                  <div className="w-4 h-4 rounded-full mt-0.5 flex-shrink-0 flex items-center justify-center" style={{ background: 'var(--color-muted)', border: '1.5px solid var(--color-border)' }}>
+                  <div className="w-4 h-4 rounded-full mt-0.5 shrink-0 flex items-center justify-center" style={{ background: 'var(--color-muted)', border: '1.5px solid var(--color-border)' }}>
                     <span className="w-1 h-1 rounded-full" style={{ background: 'var(--color-muted-fg)' }} />
                   </div>
                   <div>
@@ -890,7 +890,7 @@ function CompletionSidebar({ user }: { user: UserProfile }) {
             <div className="flex flex-col gap-1.5">
               {done.map(item => (
                 <div key={item.label} className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full flex-shrink-0 flex items-center justify-center" style={{ background: '#ECFDF5', border: '1.5px solid #A7F3D0' }}>
+                  <div className="w-4 h-4 rounded-full shrink-0 flex items-center justify-center" style={{ background: '#ECFDF5', border: '1.5px solid #A7F3D0' }}>
                     <Icon d={icons.check} size={9} strokeWidth={2.5} className="text-green-600" />
                   </div>
                   <p className="text-[12.5px]" style={{ color: 'var(--color-muted-fg)', fontFamily: 'Inter, sans-serif' }}>{item.label}</p>
@@ -924,13 +924,13 @@ export function ProfilePage() {
   }
 
   return (
-    <div className="max-w-[1060px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
+    <div className="max-w-265 mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
       {/* Page header */}
       <div className="mb-7">
         <h1 className="text-[26px] font-bold tracking-tight" style={{ color: 'var(--color-primary)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
           Career Profile
         </h1>
-        <p className="text-[15px] mt-1 max-w-[520px] leading-relaxed" style={{ color: 'var(--color-muted-fg)' }}>
+        <p className="text-[15px] mt-1 max-w-130 leading-relaxed" style={{ color: 'var(--color-muted-fg)' }}>
           Keep your professional context up to date so Outreacher can make better recommendations.
         </p>
       </div>
@@ -947,7 +947,7 @@ export function ProfilePage() {
         </div>
 
         {/* Sidebar: completeness */}
-        <div className="w-full xl:w-[260px] flex-shrink-0">
+        <div className="w-full xl:w-65 shrink-0">
           <CompletionSidebar user={localUser} />
         </div>
       </div>
