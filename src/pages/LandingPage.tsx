@@ -196,17 +196,6 @@ function ProductConceptSection() {
             Outreacher doesn't start with a message. It starts with context. 
           </p>
         </div>
-
-        <div className="flex flex-wrap items-center gap-4 text-[14px] font-medium text-[var(--color-primary)]">
-          {['Company signal', 'Evidence', 'Opportunity', 'Person', 'Reason', 'Outreach'].map((step, i, arr) => (
-            <div key={i} className="flex items-center gap-4">
-              <div className="px-5 py-3 rounded-xl border bg-white shadow-sm" style={{ borderColor: 'var(--color-border)' }}>
-                {step}
-              </div>
-              {i < arr.length - 1 && <Icon d={icons.arrowRight} size={16} className="text-gray-400" />}
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   )
@@ -276,7 +265,7 @@ function PersonSection() {
             </div>
             <div>
               <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Supporting evidence</p>
-              <p className="text-[14px] text-[var(--color-primary)]">"We are scaling our component library" (Acme Tech Blog, Oct 2026)</p>
+              <p className="text-[14px] text-[var(--color-primary)]">"We are scaling our component library" (Acme Tech Blog)</p>
             </div>
             <div>
               <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Conversation angle</p>
