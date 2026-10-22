@@ -42,7 +42,7 @@ function NeedsAttentionSection() {
       icon: icons.user, iconBg: '#EEF2FF', iconColor: '#4F46E5',
       text: 'Complete your career profile',
       detail: 'Your profile shapes how Outreacher researches and frames your outreach.',
-      cta: 'Go to profile', route: '/profile', priority: 9,
+      cta: 'Go to profile', route: '/profile', priority: 100,
     })
   }
 
@@ -55,19 +55,85 @@ function NeedsAttentionSection() {
       icon: icons.atSign, iconBg: '#FFFBEB', iconColor: '#D97706',
       text: 'Set up a sender account',
       detail: 'You have outreach ready but no sender account configured.',
-      cta: 'Configure sender', route: '/sender-accounts', priority: 8,
+      cta: 'Configure sender', route: '/sender-accounts', priority: 99,
+    })
+  }
+
+  // Active conversations / replies
+  const activeReplies = ws.companies.filter(c => (c.convStage === 'REPLIED' || c.convStage === 'ACTIVE') && c.companyStatus !== 'ARCHIVED' && !c.convOutcome)
+  if (activeReplies.length > 0) {
+    const first = activeReplies[0]
+    items.push({
+      id: `reply-${first.id}`,
+      icon: icons.replies, iconBg: '#ECFDF5', iconColor: '#059669',
+      text: activeReplies.length === 1 ? `Reply received from ${first.name}` : `${activeReplies.length} active conversations need a reply`,
+      detail: activeReplies.length === 1 ? 'Review the message and continue the conversation.' : 'Multiple active conversations need your attention.',
+      cta: 'View conversation', route: `/companies/${first.id}`, priority: 10,
+    })
+  }
+
+  // Follow-ups due
+  const followUpsDue = ws.companies.filter(c => c.followUpStage === 'DUE' && c.companyStatus !== 'ARCHIVED' && !c.convOutcome)
+  if (followUpsDue.length > 0) {
+    const first = followUpsDue[0]
+    items.push({
+      id: `followup-${first.id}`,
+      icon: icons.clock, iconBg: '#FFFBEB', iconColor: '#D97706',
+      text: followUpsDue.length === 1 ? `Follow-up due for ${first.name}` : `${followUpsDue.length} follow-ups are due`,
+      detail: 'It\'s time to send a follow-up to keep the conversation going.',
+      cta: 'Review follow-up', route: `/companies/${first.id}`, priority: 9,
+    })
+  }
+
+  // Outreach ready to send
+  const readyToSend = ws.companies.filter(c => c.outreachStage === 'READY' && c.companyStatus !== 'ARCHIVED')
+  if (readyToSend.length > 0) {
+    const first = readyToSend[0]
+    items.push({
+      id: `ready-${first.id}`,
+      icon: icons.campaigns, iconBg: '#EEF2FF', iconColor: '#4F46E5',
+      text: readyToSend.length === 1 ? `Ready to send: ${first.name}` : `${readyToSend.length} outreaches ready to send`,
+      detail: 'Your outreach draft is approved and ready to be sent.',
+      cta: 'Send outreach', route: `/companies/${first.id}`, priority: 8,
     })
   }
 
   // Draft outreaches waiting review
-  const drafts = ws.outreaches.filter(o => o.status === 'DRAFT')
+  const drafts = ws.companies.filter(c => c.outreachStage === 'DRAFT' && c.companyStatus !== 'ARCHIVED')
   if (drafts.length > 0) {
+    const first = drafts[0]
     items.push({
-      id: 'drafts',
+      id: `drafts-${first.id}`,
       icon: icons.outreach, iconBg: '#F5F3FF', iconColor: '#7C3AED',
-      text: `${drafts.length} outreach draft${drafts.length > 1 ? 's' : ''} waiting for review`,
-      detail: drafts.length === 1 ? 'Review and approve before sending.' : `${drafts.length} drafts need your attention before anything is sent.`,
-      cta: 'Review drafts', route: '/outreaches', priority: 7,
+      text: drafts.length === 1 ? `Review draft for ${first.name}` : `${drafts.length} drafts waiting for review`,
+      detail: drafts.length === 1 ? 'Review and approve the generated draft.' : `${drafts.length} drafts need your attention before anything is sent.`,
+      cta: 'Review draft', route: `/companies/${first.id}`, priority: 7,
+    })
+  }
+
+  // Contacts selected but outreach not started
+  const readyForOutreach = ws.companies.filter(c => c.contactStage === 'SELECTED' && c.outreachStage === 'NOT_STARTED' && c.companyStatus !== 'ARCHIVED')
+  if (readyForOutreach.length > 0) {
+    const first = readyForOutreach[0]
+    items.push({
+      id: `outreach-${first.id}`,
+      icon: icons.contacts, iconBg: '#FDF4FF', iconColor: '#C026D3',
+      text: readyForOutreach.length === 1 ? `Prepare outreach for ${first.name}` : `${readyForOutreach.length} contacts selected for outreach`,
+      detail: 'A contact is selected — the next step is to prepare your outreach message.',
+      cta: 'Prepare outreach', route: `/companies/${first.id}`, priority: 6,
+    })
+  }
+
+  // Opportunities awaiting classification
+  const unclassified = ws.companies.filter(c => c.researchStage === 'COMPLETE' && c.oppStatus === 'UNCLASSIFIED' && c.companyStatus !== 'ARCHIVED')
+  if (unclassified.length > 0) {
+    const first = unclassified[0]
+    items.push({
+      id: `opp-${first.id}`,
+      icon: icons.opportunities, iconBg: '#FEFCE8', iconColor: '#B45309',
+      text: unclassified.length === 1 ? `Review opportunity at ${first.name}` : `${unclassified.length} opportunities await classification`,
+      detail: 'Research is complete — classify as CONFIRMED or PROACTIVE before proceeding.',
+      cta: 'Review opportunity', route: `/companies/${first.id}`, priority: 5,
     })
   }
 
@@ -82,33 +148,7 @@ function NeedsAttentionSection() {
       detail: unresearched.length === 1
         ? 'Research helps determine whether there is a credible reason to reach out.'
         : `${first.name}${unresearched.length > 1 ? ` and ${unresearched.length - 1} other${unresearched.length > 2 ? 's' : ''}` : ''} need research before outreach can proceed.`,
-      cta: 'Start research', route: `/companies/${first.id}`, priority: 5,
-    })
-  }
-
-  // Opportunities awaiting classification
-  const unclassified = ws.companies.filter(c => c.researchStage === 'COMPLETE' && c.oppStatus === 'UNCLASSIFIED' && c.companyStatus !== 'ARCHIVED')
-  if (unclassified.length > 0) {
-    const first = unclassified[0]
-    items.push({
-      id: `opp-${first.id}`,
-      icon: icons.opportunities, iconBg: '#FEFCE8', iconColor: '#B45309',
-      text: unclassified.length === 1 ? `Review opportunity at ${first.name}` : `${unclassified.length} opportunities await classification`,
-      detail: 'Research is complete — classify as CONFIRMED or PROACTIVE before proceeding.',
-      cta: 'Review opportunity', route: `/companies/${first.id}`, priority: 6,
-    })
-  }
-
-  // Contacts selected but outreach not started
-  const readyForOutreach = ws.companies.filter(c => c.contactStage === 'SELECTED' && c.outreachStage === 'NOT_STARTED' && c.companyStatus !== 'ARCHIVED')
-  if (readyForOutreach.length > 0) {
-    const first = readyForOutreach[0]
-    items.push({
-      id: `outreach-${first.id}`,
-      icon: icons.outreach, iconBg: '#ECFDF5', iconColor: '#059669',
-      text: `Prepare outreach for ${first.name}`,
-      detail: 'A contact is selected — the next step is to prepare your outreach message.',
-      cta: 'Prepare outreach', route: `/companies/${first.id}`, priority: 6,
+      cta: 'Start research', route: `/companies/${first.id}`, priority: 4,
     })
   }
 
@@ -256,14 +296,14 @@ function getUrgency(entry: CompanyEntry): number {
   }
   if (entry.convStage === 'REPLIED') return 10
   if (entry.convStage === 'ACTIVE') return 9
-  if (entry.followUpStage === 'DUE') return 8
+  if (entry.followUpStage === 'DUE') return 9
   if (entry.followUpStage === 'DRAFT') return 8
+  if (entry.outreachStage === 'READY') return 8
   if (entry.outreachStage === 'DRAFT') return 7
   if (entry.campaignStage === 'READY') return 7
   if (entry.campaignStage === 'SETUP') return 7
   if (entry.outreachStage === 'SENT') return 6
   if (entry.contactStage === 'DISCOVERED') return 6
-  if (entry.outreachStage === 'READY') return 6
   if (entry.contactStage === 'SELECTED') return 5
   if (entry.researchStage === 'COMPLETE' && entry.oppStatus !== 'UNCLASSIFIED') return 5
   if (entry.researchStage === 'COMPLETE') return 4
@@ -291,7 +331,7 @@ function getReasonText(entry: CompanyEntry, contactName?: string): string {
   if (entry.campaignStage === 'READY') return 'Your outreach is ready to send.'
   if (entry.campaignStage === 'SETUP') return 'Complete your campaign setup to continue.'
   if (entry.outreachStage === 'DRAFT') return 'Your outreach draft is ready for review.'
-  if (entry.outreachStage === 'READY') return 'Draft approved — create a campaign to send.'
+  if (entry.outreachStage === 'READY') return 'Draft approved — ready to send.'
   if (entry.contactStage === 'DISCOVERED') return 'Contacts have been identified — review and select one.'
   if (entry.contactStage === 'SELECTED') return 'A contact has been selected — prepare your outreach.'
   if (entry.researchStage === 'COMPLETE' && entry.oppStatus !== 'UNCLASSIFIED') return 'Research complete — find the right contact to approach.'
@@ -309,7 +349,7 @@ function getHeroCtaLabel(entry: CompanyEntry): string {
   if (entry.outreachStage === 'DRAFT') return 'Review draft'
   if (entry.campaignStage === 'READY') return 'Send outreach'
   if (entry.campaignStage === 'SETUP') return 'Complete campaign setup'
-  if (entry.outreachStage === 'READY') return 'Create campaign'
+  if (entry.outreachStage === 'READY') return 'Send outreach'
   if (entry.contactStage === 'DISCOVERED') return 'Review contacts'
   if (entry.contactStage === 'SELECTED') return 'Prepare outreach'
   if (entry.researchStage === 'COMPLETE' && entry.oppStatus !== 'UNCLASSIFIED') return 'Find contacts'
@@ -691,12 +731,6 @@ export function DashboardPage() {
     .slice(0, 5)
 
   function getEntryDestination(entry: CompanyEntry): string {
-    if (entry.convStage === 'REPLIED' || entry.convStage === 'ACTIVE' || entry.outreachStage === 'SENT') {
-      return `/conversations/${entry.id}`
-    }
-    if (entry.researchStage === 'COMPLETE' && entry.contactStage === 'NOT_DISCOVERED') {
-      return `/opportunities/${entry.id}`
-    }
     return `/companies/${entry.id}`
   }
 
